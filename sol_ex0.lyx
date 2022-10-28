@@ -29,8 +29,9 @@
 \bibtex_command default
 \index_command default
 \paperfontsize default
+\spacing single
 \use_hyperref false
-\papersize default
+\papersize a4paper
 \use_geometry false
 \use_package amsmath 1
 \use_package amssymb 1
@@ -44,6 +45,7 @@
 \use_package undertilde 1
 \cite_engine basic
 \cite_engine_type default
+\biblio_style plain
 \use_bibtopic false
 \use_indices false
 \paperorientation portrait
@@ -100,7 +102,7 @@ Denot
 \begin_inset Formula $x^{T}Rx=<x,Rx>$
 \end_inset
 
-, Denote 
+, Denote :
 \begin_inset Formula 
 \[
 R=\left[\begin{array}{ccc}
@@ -203,7 +205,7 @@ Where 1 is due to the fact that when
 \underset{i}{\sum}x_{i}R_{i1}\\
 \vdots\\
 \underset{i}{\sum}x_{i}R_{in}
-\end{array}\right]=Rx+(x^{T}R)^{T}=x^{T}(A^{T}+A)
+\end{array}\right]=Rx+(x^{T}R)^{T}=x^{T}(R^{T}+R)
 \]
 
 \end_inset
@@ -223,7 +225,7 @@ Denote
 
 .
  We found 
-\begin_inset Formula $\frac{\partial Q(g(x))}{\partial g(x)}=x^{T}(A^{T}+A)$
+\begin_inset Formula $\frac{\partial Q(g(x))}{\partial g(x)}=x^{T}(R^{T}+R)$
 \end_inset
 
 , also 
@@ -234,108 +236,8 @@ Denote
  Finally:
 \begin_inset Formula 
 \[
-\frac{\partial f_{1}}{\partial x}(x)=x^{T}(A^{T}+A)
+\frac{\partial f_{1}}{\partial x}(x)=x^{T}(R^{T}+R)
 \]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
-Now we look at the case for 
-\begin_inset Formula $(x-\mu)$
-\end_inset
-
-:
-\end_layout
-
-\begin_layout Paragraph
-\begin_inset Formula 
-\begin{align*}
- & (x-\mu)^{T}R(x-\mu)\\
-= & <(x-\mu),R(x-\mu)>\\
-= & <(x-\mu),\left[\begin{array}{c}
-\vdots\\
-R_{i}^{T}(x-\mu)\\
-\vdots
-\end{array}\right]>\\
-= & <(x-\mu),\left[\begin{array}{c}
-\vdots\\
-\stackrel[j=1]{n}{\sum}R_{ij}(x-\mu)_{j}\\
-\vdots
-\end{array}\right]>\\
-= & [x_{1}-\mu_{1},\ldots,x_{n}-\mu_{n}]\left[\begin{array}{c}
-\vdots\\
-\stackrel[j=1]{n}{\sum}R_{ij}(x-\mu)_{j}\\
-\vdots
-\end{array}\right]\\
-= & [x_{1},\ldots,x_{n}]\left[\begin{array}{c}
-\vdots\\
-\stackrel[j=1]{n}{\sum}R_{ij}(x-\mu)_{j}\\
-\vdots
-\end{array}\right]-[\mu_{1},\ldots,\mu_{n}]\left[\begin{array}{c}
-\vdots\\
-\stackrel[j=1]{n}{\sum}R_{ij}(x-\mu)_{j}\\
-\vdots
-\end{array}\right]\\
-= & \stackrel[i=1]{n}{\sum}x_{i}\stackrel[j=1]{n}{\sum}R_{ij}(x-\mu)_{j}-\stackrel[i=1]{n}{\sum}\mu_{i}\stackrel[j=1]{n}{\sum}R_{ij}(x-\mu)_{j}\\
-= & \left(\stackrel[i=1]{n}{\sum}x_{i}\left[\stackrel[j=1]{n}{\sum}R_{ij}x_{j}-\stackrel[j=1]{n}{\sum}R_{ij}\mu_{j}\right]\right)-\left(\stackrel[i=1]{n}{\sum}\mu_{i}\left[\stackrel[j=1]{n}{\sum}R_{ij}x_{j}-\stackrel[j=1]{n}{\sum}R_{ij}\mu_{j}\right]\right)\\
-= & \left(\stackrel[i=1]{n}{\sum}\left[\stackrel[j=1]{n}{\sum}x_{i}R_{ij}x_{j}-\stackrel[j=1]{n}{\sum}x_{i}R_{ij}\mu_{j}\right]\right)-\left(\stackrel[i=1]{n}{\sum}\left[\stackrel[j=1]{n}{\sum}\mu_{i}R_{ij}x_{j}-\stackrel[j=1]{n}{\sum}\mu_{i}R_{ij}\mu_{j}\right]\right)\\
-= & \left(\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}x_{i}R_{ij}x_{j}-\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}x_{i}R_{ij}\mu_{j}\right)-\left(\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}\mu_{i}R_{ij}x_{j}-\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}\mu_{i}R_{ij}\mu_{j}\right)\\
-= & \stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}x_{i}R_{ij}x_{j}-2\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}x_{i}R_{ij}\mu_{j}-\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}\mu_{i}R_{ij}\mu_{j}\\
-\end{align*}
-
-\end_inset
-
-Since derivation is a linear operation:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{align*}
- & \frac{\partial}{\partial x_{k}}(x-\mu)^{T}R(x-\mu)\\
-= & \frac{\partial}{\partial x_{k}}\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}x_{i}R_{ij}x_{j}-\frac{\partial}{\partial x_{k}}2\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}x_{i}R_{ij}\mu_{j}-\frac{\partial}{\partial x_{k}}\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}\mu_{i}R_{ij}\mu_{j}\\
-= & \frac{\partial}{\partial x_{k}}\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}x_{i}R_{ij}x_{j}-\frac{\partial}{\partial x_{k}}2\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}x_{i}R_{ij}\mu_{j}\\
-= & \frac{\partial}{\partial x_{k}}\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}x_{i}R_{ij}x_{j}-2\frac{\partial}{\partial x_{k}}\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}x_{i}R_{ij}\mu_{j}\\
-= & \underset{j}{\sum}R_{kj}x_{j}+\underset{i}{\sum}x_{i}R_{ik}-2\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}\frac{\partial}{\partial x_{k}}x_{i}R_{ij}\mu_{j}\\
-= & \underset{j}{\sum}R_{kj}x_{j}+\underset{i}{\sum}x_{i}R_{ik}-2\stackrel[j=1]{n}{\sum}\frac{\partial}{\partial x_{k}}x_{k}R_{kj}\mu_{j}\\
-= & \underset{j}{\sum}R_{kj}x_{j}+\underset{i}{\sum}x_{i}R_{ik}-2\stackrel[j=1]{n}{\sum}R_{kj}\mu_{j}
-\end{align*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
-In vector form:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{align*}
- & \nabla(x-\mu)^{T}R(x-\mu)\\
-= & \left[\begin{array}{c}
-\underset{j}{\sum}R_{1j}x_{j}+\underset{i}{\sum}x_{i}R_{i1}-2\stackrel[j=1]{n}{\sum}R_{1j}\mu_{j}\\
-\vdots\\
-\underset{j}{\sum}R_{nj}x_{j}+\underset{i}{\sum}x_{i}R_{in}-2\stackrel[j=1]{n}{\sum}R_{nj}\mu_{j}
-\end{array}\right]\\
-= & \left[\begin{array}{c}
-\underset{j}{\sum}R_{1j}x_{j}\\
-\vdots\\
-\underset{j}{\sum}R_{nj}x_{j}
-\end{array}\right]+\left[\begin{array}{c}
-\underset{i}{\sum}x_{i}R_{i1}\\
-\vdots\\
-\underset{i}{\sum}x_{i}R_{in}
-\end{array}\right]-2\left[\begin{array}{c}
-\underset{j}{\sum}R_{1j}\mu_{j}\\
-\vdots\\
-\underset{j}{\sum}R_{nj}\mu_{j}
-\end{array}\right]\\
-= & Rx+(x^{T}R)^{T}-2R\mu
-\end{align*}
 
 \end_inset
 
@@ -360,12 +262,12 @@ Denote
 \end_inset
 
  and 
-\begin_inset Formula $g_{4}(x)=g_{3}(x)g_{2}(x)$
+\begin_inset Formula $g_{4}(x)=g_{3}(x)^{T}g_{2}(x)$
 \end_inset
 
 .
  So 
-\begin_inset Formula $f_{1}(x)=g_{4}(g_{1}(x))$
+\begin_inset Formula $f_{1}(x)=g_{4}(g_{1}(x))=g_{3}^{T}(g_{1}(x))g_{2}(g_{1}(x))$
 \end_inset
 
 .
@@ -378,7 +280,7 @@ Denote
 \end_inset
 
 Now - 
-\begin_inset Formula $\frac{\partial g_{1}(x)}{\partial x}=1$
+\begin_inset Formula $\frac{\partial g_{1}(x)}{\partial x}=\frac{\partial x}{\partial x}-\frac{\partial\mu}{\partial x}=1-0=1$
 \end_inset
 
  and we get 
@@ -389,13 +291,13 @@ Now -
  By the product role we get: 
 \begin_inset Formula 
 \[
-\frac{\partial g_{4}(x)}{\partial x}=\frac{\partial(g_{3}\cdot g_{2})(x)}{\partial x}=\frac{\partial g_{3}(x)}{\partial x}g_{2}(x)+\frac{\partial g_{2}(x)}{\partial x}g_{3}(x)
+\frac{\partial g_{4}(x)}{\partial x}=\frac{\partial(g_{3}^{T}\cdot g_{2})(x)}{\partial x}=\frac{\partial g_{3}(x)}{\partial x}^{T}g_{2}(x)+g_{3}(x)^{T}\frac{\partial g_{2}(x)}{\partial x}
 \]
 
 \end_inset
 
 separately we have - 
-\begin_inset Formula $\frac{\partial g_{3}(x)}{\partial x}=1$
+\begin_inset Formula $\frac{\partial g_{3}(x)}{\partial x}=\frac{\partial x}{\partial x}=1$
 \end_inset
 
  (same as 
@@ -454,9 +356,77 @@ So long story short
  All Togther now:
 \begin_inset Formula 
 \begin{align*}
- & \frac{\partial g_{3}(x)}{\partial x}g_{2}(x)+\frac{\partial g_{2}(x)}{\partial x}g_{3}(x)\\
-= & 1Rx+(Rx)^{T}
+ & \frac{\partial g_{3}(x)}{\partial x}^{T}g_{2}(x)+g_{3}(x)^{T}\frac{\partial g_{2}(x)}{\partial x}\\
+= & 1Rx+(x^{T}R)\\
+\underset{\varhexstar}{=} & Rx+(x^{T}R)^{T}=x^{T}(R^{T}+R)
 \end{align*}
+
+\end_inset
+
+And 
+\begin_inset Formula $\varhexstar$
+\end_inset
+
+ is just simbulic so we make sure we add to collumn vectors.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Assume R is symmetric.
+ //ToDo:
+\end_layout
+
+\begin_layout Paragraph
+In this case R can be writen as 
+\begin_inset Formula $R=UDU^{T}$
+\end_inset
+
+ (iff 
+\begin_inset Formula $U^{T}RU=D$
+\end_inset
+
+) such that 
+\begin_inset Formula $U$
+\end_inset
+
+ is an orthogonal matrix and 
+\begin_inset Formula $D$
+\end_inset
+
+ is diagonal comprised of R's eignvalues.
+ 
+\begin_inset Formula 
+\[
+x^{T}Rx=x^{T}IRIx=x^{T}UU^{T}RUU^{T}x=x^{T}UDU^{T}x
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+——————–
+\begin_inset Formula 
+\[
+Rx=UU^{T}RUU^{T}x
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+U^{T}x=\left[\begin{array}{c}
+U_{1}^{T}x\\
+\vdots\\
+U_{n}^{T}x
+\end{array}\right]=\left[\begin{array}{c}
+\sum U_{1}^{T}x\\
+\vdots\\
+U_{n}^{T}x
+\end{array}\right]
+\]
 
 \end_inset
 
@@ -470,21 +440,567 @@ So long story short
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph
+Denot 
 \begin_inset Formula 
-\begin{align*}
- & \frac{\partial f_{3}}{\partial\theta}\\
-= & -\frac{\lambda}{2}\sum\frac{\partial(h_{i}^{T}θ−y_{i})^{2}}{\partial\theta}\\
-= & -\frac{\lambda}{2}\sum2(h_{i}^{T}θ−y_{i})
-\end{align*}
+\[
+H=\left[\begin{array}{ccc}
+ & \vdots\\{}
+[- & h_{i}^{T} & -]\\
+ & \vdots
+\end{array}\right]
+\]
+
+\end_inset
+
+so - 
+\begin_inset Formula $[H\theta]_{i}=h_{i}^{T}\theta$
+\end_inset
+
+ and 
+\begin_inset Formula $h_{i}^{T}\theta-y_{i}=[H\theta]_{i}-y_{i}=[H\theta-y]_{i}$
+\end_inset
+
+ (
+\begin_inset Formula $\bigstar$
+\end_inset
+
+).
+ Now, by defintion:
+\begin_inset Formula 
+\[
+\left\Vert H\theta-y\right\Vert ^{2}=(H\theta-y)^{T}(H\theta-y)=\sum(H\theta-y)_{i}\cdot(H\theta-y)=\sum(H\theta-y)_{i}^{2}
+\]
+
+\end_inset
+
+Togther with 
+\begin_inset Formula $\bigstar$
+\end_inset
+
+ we get 
+\begin_inset Formula $\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}=\left\Vert H\theta-y\right\Vert ^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+\begin_inset Formula $f_{3}(\theta,\lambda)=-c\log\frac{1}{\lambda}-\frac{1}{2}\lambda\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Denote 
+\begin_inset Formula $g_{1}(\theta,\lambda)=\log\frac{1}{\lambda}=-\log\lambda$
+\end_inset
+
+ and 
+\begin_inset Formula $g_{2}(\theta,\lambda)=\frac{\lambda}{2}\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}$
+\end_inset
+
+.
+ We get that 
+\begin_inset Formula $\frac{\partial g_{1}}{\partial\theta}(\theta,\lambda)=0$
+\end_inset
+
+ and 
+\begin_inset Formula $\frac{\partial g_{1}}{\partial\lambda}(\theta,\lambda)=-\frac{1}{\lambda}$
+\end_inset
+
+.
+ Futhermore - 
+\begin_inset Formula $\frac{\partial g_{2}}{\partial\lambda}(\theta,\lambda)=\frac{1}{2}\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}$
+\end_inset
+
+.
+ Last but not least, note 
+\begin_inset Formula $\frac{\partial g_{2}}{\partial\theta}(\theta,\lambda)=\frac{\lambda}{2}\frac{\partial f_{2}}{\partial\theta}(\theta)$
+\end_inset
+
+.
+ We saw in the recitation that 
+\begin_inset Formula $\frac{\partial}{\partial y}g(y)=\frac{\partial}{\partial y}\left\Vert y\right\Vert ^{2}=2y$
+\end_inset
+
+.
+ for 
+\begin_inset Formula $f(x)=Hx-y$
+\end_inset
+
+ it holds that 
+\begin_inset Formula $f_{2}(x)=g(f(x))$
+\end_inset
+
+.
+ By the chain role - 
+\begin_inset Formula $\frac{\partial f_{2}}{\partial x}(x)=\frac{\partial f}{\partial x}(x)\frac{\partial g}{\partial f(x)}(f(x))$
+\end_inset
+
+.
+\begin_inset Formula 
+\[
+\frac{\partial(Hx-y)_{j}}{\partial x_{i}}=\frac{\partial(\sum_{k}H_{jk}x_{k}-y_{j})}{\partial x_{i}}=\frac{\partial(\sum_{k}H_{jk}x_{k})}{\partial x_{i}}-\frac{\partial y_{j}}{\partial x_{i}}=H_{ji}
+\]
+
+\end_inset
+
+Hence - 
+\begin_inset Formula $\frac{\partial f}{\partial x}(x)=\frac{\partial(Hx-y)}{\partial x}=H^{T}$
+\end_inset
+
+ and thus - 
+\begin_inset Formula $\frac{\partial f_{2}}{\partial x}(x)=2H^{T}(Hx-y)$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+To some it all up: 
+\begin_inset Formula $f_{3}(\theta,\lambda)=-cg_{1}(\theta,\lambda)-g_{2}(\theta,\lambda)$
+\end_inset
+
+ and so:
+\begin_inset Formula 
+\[
+\frac{\partial f_{3}}{\partial\theta}=-c\frac{\partial}{\partial\theta}g_{1}(\theta,\lambda)-\frac{\partial}{\partial\theta}g_{2}(\theta,\lambda)=-\frac{\lambda}{2}\frac{\partial f_{2}}{\partial\theta}(\theta)=-\lambda H^{T}(H\theta-y)
+\]
+
+\end_inset
+
+and:
+\begin_inset Formula 
+\[
+\frac{\partial f_{3}}{\partial\lambda}=-c\frac{\partial}{\partial\lambda}g_{1}(\theta,\lambda)-\frac{\partial}{\partial\lambda}g_{2}(\theta,\lambda)=-\frac{c}{\lambda}-\frac{1}{2}\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}=-\frac{c}{\lambda}-\frac{1}{2}\left\Vert H\theta-y\right\Vert ^{2}
+\]
 
 \end_inset
 
 
 \end_layout
 
+\begin_layout Subsubsection
+\begin_inset Formula $\theta$
+\end_inset
+
+ which maximaizes 
+\begin_inset Formula $f_{3}$
+\end_inset
+
+ holds 
+\begin_inset Formula $\frac{\partial f_{3}}{\partial\theta}(\theta,\lambda)=0$
+\end_inset
+
+ (as 
+\begin_inset Formula $f_{3}$
+\end_inset
+
+ is concave):
+\end_layout
+
+\begin_layout Paragraph
+\begin_inset Formula 
+\[
+0=-\lambda H^{T}(H\theta-y)\underset{0<\lambda}{\Longrightarrow}0=H^{T}(H\theta-y)\Longrightarrow H\theta=y\Longrightarrow\theta=H^{-1}y
+\]
+
+\end_inset
+
+ And we can see it doesn't depent on 
+\begin_inset Formula $\lambda$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+Same as before:
+\end_layout
+
+\begin_layout Paragraph
+\begin_inset Formula 
+\[
+0=\frac{\partial f_{3}}{\partial\lambda}(\theta,\lambda)=-\frac{c}{\lambda}-\frac{1}{2}\left\Vert H\theta-y\right\Vert ^{2}\Longrightarrow\frac{1}{2}\left\Vert H\theta-y\right\Vert ^{2}=-\frac{c}{\lambda}\Longrightarrow\lambda=-\frac{2c}{\left\Vert H\theta-y\right\Vert ^{2}}
+\]
+
+\end_inset
+
+And here 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ depends on 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Maximize 
+\begin_inset Formula $f_{3}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+problem ):
+\end_layout
+
 \begin_layout Section
 Probability
+\end_layout
+
+\begin_layout Subsection
+Suppose we have some way to predict whether it will rain tomorrow using
+ some fancy machine.
+ We know that the probability that it will predict rain when there actually
+ won’t be any is 
+\begin_inset Formula $p_{FP}$
+\end_inset
+
+ (the “FP” stands for false positive).
+ Conversely, the probability it predicts dry conditions when there will
+ be rain is 
+\begin_inset Formula $p_{FN}$
+\end_inset
+
+ (the “FN” stands for false negative).
+ We also somehow know that the probability that tomorrow will be rainy is
+ 
+\begin_inset Formula $p_{r}$
+\end_inset
+
+.
+ What is the probability that there will be rain if our machine said there
+ won’t be?
+\end_layout
+
+\begin_layout Paragraph
+We want P(
+\begin_inset Quotes eld
+\end_inset
+
+it will rain
+\begin_inset Quotes erd
+\end_inset
+
+ | 
+\begin_inset Quotes eld
+\end_inset
+
+machine said it won’t rain
+\begin_inset Quotes erd
+\end_inset
+
+).
+ Denote A={
+\begin_inset Quotes eld
+\end_inset
+
+it will rain
+\begin_inset Quotes erd
+\end_inset
+
+}, B={
+\begin_inset Quotes eld
+\end_inset
+
+machine said it won’t rain
+\begin_inset Quotes erd
+\end_inset
+
+}.
+ What is P(A|B).
+ According to Bayes’ law: 
+\begin_inset Formula $P(A|B)=\frac{P(A)P(B|A)}{P(B)}$
+\end_inset
+
+.
+ P(B|A)=P(
+\begin_inset Quotes eld
+\end_inset
+
+machine said it won’t rain
+\begin_inset Quotes erd
+\end_inset
+
+ | 
+\begin_inset Quotes eld
+\end_inset
+
+it will rain
+\begin_inset Quotes erd
+\end_inset
+
+) = 
+\begin_inset Formula $p_{FN}$
+\end_inset
+
+.
+ Furthermore - P(A)=P(
+\begin_inset Quotes eld
+\end_inset
+
+it will rain
+\begin_inset Quotes erd
+\end_inset
+
+)=
+\begin_inset Formula $p_{r}$
+\end_inset
+
+.
+ All we need now is P(B)=P(
+\begin_inset Quotes eld
+\end_inset
+
+machine said it won’t rain
+\begin_inset Quotes erd
+\end_inset
+
+).
+ By the law of total probability we get 
+\begin_inset Formula $P(B)$
+\end_inset
+
+ = P(B|A) + P(B|
+\begin_inset Formula $!A$
+\end_inset
+
+) = 
+\begin_inset Formula $p_{FN}$
+\end_inset
+
+ + P(B|
+\begin_inset Formula $!A$
+\end_inset
+
+).
+ So we want - P(B|
+\begin_inset Formula $!A$
+\end_inset
+
+) = P(
+\begin_inset Quotes eld
+\end_inset
+
+machine said it won’t rain
+\begin_inset Quotes erd
+\end_inset
+
+| NOT 
+\begin_inset Quotes eld
+\end_inset
+
+it will rain
+\begin_inset Quotes erd
+\end_inset
+
+) = P(
+\begin_inset Quotes eld
+\end_inset
+
+machine said it won’t rain
+\begin_inset Quotes erd
+\end_inset
+
+| 
+\begin_inset Quotes eld
+\end_inset
+
+it will not rain
+\begin_inset Quotes erd
+\end_inset
+
+) i.e.
+ the qusestion is what's the probabilty to get a True Positive which is
+ 
+\begin_inset Formula $1-p_{FP}.$
+\end_inset
+
+ Thus:
+\end_layout
+
+\begin_layout Paragraph
+\begin_inset Formula 
+\[
+P(A|B)=\frac{p_{r}\cdot p_{FN}}{p_{FN}+1-p_{FP}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Uniform random variable on a segment in 
+\begin_inset Formula $\mathbb{R}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+We know 
+\begin_inset Formula $1=\stackrel[-\infty]{\infty}{\int}PDF(x)dx$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Paragraph
+So, because the p(x) is non zero only in the interval 
+\begin_inset Formula $[m-\frac{d}{2},m+\frac{d}{2}]$
+\end_inset
+
+:
+\begin_inset Formula 
+\[
+1=\stackrel[-\infty]{m-\frac{d}{2}}{\int}0dx+\stackrel[m-\frac{d}{2}]{m+\frac{d}{2}}{\int}\frac{1}{c}dx+\stackrel[m+\frac{d}{2}]{\infty}{\int}0dx=\stackrel[m-\frac{d}{2}]{m+\frac{d}{2}}{\int}\frac{1}{c}dx=\frac{1}{c}\stackrel[m-\frac{d}{2}]{m+\frac{d}{2}}{\int}dx=\frac{1}{c}\cdot x|_{m-\frac{d}{2}}^{m+\frac{d}{2}}=\frac{1}{c}(m+\frac{d}{2}-(m-\frac{d}{2}))=\frac{d}{c}
+\]
+
+\end_inset
+
+ Multiply by c and we get c=d.
+\end_layout
+
+\begin_layout Subsubsection
+Mean and Variance
+\end_layout
+
+\begin_layout Paragraph
+For the mean we use 
+\begin_inset Formula $E[x]=\stackrel[-\infty]{\infty}{\int}xp(x)dx$
+\end_inset
+
+.
+ As above:
+\begin_inset Formula 
+\begin{align*}
+E[x] & =\stackrel[m-\frac{d}{2}]{m+\frac{d}{2}}{\int}\frac{x}{c}dx=\frac{1}{c}\stackrel[m-\frac{d}{2}]{m+\frac{d}{2}}{\int}xdx=\frac{1}{2c}\cdot x^{2}|_{m-\frac{d}{2}}^{m+\frac{d}{2}}=\frac{1}{2c}((m+\frac{d}{2})^{2}-(m-\frac{d}{2})^{2})=\\
+= & \frac{1}{2c}(m^{2}+md+\frac{d^{2}}{4}-(m^{2}-md+\frac{d^{2}}{4}))=\frac{1}{2c}(md+md)=\frac{md}{c}\underset{c=d}{=}m=E[x]
+\end{align*}
+
+\end_inset
+
+ As for the variance - 
+\begin_inset Formula $var(x)=E[x^{2}]-E[x]^{2}$
+\end_inset
+
+.
+ By the computation above - 
+\begin_inset Formula $E[x]^{2}=m^{2}$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Paragraph
+According to 4.10 in the recitation 
+\begin_inset Formula $E[x^{2}]=E[f(x)]=\int p(x)f(x)dx$
+\end_inset
+
+ for 
+\begin_inset Formula $f(x)=x^{2}$
+\end_inset
+
+ .
+ We compute:
+\begin_inset Formula 
+\begin{align*}
+E[f(x)] & =\stackrel[-\infty]{m-\frac{d}{2}}{\int}0\cdot x^{2}dx+\stackrel[m-\frac{d}{2}]{m+\frac{d}{2}}{\int}\frac{1}{c}x^{2}dx+\stackrel[m+\frac{d}{2}]{\infty}{\int}0\cdot x^{2}dx=\frac{1}{c}\stackrel[m-\frac{d}{2}]{m+\frac{d}{2}}{\int}x^{2}dx=\\
+\underset{c=d}{=} & \frac{1}{3d}((m+\frac{d}{2})^{3}-(m-\frac{d}{2})^{3})=\frac{d^{3}}{12d}+\frac{dm^{2}}{d}=\frac{d^{2}}{12}+m^{2}=E[x^{2}]
+\end{align*}
+
+\end_inset
+
+Finally - 
+\begin_inset Formula $var(x)=E[x^{2}]-E[x]^{2}=\frac{d^{3}}{12d}+m^{2}-m^{2}=\frac{d^{3}}{12d}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset Formula $y=x+\delta$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+According to the 
+\begin_inset Quotes eld
+\end_inset
+
+Change of variable
+\begin_inset Quotes erd
+\end_inset
+
+ rule from the recitation (4.24) we know 
+\begin_inset Formula $p_{y}(y)=p_{x}(f^{-1}(y))\cdot det(J_{y}(f^{-1}(y)))$
+\end_inset
+
+.
+ As 
+\begin_inset Formula $f^{-1}(y)=y-\delta$
+\end_inset
+
+ and we're talking about 1D real functions - 
+\begin_inset Formula $det(J_{y}(f^{-1}(y)))=\frac{\partial f^{-1}}{\partial y}(y)=1$
+\end_inset
+
+ and so 
+\begin_inset Formula 
+\[
+p_{y}(y)=p_{x}(f^{-1}(y))=\begin{cases}
+\frac{1}{d} & m-\frac{d}{2}\le f^{-1}(y)\le m+\frac{d}{2}\\
+0 & else
+\end{cases}=\begin{cases}
+\frac{1}{d} & m-\frac{d}{2}+\delta\le y\le m+\frac{d}{2}+\delta\\
+0 & else
+\end{cases}
+\]
+
+\end_inset
+
+ Now note that if we take 
+\begin_inset Formula $\hat{m}=m+\delta$
+\end_inset
+
+ and 
+\begin_inset Formula 
+\[
+\hat{p}_{z}(z)=\begin{cases}
+\frac{1}{d} & m-\frac{d}{2}\le z\le m+\frac{d}{2}\\
+0 & else
+\end{cases}
+\]
+
+\end_inset
+
+We're back to the conditions of our original question, meaning the mean
+ and variance of a uniform random variable in a real segment are invariant
+ to shifts of the segment.
+ I.e.
+ 
+\begin_inset Formula $E(y)=m^{2}$
+\end_inset
+
+ and 
+\begin_inset Formula $var(y)=\frac{d^{3}}{12d}$
+\end_inset
+
+.
 \end_layout
 
 \end_body
