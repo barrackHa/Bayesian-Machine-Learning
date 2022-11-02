@@ -199,7 +199,7 @@ Where 1 is due to the fact that when
 \underset{i}{\sum}x_{i}R_{i1}\\
 \vdots\\
 \underset{i}{\sum}x_{i}R_{in}
-\end{array}\right]=Rx+(x^{T}R)^{T}=x^{T}(R^{T}+R)
+\end{array}\right]=Rx+(x^{T}R)^{T}=x^{T}(R^{T}+R)=(R+R^{T})x
 \]
 
 \end_inset
@@ -219,7 +219,7 @@ Denote
 
 .
  We found 
-\begin_inset Formula $\frac{\partial Q(g(x))}{\partial g(x)}=x^{T}(R^{T}+R)$
+\begin_inset Formula $\frac{\partial Q(y)}{\partial y}=(R+R^{T})y$
 \end_inset
 
 , also 
@@ -227,10 +227,14 @@ Denote
 \end_inset
 
 .
- Finally:
+ Finally, as 
+\begin_inset Formula $y=g(x)$
+\end_inset
+
+:
 \begin_inset Formula 
 \[
-\frac{\partial f_{1}}{\partial x}(x)=x^{T}(R^{T}+R)
+\frac{\partial f_{1}}{\partial x}(x)=(R+R^{T})(x-\mu)
 \]
 
 \end_inset
@@ -928,19 +932,11 @@ machine said it won’t rain
 \begin_inset Formula $P(B)$
 \end_inset
 
- = P(B|A) + P(B|
-\begin_inset Formula $!A$
+ = 
+\begin_inset Formula $P(B|A)p_{r}+P(B|!A)(1-p_{r})=p_{FN}\cdot p_{r}+P(B|!A)(1-p_{r})$
 \end_inset
 
-) = 
-\begin_inset Formula $p_{FN}$
-\end_inset
-
- + P(B|
-\begin_inset Formula $!A$
-\end_inset
-
-).
+.
  So we want - P(B|
 \begin_inset Formula $!A$
 \end_inset
@@ -984,12 +980,21 @@ it will not rain
 \end_inset
 
  Thus:
+\begin_inset Formula 
+\begin{align*}
+P(B) & =p_{FN}\cdot p_{r}+(1-p_{FP})(1-p_{r})=p_{FN}\cdot p_{r}+(1-p_{r})-p_{FP}(1-p_{r})=\\
+p_{FN}p_{r}+1-p_{r}-p_{FP}+p_{r}p_{FP}= & 1-p_{r}(1-p_{FN})+p_{FP}(1-p_{r})
+\end{align*}
+
+\end_inset
+
+So:
 \end_layout
 
 \begin_layout Paragraph
 \begin_inset Formula 
 \[
-P(A|B)=\frac{p_{r}\cdot p_{FN}}{p_{FN}+1-p_{FP}}
+P(A|B)=\frac{p_{r}\cdot p_{FN}}{1-p_{r}(1-p_{FN})+p_{FP}(1-p_{r})}
 \]
 
 \end_inset

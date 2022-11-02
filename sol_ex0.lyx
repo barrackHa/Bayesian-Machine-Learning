@@ -199,7 +199,7 @@ Where 1 is due to the fact that when
 \underset{i}{\sum}x_{i}R_{i1}\\
 \vdots\\
 \underset{i}{\sum}x_{i}R_{in}
-\end{array}\right]=Rx+(x^{T}R)^{T}=x^{T}(R^{T}+R)
+\end{array}\right]=Rx+(x^{T}R)^{T}=x^{T}(R^{T}+R)=(R+R^{T})x
 \]
 
 \end_inset
@@ -219,7 +219,7 @@ Denote
 
 .
  We found 
-\begin_inset Formula $\frac{\partial Q(g(x))}{\partial g(x)}=x^{T}(R^{T}+R)$
+\begin_inset Formula $\frac{\partial Q(y)}{\partial y}=(R+R^{T})y$
 \end_inset
 
 , also 
@@ -227,10 +227,14 @@ Denote
 \end_inset
 
 .
- Finally:
+ Finally, as 
+\begin_inset Formula $y=g(x)$
+\end_inset
+
+:
 \begin_inset Formula 
 \[
-\frac{\partial f_{1}}{\partial x}(x)=x^{T}(R^{T}+R)
+\frac{\partial f_{1}}{\partial x}(x)=(R+R^{T})(x-\mu)
 \]
 
 \end_inset
@@ -268,7 +272,7 @@ Denote
  By the chain role: 
 \begin_inset Formula 
 \[
-\frac{\partial f_{1}}{\partial x}(x)=\frac{\partial(g_{4}\circ g_{1})}{\partial x}(x)=\frac{\partial g_{1}(x)}{\partial x}\frac{\partial g_{4}(g_{1}(x))}{\partial g_{1}}=\bigstar
+\frac{\partial f_{1}}{\partial x}(x)=\frac{\partial(g_{4}\circ g_{1})}{\partial x}(x)=\frac{\partial g_{1}(x)}{\partial x}\frac{\partial g_{4}(g_{1}(x))}{\partial g_{1}(x)}=\bigstar
 \]
 
 \end_inset
@@ -278,20 +282,24 @@ Now -
 \end_inset
 
  and we get 
-\begin_inset Formula $\bigstar=\frac{\partial g_{4}(g_{1}(x))}{\partial g_{1}}=\frac{\partial g_{4}(x)}{\partial x}$
+\begin_inset Formula $\bigstar=1\cdot\frac{\partial g_{4}(g_{1}(x))}{\partial g_{1}(x)}=\frac{\partial g_{4}(y)}{\partial y}$
+\end_inset
+
+ for 
+\begin_inset Formula $y=g_{1}(x)$
 \end_inset
 
 .
  By the product role we get: 
 \begin_inset Formula 
 \[
-\frac{\partial g_{4}(x)}{\partial x}=\frac{\partial(g_{3}^{T}\cdot g_{2})(x)}{\partial x}=\frac{\partial g_{3}(x)}{\partial x}^{T}g_{2}(x)+g_{3}(x)^{T}\frac{\partial g_{2}(x)}{\partial x}
+\frac{\partial g_{4}(y)}{\partial y}=\frac{\partial(g_{3}^{T}\cdot g_{2})(y)}{\partial y}=\frac{\partial g_{3}(y)}{\partial y}^{T}g_{2}(y)+g_{3}(y)^{T}\frac{\partial g_{2}(y)}{\partial y}
 \]
 
 \end_inset
 
 separately we have - 
-\begin_inset Formula $\frac{\partial g_{3}(x)}{\partial x}=\frac{\partial x}{\partial x}=1$
+\begin_inset Formula $\frac{\partial g_{3}(y)}{\partial y}=\frac{\partial y}{\partial y}=1$
 \end_inset
 
  (same as 
@@ -299,14 +307,14 @@ separately we have -
 \end_inset
 
  only without the constant) and we're left with - 
-\begin_inset Formula $\frac{\partial g_{2}(x)}{\partial x}$
+\begin_inset Formula $\frac{\partial g_{2}(y)}{\partial y}$
 \end_inset
 
 .
  Since 
-\begin_inset Formula $Rx=\left[\begin{array}{c}
+\begin_inset Formula $Ry=\left[\begin{array}{c}
 \vdots\\
-R_{i}^{T}x\\
+R_{i}^{T}y\\
 \vdots
 \end{array}\right]$
 \end_inset
@@ -326,7 +334,7 @@ R_{i}^{T}x\\
 \end_inset
 
  we get 
-\begin_inset Formula $R_{i}^{T}x=\stackrel[j=1]{n}{\sum}R_{ij}x_{j}$
+\begin_inset Formula $R_{i}^{T}y=\stackrel[j=1]{n}{\sum}R_{ij}y_{j}$
 \end_inset
 
 .
@@ -337,22 +345,22 @@ R_{i}^{T}x\\
  is:
 \begin_inset Formula 
 \[
-\frac{\partial}{\partial x_{k}}\stackrel[j=1]{n}{\sum}R_{ij}x_{j}=R_{ik}
+\frac{\partial}{\partial y_{k}}\stackrel[j=1]{n}{\sum}R_{ij}y_{j}=R_{ik}
 \]
 
 \end_inset
 
 So long story short 
-\begin_inset Formula $\frac{\partial g_{2}(x)}{\partial x}=R$
+\begin_inset Formula $\frac{\partial g_{2}(y)}{\partial y}=R$
 \end_inset
 
 .
  All Togther now:
 \begin_inset Formula 
 \begin{align*}
- & \frac{\partial g_{3}(x)}{\partial x}^{T}g_{2}(x)+g_{3}(x)^{T}\frac{\partial g_{2}(x)}{\partial x}\\
-= & 1Rx+(x^{T}R)\\
-\underset{\varhexstar}{=} & Rx+(x^{T}R)^{T}=x^{T}(R^{T}+R)
+ & \frac{\partial g_{3}(y)}{\partial y}^{T}g_{2}(y)+g_{3}(y)^{T}\frac{\partial g_{2}(y)}{\partial y}\\
+= & 1Ry+(y^{T}R)\\
+\underset{\varhexstar}{=} & Ry+(y^{T}R)^{T}=y^{T}(R^{T}+R)=(R+R^{T})y
 \end{align*}
 
 \end_inset
@@ -362,7 +370,19 @@ And
 \end_inset
 
  is just simbulic so we make sure we add to collumn vectors.
- 
+ Remeber 
+\begin_inset Formula $y=x-\mu$
+\end_inset
+
+ and we get:
+\begin_inset Formula 
+\[
+\frac{\partial f_{1}}{\partial x}(x)=(R+R^{T})(x-\mu)
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
