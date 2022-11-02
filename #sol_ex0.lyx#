@@ -489,14 +489,32 @@ Moreover, same as was the cas with
 using bilinearity:
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph
 \begin_inset Formula 
 \begin{align*}
 \left(x-\mu\right)^{T}R\left(x-\mu\right) & =\left\langle \left(x-\mu\right),R\left(x-\mu\right)\right\rangle =\\
 \left\langle x,R\left(x-\mu\right)\right\rangle -\left\langle \mu,R\left(x-\mu\right)\right\rangle  & =\left\langle x^{T}R,\left(x-\mu\right)\right\rangle -\left\langle \mu^{T}R,\left(x-\mu\right)\right\rangle =\\
-\left\langle x^{T}R,x\right\rangle -\left\langle x^{T}R,\mu\right\rangle -\left\langle \mu^{T}R,x\right\rangle +\left\langle \mu^{T}R,\mu\right\rangle = & \left\langle x,Rx\right\rangle -\left\langle x,R\mu\right\rangle -\left\langle \mu,Rx\right\rangle +\left\langle \mu,R\mu\right\rangle =
+\left\langle \left(x-\mu\right),x^{T}R\right\rangle -\left\langle \left(x-\mu\right),\mu^{T}R\right\rangle = & \left\langle x,x^{T}R\right\rangle -\left\langle \mu,x^{T}R\right\rangle -\left\langle x,\mu^{T}R\right\rangle +\left\langle \mu,\mu^{T}R\right\rangle =\\
+\left\langle x^{T}R,x\right\rangle -\left\langle x^{T}R,\mu\right\rangle -\left\langle \mu^{T}R,x\right\rangle +\left\langle \mu^{T}R,\mu\right\rangle = & \left\langle x,Rx\right\rangle -\left\langle x,R\mu\right\rangle -\left\langle \mu,Rx\right\rangle +\left\langle \mu,R\mu\right\rangle 
 \end{align*}
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+So 
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial}{\partial x}\left(x-\mu\right)^{T}R\left(x-\mu\right) & =\frac{\partial}{\partial x}\left\langle x,Rx\right\rangle -\frac{\partial}{\partial x}\left\langle x,R\mu\right\rangle -\frac{\partial}{\partial x}\left\langle \mu,Rx\right\rangle +\frac{\partial}{\partial x}\left\langle \mu,R\mu\right\rangle =\\
+\frac{\partial}{\partial x}\left\langle x,Rx\right\rangle -\frac{\partial}{\partial x}\left\langle x,R\mu\right\rangle -\frac{\partial}{\partial x}\left\langle \mu,Rx\right\rangle +0= & \frac{\partial}{\partial x}\left\langle x,Rx\right\rangle -2\frac{\partial}{\partial x}\left\langle x,R\mu\right\rangle =\\
+\end{align*}
+
+\end_inset
+
+Now 
+\begin_inset Formula $\frac{\partial}{\partial x}\left\langle x,R\mu\right\rangle =\frac{\partial}{\partial x}x^{T}R\mu=\frac{\partial}{\partial x}\sum x_{i}[R\mu]_{i}=\sum\frac{\partial}{\partial x}x_{i}[R\mu]_{i}=\sum[R\mu]_{i}\frac{\partial}{\partial x}x_{i}=\sum[R\mu]_{i}e_{i}=R\mu$
 \end_inset
 
 
@@ -910,19 +928,11 @@ machine said it won’t rain
 \begin_inset Formula $P(B)$
 \end_inset
 
- = P(B|A) + P(B|
-\begin_inset Formula $!A$
+ = 
+\begin_inset Formula $P(B|A)p_{r}+P(B|!A)(1-p_{r})=p_{FN}\cdot p_{r}+P(B|!A)(1-p_{r})$
 \end_inset
 
-) = 
-\begin_inset Formula $p_{FN}$
-\end_inset
-
- + P(B|
-\begin_inset Formula $!A$
-\end_inset
-
-).
+.
  So we want - P(B|
 \begin_inset Formula $!A$
 \end_inset
@@ -966,6 +976,15 @@ it will not rain
 \end_inset
 
  Thus:
+\begin_inset Formula 
+\begin{align*}
+P(B) & =p_{FN}\cdot p_{r}+(1-p_{FP})(1-p_{r})=p_{FN}\cdot p_{r}+(1-p_{r})-p_{fp}(1-p_{r})=\\
+p_{FN}\cdot p_{r}+1-p_{r}-p_{fp}+p_{r}p_{fp}=
+\end{align*}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -1064,7 +1083,7 @@ E[f(x)] & =\stackrel[-\infty]{m-\frac{d}{2}}{\int}0\cdot x^{2}dx+\stackrel[m-\fr
 \end_inset
 
 Finally - 
-\begin_inset Formula $var(x)=E[x^{2}]-E[x]^{2}=\frac{d^{3}}{12d}+m^{2}-m^{2}=\frac{d^{3}}{12d}$
+\begin_inset Formula $var(x)=E[x^{2}]-E[x]^{2}=\frac{d^{3}}{12d}+m^{2}-m^{2}=\frac{d^{3}}{12d}=\frac{d^{2}}{12}$
 \end_inset
 
 .
@@ -1137,7 +1156,7 @@ We're back to the conditions of our original question, meaning the mean
 \end_inset
 
  and 
-\begin_inset Formula $var(y)=\frac{d^{3}}{12d}$
+\begin_inset Formula $var(y)=\frac{d^{2}}{12}$
 \end_inset
 
 .

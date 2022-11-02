@@ -366,6 +366,161 @@ And
 \end_layout
 
 \begin_layout Subsubsection
+New-new approch
+\end_layout
+
+\begin_layout Paragraph
+Let 
+\begin_inset Formula $g(x)=x^{T}Rx$
+\end_inset
+
+ and 
+\begin_inset Formula $f(x)=x-\mu$
+\end_inset
+
+.
+ Than 
+\begin_inset Formula $f_{1}(x)=g(f(x))$
+\end_inset
+
+.
+ According to the chain role: 
+\begin_inset Formula $\frac{\partial f_{1}}{\partial x}(x)=\frac{\partial g(f(x))}{\partial x}=\frac{\partial f(x)}{\partial x}\frac{\partial g(f(x))}{\partial f(x)}$
+\end_inset
+
+.
+ First we need - 
+\begin_inset Formula 
+\[
+\frac{\partial f(x)}{\partial x}=J_{x}[f(x)]^{T}=\frac{\partial(x-\mu)}{\partial x}
+\]
+
+\end_inset
+
+From definition: 
+\begin_inset Formula 
+\[
+[J_{x}[f(x)]]_{ij}=\frac{\partial[f(x)]_{i}}{\partial x_{j}}=\frac{\partial[x-\mu]_{i}}{\partial x_{j}}=\frac{\partial(x_{i}-\mu_{i})}{\partial x_{j}}=\begin{cases}
+1 & \text{\ensuremath{if}}\;i=j\\
+0 & else
+\end{cases}
+\]
+
+\end_inset
+
+I.e.
+ 
+\begin_inset Formula $J_{x}[f(x)]^{T}=I$
+\end_inset
+
+.
+ We get 
+\begin_inset Formula $\frac{\partial f_{1}}{\partial x}(x)=\frac{\partial g(f(x))}{\partial x}=I\frac{\partial g(f(x))}{\partial f(x)}=\frac{\partial g(f(x))}{\partial f(x)}$
+\end_inset
+
+.
+ We're left to deal with 
+\begin_inset Formula $\frac{\partial g(y)}{\partial y}$
+\end_inset
+
+.
+ Denote 
+\begin_inset Formula $g_{1}(y)=y$
+\end_inset
+
+ and 
+\begin_inset Formula $g_{2}(y)=Ry$
+\end_inset
+
+, hence 
+\begin_inset Formula $g(y)=g_{1}(y)^{T}g_{2}(y)$
+\end_inset
+
+.
+ By the product rule - 
+\begin_inset Formula 
+\[
+\frac{\partial g(y)}{\partial y}=\frac{\partial g_{1}(y)^{T}g_{2}(y)}{\partial y}=\frac{\partial g_{1}(y)^{T}}{\partial y}g_{2}(y)+g_{1}(y)^{T}\frac{\partial g_{2}(y)}{\partial y}
+\]
+
+\end_inset
+
+As we saw in the recitation:
+\begin_inset Formula 
+\[
+\frac{\partial g_{2}(y)}{\partial y}=\frac{\partial Ry}{\partial y}=R^{T}
+\]
+
+\end_inset
+
+Moreover, same as was the cas with 
+\begin_inset Formula $x-\mu$
+\end_inset
+
+ - 
+\begin_inset Formula $\frac{\partial g_{1}(y)^{T}}{\partial y}=\frac{\partial y{}^{T}}{\partial y}=1$
+\end_inset
+
+ .
+ All together we get: 
+\begin_inset Formula 
+\[
+\frac{\partial g(y)}{\partial y}=1Ry+y^{T}R^{T}=Ry+y^{T}R^{T}=2Ry
+\]
+
+\end_inset
+
+ Now remeber 
+\begin_inset Formula $y=x-\mu$
+\end_inset
+
+ and we get: 
+\begin_inset Formula 
+\[
+\frac{\partial f_{1}}{\partial x}(x)=2R(x-\mu)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+using bilinearity:
+\end_layout
+
+\begin_layout Paragraph
+\begin_inset Formula 
+\begin{align*}
+\left(x-\mu\right)^{T}R\left(x-\mu\right) & =\left\langle \left(x-\mu\right),R\left(x-\mu\right)\right\rangle =\\
+\left\langle x,R\left(x-\mu\right)\right\rangle -\left\langle \mu,R\left(x-\mu\right)\right\rangle  & =\left\langle x^{T}R,\left(x-\mu\right)\right\rangle -\left\langle \mu^{T}R,\left(x-\mu\right)\right\rangle =\\
+\left\langle \left(x-\mu\right),x^{T}R\right\rangle -\left\langle \left(x-\mu\right),\mu^{T}R\right\rangle = & \left\langle x,x^{T}R\right\rangle -\left\langle \mu,x^{T}R\right\rangle -\left\langle x,\mu^{T}R\right\rangle +\left\langle \mu,\mu^{T}R\right\rangle =\\
+\left\langle x^{T}R,x\right\rangle -\left\langle x^{T}R,\mu\right\rangle -\left\langle \mu^{T}R,x\right\rangle +\left\langle \mu^{T}R,\mu\right\rangle = & \left\langle x,Rx\right\rangle -\left\langle x,R\mu\right\rangle -\left\langle \mu,Rx\right\rangle +\left\langle \mu,R\mu\right\rangle 
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+So 
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial}{\partial x}\left(x-\mu\right)^{T}R\left(x-\mu\right) & =\frac{\partial}{\partial x}\left\langle x,Rx\right\rangle -\frac{\partial}{\partial x}\left\langle x,R\mu\right\rangle -\frac{\partial}{\partial x}\left\langle \mu,Rx\right\rangle +\frac{\partial}{\partial x}\left\langle \mu,R\mu\right\rangle =\\
+\frac{\partial}{\partial x}\left\langle x,Rx\right\rangle -\frac{\partial}{\partial x}\left\langle x,R\mu\right\rangle -\frac{\partial}{\partial x}\left\langle \mu,Rx\right\rangle +0= & \frac{\partial}{\partial x}\left\langle x,Rx\right\rangle -2\frac{\partial}{\partial x}\left\langle x,R\mu\right\rangle =\\
+\end{align*}
+
+\end_inset
+
+Now 
+\begin_inset Formula $\frac{\partial}{\partial x}\left\langle x,R\mu\right\rangle =\frac{\partial}{\partial x}x^{T}R\mu=\frac{\partial}{\partial x}\sum x_{i}[R\mu]_{i}=\sum\frac{\partial}{\partial x}x_{i}[R\mu]_{i}=\sum[R\mu]_{i}\frac{\partial}{\partial x}x_{i}=\sum[R\mu]_{i}e_{i}=R\mu$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
 Assume R is symmetric.
  //ToDo:
 \end_layout
@@ -601,6 +756,15 @@ and:
 \[
 0=-\lambda H^{T}(H\hat{\theta}-y)\underset{0<\lambda}{\Longrightarrow}0=H^{T}(H\hat{\theta}-y)\Longrightarrow H\hat{\theta}=y\Longrightarrow\hat{\theta}=H^{-1}y
 \]
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+H^{T}y & =H^{T}H\hat{\theta}\\
+\theta= & \left(H^{T}H\right)^{-1}H^{T}y
+\end{align*}
 
 \end_inset
 
@@ -918,7 +1082,7 @@ E[f(x)] & =\stackrel[-\infty]{m-\frac{d}{2}}{\int}0\cdot x^{2}dx+\stackrel[m-\fr
 \end_inset
 
 Finally - 
-\begin_inset Formula $var(x)=E[x^{2}]-E[x]^{2}=\frac{d^{3}}{12d}+m^{2}-m^{2}=\frac{d^{3}}{12d}$
+\begin_inset Formula $var(x)=E[x^{2}]-E[x]^{2}=\frac{d^{3}}{12d}+m^{2}-m^{2}=\frac{d^{3}}{12d}=\frac{d^{2}}{12}$
 \end_inset
 
 .
@@ -991,7 +1155,7 @@ We're back to the conditions of our original question, meaning the mean
 \end_inset
 
  and 
-\begin_inset Formula $var(y)=\frac{d^{3}}{12d}$
+\begin_inset Formula $var(y)=\frac{d^{2}}{12}$
 \end_inset
 
 .
