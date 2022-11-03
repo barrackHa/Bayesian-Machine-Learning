@@ -82,168 +82,19 @@ BML EX0
 \end_layout
 
 \begin_layout Author
-Barak Haim
+Barak Haim 021682141
+\end_layout
+
+\begin_layout Date
+10/11/2022
 \end_layout
 
 \begin_layout Section
 Linear Algebra
 \end_layout
 
-\begin_layout Subsection
-Q form derivation 
-\end_layout
-
-\begin_layout Paragraph
-Denot 
-\begin_inset Formula $Q(x)=x^{T}Rx$
-\end_inset
-
- , Note 
-\begin_inset Formula $x^{T}Rx=<x,Rx>$
-\end_inset
-
-, Denote :
-\begin_inset Formula 
-\[
-R=\left[\begin{array}{ccc}
- & \vdots\\{}
-[- & R_{i}^{T} & -]\\
- & \vdots
-\end{array}\right]
-\]
-
-\end_inset
-
-where 
-\begin_inset Formula $\{R_{i}\}_{i=1}^{n}\subset\mathbb{R}^{n}$
-\end_inset
-
- are R's row vectors , so - 
-\begin_inset Formula 
-\begin{align*}
-x^{T}Rx & =\left\langle x,Rx\right\rangle =\left\langle x,\left[\begin{array}{c}
-\vdots\\
-R_{i}^{T}x\\
-\vdots
-\end{array}\right]\right\rangle =\left\langle x,\left[\begin{array}{c}
-\vdots\\
-\stackrel[j=1]{n}{\sum R_{ij}x_{j}}\\
-\vdots
-\end{array}\right]\right\rangle =[x_{1},\ldots,x_{n}]\left[\begin{array}{c}
-\vdots\\
-\stackrel[j=1]{n}{\sum R_{ij}x_{j}}\\
-\vdots
-\end{array}\right]\\
-= & \stackrel[i=1]{n}{\sum x_{i}}\stackrel[j=1]{n}{\sum}R_{ij}x_{j}=\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}x_{i}R_{ij}x_{j}
-\end{align*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
-For index 
-\begin_inset Formula $1\le k\le n$
-\end_inset
-
- the partial derivative is (
-\begin_inset Formula $x_{k}$
-\end_inset
-
- marks the k-th entry in the vector 
-\begin_inset Formula $x$
-\end_inset
-
-): 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\begin{align*}
-\frac{\partial}{\partial x_{k}}x^{T}Rx= & \frac{\partial}{\partial x_{k}}\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}x_{i}R_{ij}x_{j}=\stackrel[i=1]{n}{\sum}\stackrel[j=1]{n}{\sum}\frac{\partial}{\partial x_{k}}x_{i}R_{ij}x_{j}\\
-\underset{1}{=} & \underset{j\ne k}{\sum}\frac{\partial}{\partial x_{k}}x_{k}R_{kj}x_{j}+\underset{i\ne k}{\sum}\frac{\partial}{\partial x_{k}}x_{i}R_{ik}x_{k}+\frac{\partial}{\partial x_{k}}x_{k}R_{kk}x_{k}=\underset{j\ne k}{\sum}R_{kj}x_{j}+\underset{i\ne k}{\sum}x_{i}R_{ik}+2x_{k}R_{kk}\\
-= & \underset{j}{\sum}R_{kj}x_{j}+\underset{i}{\sum}x_{i}R_{ik}
-\end{align*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
-Where 1 is due to the fact that when 
-\begin_inset Formula $i,j\ne k$
-\end_inset
-
- we get - 
-\begin_inset Formula $\frac{\partial}{\partial x_{k}}x_{i}R_{ij}x_{j}=0$
-\end_inset
-
-.
- Thus, the vector of partials is: 
-\end_layout
-
-\begin_layout Standard
-\begin_inset Formula 
-\[
-\nabla x^{T}Rx=\left[\begin{array}{c}
-\underset{j}{\sum}R_{1j}x_{j}+\underset{i}{\sum}x_{i}R_{i1}\\
-\vdots\\
-\underset{j}{\sum}R_{nj}x_{j}+\underset{i}{\sum}x_{i}R_{in}
-\end{array}\right]=\left[\begin{array}{c}
-\underset{j}{\sum}R_{1j}x_{j}\\
-\vdots\\
-\underset{j}{\sum}R_{nj}x_{j}
-\end{array}\right]+\left[\begin{array}{c}
-\underset{i}{\sum}x_{i}R_{i1}\\
-\vdots\\
-\underset{i}{\sum}x_{i}R_{in}
-\end{array}\right]=Rx+(x^{T}R)^{T}=x^{T}(R^{T}+R)=(R+R^{T})x
-\]
-
-\end_inset
-
-Denote 
-\begin_inset Formula $g(x)=x-\mu$
-\end_inset
-
- and so we get 
-\begin_inset Formula $f_{1}(x)=Q(g(x))$
-\end_inset
-
-.
- From the chain rule we get 
-\begin_inset Formula $\frac{\partial f_{1}}{\partial x}=\frac{\partial g(x)}{\partial x}\cdot\frac{\partial Q(g(x))}{\partial g(x)}$
-\end_inset
-
-.
- We found 
-\begin_inset Formula $\frac{\partial Q(y)}{\partial y}=(R+R^{T})y$
-\end_inset
-
-, also 
-\begin_inset Formula $\frac{\partial g(x)}{\partial x}=\frac{\partial x}{\partial x}-\frac{\partial\mu}{\partial x}=1-0=1$
-\end_inset
-
-.
- Finally, as 
-\begin_inset Formula $y=g(x)$
-\end_inset
-
-:
-\begin_inset Formula 
-\[
-\frac{\partial f_{1}}{\partial x}(x)=(R+R^{T})(x-\mu)
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-new approch
+\begin_layout Subsection*
+Q1.
 \end_layout
 
 \begin_layout Paragraph
@@ -385,116 +236,17 @@ And
 
 \end_layout
 
-\begin_layout Subsubsection
-New-new approch
-\end_layout
-
 \begin_layout Paragraph
-Let 
-\begin_inset Formula $g(x)=x^{T}Rx$
+Now, assume 
+\begin_inset Formula $R=R^{T}$
 \end_inset
 
- and 
-\begin_inset Formula $f(x)=x-\mu$
+ (i.e.
+ R is symmetric), we get 
+\begin_inset Formula $R+R^{T}=2R$
 \end_inset
 
-.
- Than 
-\begin_inset Formula $f_{1}(x)=g(f(x))$
-\end_inset
-
-.
- According to the chain role: 
-\begin_inset Formula $\frac{\partial f_{1}}{\partial x}(x)=\frac{\partial g(f(x))}{\partial x}=\frac{\partial f(x)}{\partial x}\frac{\partial g(f(x))}{\partial f(x)}$
-\end_inset
-
-.
- First we need - 
-\begin_inset Formula 
-\[
-\frac{\partial f(x)}{\partial x}=J_{x}[f(x)]^{T}=\frac{\partial(x-\mu)}{\partial x}
-\]
-
-\end_inset
-
-From definition: 
-\begin_inset Formula 
-\[
-[J_{x}[f(x)]]_{ij}=\frac{\partial[f(x)]_{i}}{\partial x_{j}}=\frac{\partial[x-\mu]_{i}}{\partial x_{j}}=\frac{\partial(x_{i}-\mu_{i})}{\partial x_{j}}=\begin{cases}
-1 & \text{\ensuremath{if}}\;i=j\\
-0 & else
-\end{cases}
-\]
-
-\end_inset
-
-I.e.
- 
-\begin_inset Formula $J_{x}[f(x)]^{T}=I$
-\end_inset
-
-.
- We get 
-\begin_inset Formula $\frac{\partial f_{1}}{\partial x}(x)=\frac{\partial g(f(x))}{\partial x}=I\frac{\partial g(f(x))}{\partial f(x)}=\frac{\partial g(f(x))}{\partial f(x)}$
-\end_inset
-
-.
- We're left to deal with 
-\begin_inset Formula $\frac{\partial g(y)}{\partial y}$
-\end_inset
-
-.
- Denote 
-\begin_inset Formula $g_{1}(y)=y$
-\end_inset
-
- and 
-\begin_inset Formula $g_{2}(y)=Ry$
-\end_inset
-
-, hence 
-\begin_inset Formula $g(y)=g_{1}(y)^{T}g_{2}(y)$
-\end_inset
-
-.
- By the product rule - 
-\begin_inset Formula 
-\[
-\frac{\partial g(y)}{\partial y}=\frac{\partial g_{1}(y)^{T}g_{2}(y)}{\partial y}=\frac{\partial g_{1}(y)^{T}}{\partial y}g_{2}(y)+g_{1}(y)^{T}\frac{\partial g_{2}(y)}{\partial y}
-\]
-
-\end_inset
-
-As we saw in the recitation:
-\begin_inset Formula 
-\[
-\frac{\partial g_{2}(y)}{\partial y}=\frac{\partial Ry}{\partial y}=R^{T}
-\]
-
-\end_inset
-
-Moreover, same as was the cas with 
-\begin_inset Formula $x-\mu$
-\end_inset
-
- - 
-\begin_inset Formula $\frac{\partial g_{1}(y)^{T}}{\partial y}=\frac{\partial y{}^{T}}{\partial y}=1$
-\end_inset
-
- .
- All together we get: 
-\begin_inset Formula 
-\[
-\frac{\partial g(y)}{\partial y}=1Ry+y^{T}R^{T}=Ry+y^{T}R^{T}=2Ry
-\]
-
-\end_inset
-
- Now remeber 
-\begin_inset Formula $y=x-\mu$
-\end_inset
-
- and we get: 
+ and so:
 \begin_inset Formula 
 \[
 \frac{\partial f_{1}}{\partial x}(x)=2R(x-\mu)
@@ -505,104 +257,9 @@ Moreover, same as was the cas with
 
 \end_layout
 
-\begin_layout Subsubsection
-using bilinearity:
-\end_layout
-
-\begin_layout Paragraph
-\begin_inset Formula 
-\begin{align*}
-\left(x-\mu\right)^{T}R\left(x-\mu\right) & =\left\langle \left(x-\mu\right),R\left(x-\mu\right)\right\rangle =\\
-\left\langle x,R\left(x-\mu\right)\right\rangle -\left\langle \mu,R\left(x-\mu\right)\right\rangle  & =\left\langle x^{T}R,\left(x-\mu\right)\right\rangle -\left\langle \mu^{T}R,\left(x-\mu\right)\right\rangle =\\
-\left\langle \left(x-\mu\right),x^{T}R\right\rangle -\left\langle \left(x-\mu\right),\mu^{T}R\right\rangle = & \left\langle x,x^{T}R\right\rangle -\left\langle \mu,x^{T}R\right\rangle -\left\langle x,\mu^{T}R\right\rangle +\left\langle \mu,\mu^{T}R\right\rangle =\\
-\left\langle x^{T}R,x\right\rangle -\left\langle x^{T}R,\mu\right\rangle -\left\langle \mu^{T}R,x\right\rangle +\left\langle \mu^{T}R,\mu\right\rangle = & \left\langle x,Rx\right\rangle -\left\langle x,R\mu\right\rangle -\left\langle \mu,Rx\right\rangle +\left\langle \mu,R\mu\right\rangle 
-\end{align*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
-So 
-\begin_inset Formula 
-\begin{align*}
-\frac{\partial}{\partial x}\left(x-\mu\right)^{T}R\left(x-\mu\right) & =\frac{\partial}{\partial x}\left\langle x,Rx\right\rangle -\frac{\partial}{\partial x}\left\langle x,R\mu\right\rangle -\frac{\partial}{\partial x}\left\langle \mu,Rx\right\rangle +\frac{\partial}{\partial x}\left\langle \mu,R\mu\right\rangle =\\
-\frac{\partial}{\partial x}\left\langle x,Rx\right\rangle -\frac{\partial}{\partial x}\left\langle x,R\mu\right\rangle -\frac{\partial}{\partial x}\left\langle \mu,Rx\right\rangle +0= & \frac{\partial}{\partial x}\left\langle x,Rx\right\rangle -2\frac{\partial}{\partial x}\left\langle x,R\mu\right\rangle =\\
-\end{align*}
-
-\end_inset
-
-Now 
-\begin_inset Formula $\frac{\partial}{\partial x}\left\langle x,R\mu\right\rangle =\frac{\partial}{\partial x}x^{T}R\mu=\frac{\partial}{\partial x}\sum x_{i}[R\mu]_{i}=\sum\frac{\partial}{\partial x}x_{i}[R\mu]_{i}=\sum[R\mu]_{i}\frac{\partial}{\partial x}x_{i}=\sum[R\mu]_{i}e_{i}=R\mu$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Assume R is symmetric.
- //ToDo:
-\end_layout
-
-\begin_layout Paragraph
-In this case R can be writen as 
-\begin_inset Formula $R=UDU^{T}$
-\end_inset
-
- (iff 
-\begin_inset Formula $U^{T}RU=D$
-\end_inset
-
-) such that 
-\begin_inset Formula $U$
-\end_inset
-
- is an orthogonal matrix and 
-\begin_inset Formula $D$
-\end_inset
-
- is diagonal comprised of R's eignvalues.
+\begin_layout Subsection*
+Q2.
  
-\begin_inset Formula 
-\[
-x^{T}Rx=x^{T}IRIx=x^{T}UU^{T}RUU^{T}x=x^{T}UDU^{T}x
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-——————–
-\begin_inset Formula 
-\[
-Rx=UU^{T}RUU^{T}x
-\]
-
-\end_inset
-
-
-\begin_inset Formula 
-\[
-U^{T}x=\left[\begin{array}{c}
-U_{1}^{T}x\\
-\vdots\\
-U_{n}^{T}x
-\end{array}\right]=\left[\begin{array}{c}
-\sum U_{1}^{T}x\\
-\vdots\\
-U_{n}^{T}x
-\end{array}\right]
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
 \begin_inset Formula $f_{2}(\theta)=\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}\overset{?}{=}\left\Vert H\theta-y\right\Vert ^{2}$
 \end_inset
 
@@ -654,7 +311,9 @@ Togther with
 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsection*
+Q3.
+ 
 \begin_inset Formula $f_{3}(\theta,\lambda)=-c\log\frac{1}{\lambda}-\frac{1}{2}\lambda\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}$
 \end_inset
 
@@ -671,35 +330,57 @@ Denote
 \end_inset
 
 .
- We get that 
-\begin_inset Formula $\frac{\partial g_{1}}{\partial\theta}(\theta,\lambda)=0$
+ When deriving each function separately, we get for 
+\begin_inset Formula $g_{1}$
+\end_inset
+
+: 
+\begin_inset Formula 
+\[
+\frac{\partial g_{1}}{\partial\lambda}(\theta,\lambda)=\frac{\partial}{\partial\lambda}\log\frac{1}{\lambda}=-\frac{\partial}{\partial\lambda}\log\lambda=-\frac{1}{\lambda}
+\]
+
 \end_inset
 
  and 
-\begin_inset Formula $\frac{\partial g_{1}}{\partial\lambda}(\theta,\lambda)=-\frac{1}{\lambda}$
+\begin_inset Formula 
+\[
+\frac{\partial g_{1}}{\partial\theta}(\theta,\lambda)=\frac{\partial}{\partial\theta}\log\frac{1}{\lambda}=-\frac{\partial}{\partial\theta}\log\lambda=0
+\]
+
 \end_inset
 
-.
- Futhermore - 
-\begin_inset Formula $\frac{\partial g_{2}}{\partial\lambda}(\theta,\lambda)=\frac{1}{2}\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}$
+As for 
+\begin_inset Formula $g_{2}$
 \end_inset
 
-.
- Last but not least, note 
+: 
+\begin_inset Formula 
+\[
+\frac{\partial g_{2}}{\partial\lambda}(\theta,\lambda)=\frac{\partial}{\partial\lambda}\frac{\lambda}{2}\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}=\frac{1}{2}\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}\frac{\partial}{\partial\lambda}\lambda=\frac{1}{2}\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}
+\]
+
+\end_inset
+
+Lastly, note that - 
 \begin_inset Formula $\frac{\partial g_{2}}{\partial\theta}(\theta,\lambda)=\frac{\lambda}{2}\frac{\partial f_{2}}{\partial\theta}(\theta)$
 \end_inset
 
-.
+ (
+\begin_inset Formula $f_{2}$
+\end_inset
+
+ from Q2).
  We saw in the recitation that 
 \begin_inset Formula $\frac{\partial}{\partial y}g(y)=\frac{\partial}{\partial y}\left\Vert y\right\Vert ^{2}=2y$
 \end_inset
 
 .
- for 
+ Denote 
 \begin_inset Formula $f(x)=Hx-y$
 \end_inset
 
- it holds that 
+ and we get: 
 \begin_inset Formula $f_{2}(x)=g(f(x))$
 \end_inset
 
@@ -709,6 +390,7 @@ Denote
 \end_inset
 
 .
+ Per index:
 \begin_inset Formula 
 \[
 \frac{\partial(Hx-y)_{j}}{\partial x_{i}}=\frac{\partial(\sum_{k}H_{jk}x_{k}-y_{j})}{\partial x_{i}}=\frac{\partial(\sum_{k}H_{jk}x_{k})}{\partial x_{i}}-\frac{\partial y_{j}}{\partial x_{i}}=H_{ji}
@@ -721,22 +403,37 @@ Hence -
 \end_inset
 
  and thus - 
-\begin_inset Formula $\frac{\partial f_{2}}{\partial x}(x)=2H^{T}(Hx-y)$
+\begin_inset Formula 
+\[
+\frac{\partial f_{2}}{\partial x}(x)=2H^{T}(Hx-y)
+\]
+
 \end_inset
 
-.
- 
+And - 
+\begin_inset Formula 
+\[
+\frac{\partial g_{2}}{\partial\theta}(\theta,\lambda)=\frac{\lambda}{2}\frac{\partial f_{2}}{\partial\theta}(\theta)=\frac{\lambda}{2}2H^{T}(H\theta-y)=\lambda H^{T}(H\theta-y)
+\]
+
+\end_inset
+
+
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph
 To some it all up: 
-\begin_inset Formula $f_{3}(\theta,\lambda)=-cg_{1}(\theta,\lambda)-g_{2}(\theta,\lambda)$
+\begin_inset Formula 
+\[
+f_{3}(\theta,\lambda)=-cg_{1}(\theta,\lambda)-g_{2}(\theta,\lambda)
+\]
+
 \end_inset
 
  and so:
 \begin_inset Formula 
 \[
-\frac{\partial f_{3}}{\partial\theta}=-c\frac{\partial}{\partial\theta}g_{1}(\theta,\lambda)-\frac{\partial}{\partial\theta}g_{2}(\theta,\lambda)=-\frac{\lambda}{2}\frac{\partial f_{2}}{\partial\theta}(\theta)=-\lambda H^{T}(H\theta-y)
+\frac{\partial f_{3}}{\partial\theta}=-c\frac{\partial g_{1}}{\partial\theta}(\theta,\lambda)-\frac{\partial g_{2}}{\partial\theta}(\theta,\lambda)=0-\lambda H^{T}(H\theta-y)=-\lambda H^{T}(H\theta-y)
 \]
 
 \end_inset
@@ -744,7 +441,7 @@ To some it all up:
 and:
 \begin_inset Formula 
 \[
-\frac{\partial f_{3}}{\partial\lambda}=-c\frac{\partial}{\partial\lambda}g_{1}(\theta,\lambda)-\frac{\partial}{\partial\lambda}g_{2}(\theta,\lambda)=-\frac{c}{\lambda}-\frac{1}{2}\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}=-\frac{c}{\lambda}-\frac{1}{2}\left\Vert H\theta-y\right\Vert ^{2}
+\frac{\partial f_{3}}{\partial\lambda}=-c\frac{\partial g_{1}}{\partial\lambda}(\theta,\lambda)-\frac{\partial g_{2}}{\partial\lambda}(\theta,\lambda)=\frac{c}{\lambda}-\frac{1}{2}\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}=\frac{c}{\lambda}-\frac{1}{2}\left\Vert H\theta-y\right\Vert ^{2}
 \]
 
 \end_inset
@@ -752,7 +449,8 @@ and:
 
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsubsection*
+A) 
 \begin_inset Formula $\hat{\theta}$
 \end_inset
 
@@ -773,17 +471,10 @@ and:
 
 \begin_layout Paragraph
 \begin_inset Formula 
-\[
-0=-\lambda H^{T}(H\hat{\theta}-y)\underset{0<\lambda}{\Longrightarrow}0=H^{T}(H\hat{\theta}-y)\Longrightarrow H\hat{\theta}=y\Longrightarrow\hat{\theta}=H^{-1}y
-\]
-
-\end_inset
-
-
-\begin_inset Formula 
 \begin{align*}
-H^{T}y & =H^{T}H\hat{\theta}\\
-\theta= & \left(H^{T}H\right)^{-1}H^{T}y
+0 & =-\lambda H^{T}(H\hat{\theta}-y)\underset{0<\lambda}{\Longrightarrow}0=H^{T}(H\hat{\theta}-y)\\
+\iff & H^{T}y=H^{T}H\hat{\theta}\\
+\iff & \hat{\theta}=\left(H^{T}H\right)^{-1}H^{T}y
 \end{align*}
 
 \end_inset
@@ -795,15 +486,32 @@ H^{T}y & =H^{T}H\hat{\theta}\\
 .
 \end_layout
 
-\begin_layout Subsubsection
-Same as before:
+\begin_layout Subsubsection*
+B) 
+\begin_inset Formula $\hat{\lambda}$
+\end_inset
+
+ which maximaizes 
+\begin_inset Formula $f_{3}$
+\end_inset
+
+ holds 
+\begin_inset Formula $\frac{\partial f_{3}}{\partial\theta}(\theta,\hat{\lambda})=0$
+\end_inset
+
+ (as 
+\begin_inset Formula $f_{3}$
+\end_inset
+
+ is concave):
 \end_layout
 
 \begin_layout Paragraph
 \begin_inset Formula 
-\[
-0=\frac{\partial f_{3}}{\partial\lambda}(\theta,\hat{\lambda})=-\frac{c}{\hat{\lambda}}-\frac{1}{2}\left\Vert H\theta-y\right\Vert ^{2}\Longrightarrow\frac{1}{2}\left\Vert H\theta-y\right\Vert ^{2}=-\frac{c}{\hat{\lambda}}\Longrightarrow\hat{\lambda}=-\frac{2c}{\left\Vert H\theta-y\right\Vert ^{2}}
-\]
+\begin{align*}
+0 & =\frac{\partial f_{3}}{\partial\lambda}(\theta,\hat{\lambda})=\frac{c}{\hat{\lambda}}-\frac{1}{2}\left\Vert H\theta-y\right\Vert ^{2}\Longrightarrow\frac{1}{2}\left\Vert H\theta-y\right\Vert ^{2}=\frac{c}{\hat{\lambda}}\\
+\Longrightarrow & \hat{\lambda}=\frac{2c}{\left\Vert H\theta-y\right\Vert ^{2}}
+\end{align*}
 
 \end_inset
 
@@ -819,45 +527,42 @@ And here
  
 \end_layout
 
-\begin_layout Subsubsection
-Maximize 
+\begin_layout Subsubsection*
+C) Maximize 
 \begin_inset Formula $f_{3}$
 \end_inset
 
-
+:
 \end_layout
 
 \begin_layout Paragraph
-problem ):
+We choose 
+\begin_inset Formula $\hat{\theta}=\left(H^{T}H\right)^{-1}H^{T}y$
+\end_inset
+
+.
+ Plug it in to 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ and we get:
+\begin_inset Formula 
+\[
+\hat{\lambda}=\frac{2c}{\left\Vert H\theta-y\right\Vert ^{2}}=\frac{2c}{\left\Vert H\left(H^{T}H\right)^{-1}H^{T}y-y\right\Vert ^{2}}
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
 Probability
 \end_layout
 
-\begin_layout Subsection
-Suppose we have some way to predict whether it will rain tomorrow using
- some fancy machine.
- We know that the probability that it will predict rain when there actually
- won’t be any is 
-\begin_inset Formula $p_{FP}$
-\end_inset
-
- (the “FP” stands for false positive).
- Conversely, the probability it predicts dry conditions when there will
- be rain is 
-\begin_inset Formula $p_{FN}$
-\end_inset
-
- (the “FN” stands for false negative).
- We also somehow know that the probability that tomorrow will be rainy is
- 
-\begin_inset Formula $p_{r}$
-\end_inset
-
-.
- What is the probability that there will be rain if our machine said there
- won’t be?
+\begin_layout Subsection*
+Q4.
+ Will it rain?
 \end_layout
 
 \begin_layout Paragraph
@@ -998,8 +703,10 @@ it will not rain
  Thus:
 \begin_inset Formula 
 \begin{align*}
-P(B) & =p_{FN}\cdot p_{r}+(1-p_{FP})(1-p_{r})=p_{FN}\cdot p_{r}+(1-p_{r})-p_{FP}(1-p_{r})=\\
-p_{FN}p_{r}+1-p_{r}-p_{FP}+p_{r}p_{FP}= & 1-p_{r}(1-p_{FN})+p_{FP}(1-p_{r})
+P(B) & =p_{FN}\cdot p_{r}+(1-p_{FP})(1-p_{r})=\\
+= & p_{FN}\cdot p_{r}+(1-p_{r})-p_{FP}(1-p_{r})\\
+= & p_{FN}p_{r}+1-p_{r}-p_{FP}+p_{r}p_{FP}\\
+= & 1-p_{r}(1-p_{FN})+p_{FP}(1-p_{r})
 \end{align*}
 
 \end_inset
@@ -1018,16 +725,17 @@ P(A|B)=\frac{p_{r}\cdot p_{FN}}{1-p_{r}(1-p_{FN})+p_{FP}(1-p_{r})}
 
 \end_layout
 
-\begin_layout Subsection
-Uniform random variable on a segment in 
+\begin_layout Subsection*
+Q5.
+ Uniform random variable on a segment in 
 \begin_inset Formula $\mathbb{R}$
 \end_inset
 
 .
 \end_layout
 
-\begin_layout Subsubsection
-We know 
+\begin_layout Subsubsection*
+A) We know 
 \begin_inset Formula $1=\stackrel[-\infty]{\infty}{\int}PDF(x)dx$
 \end_inset
 
@@ -1051,8 +759,8 @@ So, because the p(x) is non zero only in the interval
  Multiply by c and we get c=d.
 \end_layout
 
-\begin_layout Subsubsection
-Mean and Variance
+\begin_layout Subsubsection*
+B) Mean and Variance
 \end_layout
 
 \begin_layout Paragraph
@@ -1109,7 +817,8 @@ Finally -
 .
 \end_layout
 
-\begin_layout Subsubsection
+\begin_layout Subsubsection*
+C) 
 \begin_inset Formula $y=x+\delta$
 \end_inset
 
@@ -1182,12 +891,40 @@ We're back to the conditions of our original question, meaning the mean
 .
 \end_layout
 
-\begin_layout Subsection
-Let 
+\begin_layout Subsection*
+Q6.
+ Let 
 \begin_inset Formula $x,y$
 \end_inset
 
  be independent continuous random vectors 
+\end_layout
+
+\begin_layout Paragraph
+For each indexs 
+\begin_inset Formula $i,j$
+\end_inset
+
+ we get:
+\begin_inset Formula 
+\begin{align*}
+E[xy^{T}]_{ij}=E[x_{i}y_{j}] & =\int\int x_{i}y_{j}p(x_{i},y_{j})dx_{i}dy_{j}=\\
+=\int\int xy_{j}p(x_{i})p(y_{j})dx_{i}dy_{j} & =\int x_{i}p(x_{i})\left[\int y_{j}p(y_{j})dy_{j}\right]dx_{i}=\left[\int y_{j}p(y_{j})dy_{j}\right]\int x_{i}p(x_{i})dx_{i}=\\
+=\left[\int y_{j}p(y_{j})dy_{j}\right]\left[\int x_{i}p(x_{i})dx_{i}\right] & =E[x_{i}]E[y_{j}]
+\end{align*}
+
+\end_inset
+
+Hence - 
+\begin_inset Formula $E[xy^{T}]=E[x]E[y^{T}]$
+\end_inset
+
+.
+ 
+\end_layout
+
+\begin_layout Standard
+—————————–
 \end_layout
 
 \begin_layout Paragraph
@@ -1201,20 +938,21 @@ x_{n}y_{1} & \ldots & x_{n}y_{m}
 E[x_{1}y_{1}] & \ldots & E[x_{1}y_{m}]\\
 \vdots & \vdots & \vdots\\
 E[x_{n}y_{1}] & \ldots & E[x_{n}y_{m}]
-\end{array}\right]=\left[\begin{array}{ccc}
+\end{array}\right]=\\
+\left[\begin{array}{ccc}
 [- & E[x_{1}y] & -]\\
  & \vdots\\{}
 [- & E[x_{n}y] & -]
-\end{array}\right]=_{\blacktriangle}\left[\begin{array}{ccc}
+\end{array}\right]=_{\blacktriangle} & \left[\begin{array}{ccc}
 [- & x_{1}E[y] & -]\\
  & \vdots\\{}
 [- & x_{n}E[y] & -]
 \end{array}\right]=\\
-= & x^{T}\left[\begin{array}{ccc}
+=x^{T}\left[\begin{array}{ccc}
 [- & E[y] & -]\\
  & \vdots\\{}
 [- & E[y] & -]
-\end{array}\right]=x^{T}\left[\begin{array}{ccc}
+\end{array}\right] & =x^{T}\left[\begin{array}{ccc}
 E[y_{1}] & ... & E[y_{y}]\\
  & \vdots\\{}
 [- & E[y] & -]
@@ -1237,8 +975,8 @@ And
 \end_layout
 
 \begin_layout Paragraph
-Lemma: If x and y are independent continuous random vectors than for each
- i,j - 
+Lemma: If x and y are independent continuous random vectors than there are
+ indexes i,j such that 
 \begin_inset Formula $x_{i},y_{j}$
 \end_inset
 
@@ -1246,14 +984,30 @@ Lemma: If x and y are independent continuous random vectors than for each
 \end_layout
 
 \begin_layout Paragraph
-Proof: 
-\begin_inset Formula $p(x,y)=p(x)p(y)=p$
+Proof: Assume for all i,j it holds that 
+\begin_inset Formula $x_{i},y_{j}$
 \end_inset
 
+ are not independent.
+ Denote 
+\begin_inset Formula $x=(\bar{x},x_{i})$
+\end_inset
 
+ and 
+\begin_inset Formula $y=(\bar{y},y_{i})$
+\end_inset
+
+.
+ From definetion 
+\begin_inset Formula $E[xy^{T}]_{ij}=E[x_{i}y_{j}]$
+\end_inset
+
+ 
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Subsection*
+Q7.
+ 
 \begin_inset Formula $cov\left[Hx+\eta\right]$
 \end_inset
 
