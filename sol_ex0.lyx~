@@ -921,89 +921,97 @@ Hence -
 \end_inset
 
 .
- 
-\end_layout
+ Now, denote 
+\begin_inset Formula $z=x+y$
+\end_inset
 
-\begin_layout Standard
-—————————–
-\end_layout
+ (note that for the summation defined we must have 
+\begin_inset Formula $dim(x)=dim(y)$
+\end_inset
 
-\begin_layout Paragraph
+ ), So 
 \begin_inset Formula 
 \begin{align*}
-E[xy^{T}] & =E\left[\begin{array}{ccc}
-x_{1}y_{1} & \ldots & x_{1}y_{m}\\
-\vdots & \vdots & \vdots\\
-x_{n}y_{1} & \ldots & x_{n}y_{m}
-\end{array}\right]=\left[\begin{array}{ccc}
-E[x_{1}y_{1}] & \ldots & E[x_{1}y_{m}]\\
-\vdots & \vdots & \vdots\\
-E[x_{n}y_{1}] & \ldots & E[x_{n}y_{m}]
-\end{array}\right]=\\
-\left[\begin{array}{ccc}
-[- & E[x_{1}y] & -]\\
+(x+y)(x+y)^{T} & =\left[\begin{array}{ccc}
+[x+y]_{1}[x+y]_{1} & ... & [x+y]_{1}[x+y]_{n}\\
  & \vdots\\{}
-[- & E[x_{n}y] & -]
-\end{array}\right]=_{\blacktriangle} & \left[\begin{array}{ccc}
-[- & x_{1}E[y] & -]\\
- & \vdots\\{}
-[- & x_{n}E[y] & -]
-\end{array}\right]=\\
-=x^{T}\left[\begin{array}{ccc}
-[- & E[y] & -]\\
- & \vdots\\{}
-[- & E[y] & -]
-\end{array}\right] & =x^{T}\left[\begin{array}{ccc}
-E[y_{1}] & ... & E[y_{y}]\\
- & \vdots\\{}
-[- & E[y] & -]
-\end{array}\right]
+[x+y]_{n}[x+y]_{1} & ... & [x+y]_{n}[x+y]_{n}
+\end{array}\right]\\
+= & \left[\begin{array}{ccc}
+(x_{1}+y_{1})(x_{1}+y_{1}) & ... & (x_{1}+y_{1})(x_{m}+y_{m})\\
+ & \vdots\\
+(x_{n}+y_{n})(x_{1}+y_{1}) & ... & (x_{n}+y_{n})(x_{n}+y_{n})
+\end{array}\right]\\
+= & \left[\begin{array}{ccc}
+(x_{1}x_{1}+y_{1}x_{1}+y_{1}x_{1}+y_{1}y_{1}) & ... & (x_{1}x_{n}+y_{1}x_{n}+y_{1}x_{n}+y_{1}y_{n})\\
+ & \vdots\\
+(x_{n}x_{1}+y_{n}x_{1}+x_{n}y_{1}+y_{1}y_{n}) & ... & (x_{n}x_{n}+y_{n}x_{n}+y_{n}x_{n}+y_{n}y_{n})
+\end{array}\right]\\
+= & \left[\begin{array}{ccc}
+x_{1}x_{1} & ... & x_{1}x_{n}\\
+ & \vdots\\
+x_{n}x_{n} & ... & x_{n}x_{n}
+\end{array}\right]+\left[\begin{array}{ccc}
+y_{1}y_{1} & ... & y_{1}y_{n}\\
+ & \vdots\\
+y_{n}y_{n} & ... & y_{n}y_{n}
+\end{array}\right]\\
+ & +\left[\begin{array}{ccc}
+x_{1}y_{1} & ... & x_{1}y_{n}\\
+ & \vdots\\
+x_{n}y_{n} & ... & x_{n}y_{n}
+\end{array}\right]+\left[\begin{array}{ccc}
+y_{1}x_{1} & ... & x_{1}y_{n}\\
+ & \vdots\\
+x_{n}y_{n} & ... & x_{n}y_{n}
+\end{array}\right]\\
+= & xx^{T}+yy^{T}+2xy^{T}
 \end{align*}
 
 \end_inset
 
-And 
-\begin_inset Formula $\blacktriangle$
+
+\begin_inset Formula 
+\begin{align*}
+cov(z) & =cov(z,z)=E[zz^{T}]-E[z]E[z]^{T}=_{1}\\
+E[xx^{T}+2xy^{T}+yy^{T}]-E[x+y]^{2} & =_{2}E[xx^{T}]+2E[xy^{T}]+E[yy^{T}]-(E[x]+E[y])^{2}=\blacklozenge
+\end{align*}
+
 \end_inset
 
- is due to the linearity of E.
- So the i'th row is 
-\begin_inset Formula $E[x_{i}y]=\int x_{i}yp(y)dy=x_{i}\int yp(y)dy$
+Where 1 is due to the fact computed above that 
+\begin_inset Formula $(x+y)(x+y)^{T}=xx^{T}+yy^{T}+2xy^{T}$
 \end_inset
 
-.
- 
-\end_layout
-
-\begin_layout Paragraph
-Lemma: If x and y are independent continuous random vectors than there are
- indexes i,j such that 
-\begin_inset Formula $x_{i},y_{j}$
-\end_inset
-
- are independent.
-\end_layout
-
-\begin_layout Paragraph
-Proof: Assume for all i,j it holds that 
-\begin_inset Formula $x_{i},y_{j}$
-\end_inset
-
- are not independent.
- Denote 
-\begin_inset Formula $x=(\bar{x},x_{i})$
+ and 2 is due to E's linearity.
+ Remember that 
+\begin_inset Formula $E[xy^{T}]=E[x]E[y^{T}]$
 \end_inset
 
  and 
-\begin_inset Formula $y=(\bar{y},y_{i})$
+\begin_inset Formula $(E[x]+E[y])^{2}=E[x]^{2}+2E[x]E[y]+E[y]{}^{2}$
 \end_inset
 
-.
- From definetion 
-\begin_inset Formula $E[xy^{T}]_{ij}=E[x_{i}y_{j}]$
+ we get:
+\begin_inset Formula 
+\begin{align*}
+\blacklozenge & =E[xx^{T}]+2E[xy^{T}]+E[yy^{T}]-E[x]^{2}-2E[x]E[y]-E[y]{}^{2}\\
+= & E[xx^{T}]-E[x]^{2}+E[yy^{T}]-E[y]{}^{2}\\
+= & \left[E[xx^{T}]-E[x]E[x]^{T}\right]+\left[E[yy^{T}]-E[y]E[y^{T}]\right]\\
+= & cov[x]+cov[y]
+\end{align*}
+
 \end_inset
 
- 
+And thus 
+\begin_inset Formula $cov(x+y)=cov[x]+cov[y]$
+\end_inset
+
+
+\begin_inset Formula $\blacksquare$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection*
