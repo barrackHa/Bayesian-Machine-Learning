@@ -909,8 +909,9 @@ For each indexs
 \begin_inset Formula 
 \begin{align*}
 E[xy^{T}]_{ij}=E[x_{i}y_{j}] & =\int\int x_{i}y_{j}p(x_{i},y_{j})dx_{i}dy_{j}=\\
-=\int\int xy_{j}p(x_{i})p(y_{j})dx_{i}dy_{j} & =\int x_{i}p(x_{i})\left[\int y_{j}p(y_{j})dy_{j}\right]dx_{i}=\left[\int y_{j}p(y_{j})dy_{j}\right]\int x_{i}p(x_{i})dx_{i}=\\
-=\left[\int y_{j}p(y_{j})dy_{j}\right]\left[\int x_{i}p(x_{i})dx_{i}\right] & =E[x_{i}]E[y_{j}]
+=\int\int xy_{j}p(x_{i})p(y_{j})dx_{i}dy_{j} & =\int x_{i}p(x_{i})\left[\int y_{j}p(y_{j})dy_{j}\right]dx_{i}=\\
+=\left[\int y_{j}p(y_{j})dy_{j}\right]\int x_{i}p(x_{i})dx_{i} & =\left[\int y_{j}p(y_{j})dy_{j}\right]\left[\int x_{i}p(x_{i})dx_{i}\right]=\\
+ & =E[x_{i}]E[y_{j}]
 \end{align*}
 
 \end_inset
