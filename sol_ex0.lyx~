@@ -189,7 +189,7 @@ R_{i}^{T}y\\
 \end_inset
 
 .
- The partial derivitve for 
+ The partial derivative for 
 \begin_inset Formula $1\le k\le n$
 \end_inset
 
@@ -206,7 +206,7 @@ So long story short
 \end_inset
 
 .
- All Togther now:
+ All Together now:
 \begin_inset Formula 
 \begin{align*}
  & \frac{\partial g_{3}(y)}{\partial y}^{T}g_{2}(y)+g_{3}(y)^{T}\frac{\partial g_{2}(y)}{\partial y}\\
@@ -220,8 +220,8 @@ And
 \begin_inset Formula $\varhexstar$
 \end_inset
 
- is just simbulic so we make sure we add to collumn vectors.
- Remeber 
+ is just symbolic so we make sure we add to column vectors.
+ Remember 
 \begin_inset Formula $y=x-\mu$
 \end_inset
 
@@ -267,7 +267,7 @@ Q2.
 \end_layout
 
 \begin_layout Paragraph
-Denot 
+Denote
 \begin_inset Formula 
 \[
 H=\left[\begin{array}{ccc}
@@ -970,7 +970,7 @@ x_{n}y_{n} & ... & x_{n}y_{n}
 
 \end_inset
 
-
+Now:
 \begin_inset Formula 
 \begin{align*}
 cov(z) & =cov(z,z)=E[zz^{T}]-E[z]E[z]^{T}=_{1}\\
@@ -1024,25 +1024,157 @@ Q7.
 \end_layout
 
 \begin_layout Paragraph
+First let's look at 
+\begin_inset Formula $E[Hx]$
+\end_inset
+
+.
+ As 
+\begin_inset Formula 
+\[
+Hx=\left[\begin{array}{ccc}
+... & H_{i}^{T}x & ...\end{array}\right]^{T}=\left[\begin{array}{ccc}
+... & \sum H_{ik}x_{k} & ...\end{array}\right]^{T}=\stackrel[k=1]{n}{\sum}\left[\begin{array}{ccc}
+H_{1k}x_{k} & ... & H_{qk}x_{k}\end{array}\right]^{T}
+\]
+
+\end_inset
+
+and by the definnetion 
+\begin_inset Formula $E[Hx]_{i}=E[[Hx]_{i}]$
+\end_inset
+
+ we get:
+\begin_inset Formula 
+\[
+E[[Hx]_{i}]=E\left[\sum H_{ik}x_{k}\right]=\sum H_{ik}E\left[x_{k}\right]
+\]
+
+\end_inset
+
+where the last transition is due to E's linearity.
+ So we can write:
+\begin_inset Formula 
+\[
+E[Hx]=\left[\begin{array}{c}
+E\left[\sum H_{1k}x_{k}\right]\\
+\vdots\\
+E\left[\sum H_{qk}x_{k}\right]
+\end{array}\right]=\left[\begin{array}{c}
+\sum H_{1k}E\left[x_{k}\right]\\
+\vdots\\
+\sum H_{qk}E\left[x_{k}\right]
+\end{array}\right]=H\left[\begin{array}{c}
+E\left[x_{1}\right]\\
+\vdots\\
+E\left[x_{n}\right]
+\end{array}\right]=H\cdot E[x]
+\]
+
+\end_inset
+
+Now, using Q6 we now 
+\begin_inset Formula $cov(Hx+\eta)=cov(Hx)+cov(\eta)$
+\end_inset
+
+.
+ From definition:
+\begin_inset Formula 
+\begin{align*}
+cov(Hx) & =E\left[(Hx-E[Hx])(Hx-E[Hx])^{T}\right]=\\
+E\left[(Hx-HE[x])(Hx-HE[x])^{T}\right]= & E\left[\left(H(x-E[x])\right)\left((x-E[x])^{T}\right)H^{T}\right]=\\
+HE\left[\left((x-E[x])\right)\left((x-E[x])^{T}\right)\right]H^{T}= & Hcov[x]H^{T}
+\end{align*}
+
+\end_inset
+
+Finally: 
+\begin_inset Formula 
+\[
+cov(Hx+\eta)=Hcov[x]H^{T}+cov(\eta)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection*
+________________________________________________________________________
+\end_layout
+
+\begin_layout Paragraph
+Was it not enough???
+\end_layout
+
+\begin_layout Paragraph
+Now, again, due to E's linearity we can write: 
+\begin_inset Formula 
+\[
+E[Hx+\eta]=HE[x]+E[\eta]
+\]
+
+\end_inset
+
+Now:
+\begin_inset Formula 
+\[
+y-E[y]=Hx+\eta-HE[x]-E[\eta]=\left[Hx-HE[x]\right]+\left[\eta-E[\eta]\right]
+\]
+
+\end_inset
+
+And so:
+\begin_inset Formula 
+\[
+cov[y]=E\left[\left(\left[Hx-HE[x]\right]+\left[\eta-E[\eta]\right]\right)\left(\left[Hx-HE[x]\right]+\left[\eta-E[\eta]\right]^{T}\right)\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
 From the recitation (4.19) 
 \begin_inset Formula $cov[y]=cov[yy^{T}]=E[yy^{T}]-E[y]E[y^{T}]$
 \end_inset
 
  .
  Also 
-\begin_inset Formula $\left[Hx+\eta\right]_{i}=[Hx]_{i}+\eta_{i}=H_{i}^{T}x_{j}+\eta_{i}=\left[\sum H_{ij}x_{j}\right]+\eta_{i}$
+\begin_inset Formula $\left[Hx+\eta\right]_{i}=[Hx]_{i}+\eta_{i}=H_{i}^{T}x+\eta_{i}=\left[\sum H_{ik}x_{k}\right]+\eta_{i}$
 \end_inset
 
-.
- So 
+ (
+\begin_inset Formula $H_{i}^{T}$
+\end_inset
+
+ is the i'th row of H as a row vector).
+ So for i,j:
 \begin_inset Formula 
-\[
-yy^{T}=\left[Hx+\eta\right]\left[Hx+\eta\right]^{T}=\left[\begin{array}{ccc}
+\begin{align*}
+y_{i}y_{j} & =\left[Hx+\eta\right]_{i}\left[Hx+\eta\right]_{j}=\left(H_{i}^{T}x+\eta_{i}\right)\cdot\left(H_{j}^{T}x+\eta_{j}\right)\\
+= & H_{i}^{T}x\cdot H_{j}^{T}x+\eta_{i}\cdot H_{j}^{T}x+\eta_{j}\cdot H_{i}^{T}x+\eta_{i}\eta_{j}\\
+= & \left[Hx\right]_{i}\cdot\left[Hx\right]_{j}+\eta_{i}\cdot\left[Hx\right]_{j}+\left[Hx\right]_{i}\cdot\eta_{j}+\eta_{i}\eta_{j}
+\end{align*}
+
+\end_inset
+
+By the equality above:
+\end_layout
+
+\begin_layout Paragraph
+\begin_inset Formula 
+\begin{align*}
+yy^{T} & =\left[Hx+\eta\right]\left[Hx+\eta\right]^{T}=\left[\begin{array}{ccc}
 y_{1}y_{1} & ... & y_{1}y_{q}\\
  & \vdots\\
 y_{1}y_{q} & ... & y_{q}y_{q}
-\end{array}\right]=
-\]
+\end{array}\right]=\\
+= & \left[\left[Hx\right]_{i}\cdot\left[Hx\right]_{j}+\eta_{i}\cdot\left[Hx\right]_{j}+\left[Hx\right]_{i}\cdot\eta_{j}+\eta_{i}\eta_{j}\right]_{i,j}\\
+= & \left[\left[Hx\right]_{i}\cdot\left[Hx\right]_{j}\right]_{i,j}+\left[\eta_{i}\cdot\left[Hx\right]_{j}+\left[Hx\right]_{i}\cdot\eta_{j}\right]_{i,j}+\left[\eta_{i}\eta_{j}\right]_{i,j}\\
+= & HxHx^{T}+\eta\eta^{T}+\eta Hx^{T}+Hx\eta^{T}
+\end{align*}
 
 \end_inset
 
