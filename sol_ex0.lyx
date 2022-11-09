@@ -815,6 +815,16 @@ Finally -
 \end_inset
 
 .
+ To sum up:
+\begin_inset Formula 
+\begin{align*}
+ & E[x]=m\\
+ & var[x]=\frac{d^{2}}{12}
+\end{align*}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection*

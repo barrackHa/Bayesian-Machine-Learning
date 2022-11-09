@@ -292,7 +292,7 @@ so -
 \end_inset
 
 ).
- Now, by defintion:
+ Now, by definition:
 \begin_inset Formula 
 \[
 \left\Vert H\theta-y\right\Vert ^{2}=(H\theta-y)^{T}(H\theta-y)=\sum(H\theta-y)_{i}\cdot(H\theta-y)=\sum(H\theta-y)_{i}^{2}
@@ -300,7 +300,7 @@ so -
 
 \end_inset
 
-Togther with 
+Together with 
 \begin_inset Formula $\bigstar$
 \end_inset
 
@@ -454,7 +454,7 @@ A)
 \begin_inset Formula $\hat{\theta}$
 \end_inset
 
- which maximaizes 
+ which maximizes 
 \begin_inset Formula $f_{3}$
 \end_inset
 
@@ -479,7 +479,7 @@ A)
 
 \end_inset
 
- And we can see it doesn't depent on 
+ And we can see it doesn't depend on 
 \begin_inset Formula $\lambda$
 \end_inset
 
@@ -491,7 +491,7 @@ B)
 \begin_inset Formula $\hat{\lambda}$
 \end_inset
 
- which maximaizes 
+ which maximizes 
 \begin_inset Formula $f_{3}$
 \end_inset
 
@@ -695,7 +695,7 @@ it will not rain
 \end_inset
 
 ) i.e.
- the qusestion is what's the probabilty to get a True Positive which is
+ the question is what's the probability to get a True Positive which is
  
 \begin_inset Formula $1-p_{FP}.$
 \end_inset
@@ -815,6 +815,16 @@ Finally -
 \end_inset
 
 .
+ To sum up:
+\begin_inset Formula 
+\begin{align*}
+E[x] & =m\\
+var[x]= & \frac{d^{2}}{12}
+\end{align*}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection*
@@ -901,7 +911,7 @@ Q6.
 \end_layout
 
 \begin_layout Paragraph
-For each indexs 
+For each indexes 
 \begin_inset Formula $i,j$
 \end_inset
 
@@ -1040,7 +1050,7 @@ H_{1k}x_{k} & ... & H_{qk}x_{k}\end{array}\right]^{T}
 
 \end_inset
 
-and by the definnetion 
+and by the definition 
 \begin_inset Formula $E[Hx]_{i}=E[[Hx]_{i}]$
 \end_inset
 
