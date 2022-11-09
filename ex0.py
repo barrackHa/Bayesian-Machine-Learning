@@ -1,5 +1,3 @@
-import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
 def get_f3_for_ploting(c, h, y):
@@ -49,22 +47,24 @@ if __name__ == '__main__':
     c = 1
 
     print(f'Quiz Q2 - max theta: {max_theta(H,y)}')
-    print(f'Quiz Q3: max lambda: {max_lambda(H,y,c)}')
+    print(f'Quiz Q3 - max lambda: {max_lambda(H,y,c)}')
 
     # Q4
     p_fn = 0.04
     p_fp = 0.28
     p_r = 0.04
-    print(f'Quiz Q4: rain for rain: {rain_prob(p_r, p_fn, p_fp)}')
+    print(f'Quiz Q4 - chance for rain: {rain_prob(p_r, p_fn, p_fp)}')
 
     # Q5-6
     m = 3.6
     d = 5.7
 
-    print(f'Quiz Q5: mean: {uniform_mean(m, d)}')
-    print(f'Quiz Q6: var: {uniform_var(m, d)}')
+    print(f'Quiz Q5 - mean: {uniform_mean(m, d)}')
+    print(f'Quiz Q6 - var: {uniform_var(m, d)}')
 
     # # Plot f3
+    # import matplotlib.pyplot as plt
+    # from mpl_toolkits.mplot3d import Axes3D 
     # b = np.arange(-3, 3.2, 0.02)
     # d = np.arange(-3, 3.2, 0.02)
 
