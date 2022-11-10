@@ -30,9 +30,19 @@
 \index_command default
 \paperfontsize default
 \spacing single
-\use_hyperref false
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\pdf_quoted_options "linkcolor=\"5FAECC3\""
 \papersize a4paper
-\use_geometry false
+\use_geometry true
 \use_package amsmath 1
 \use_package amssymb 1
 \use_package cancel 1
@@ -53,6 +63,7 @@
 \justification true
 \use_refstyle 1
 \use_minted 0
+\boxbgcolor #007df2
 \index Index
 \shortcut idx
 \color #008000
@@ -78,23 +89,56 @@
 \begin_body
 
 \begin_layout Title
-BML EX0
+Bayesian Machine Learning 
+\begin_inset Newline linebreak
+\end_inset
+
+Course 67564
+\begin_inset Newline linebreak
+\end_inset
+
+Solution To Exercise 0: Linear Algebra and Probability
 \end_layout
 
 \begin_layout Author
-Barak Haim 021682141
+Barak Haim 
+\begin_inset Newline linebreak
+\end_inset
+
+021682141
 \end_layout
 
 \begin_layout Date
 10/11/2022
 \end_layout
 
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Linear Algebra
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsection
 Q1.
+ 
+\begin_inset Formula $f_{1}(x)=(x-\mu)^{T}R(x-\mu)$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -257,7 +301,7 @@ Now, assume
 
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsection
 Q2.
  
 \begin_inset Formula $f_{2}(\theta)=\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}\overset{?}{=}\left\Vert H\theta-y\right\Vert ^{2}$
@@ -311,7 +355,7 @@ Together with
 
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsection
 Q3.
  
 \begin_inset Formula $f_{3}(\theta,\lambda)=-c\log\frac{1}{\lambda}-\frac{1}{2}\lambda\stackrel[i=1]{n}{\sum}(h_{i}^{T}\theta-y_{i})^{2}$
@@ -556,11 +600,18 @@ We choose
 
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
 \begin_layout Section
 Probability
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsection
 Q4.
  Will it rain?
 \end_layout
@@ -725,7 +776,7 @@ P(A|B)=\frac{p_{r}\cdot p_{FN}}{1-p_{r}(1-p_{FN})+p_{FP}(1-p_{r})}
 
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsection
 Q5.
  Uniform random variable on a segment in 
 \begin_inset Formula $\mathbb{R}$
@@ -818,8 +869,8 @@ Finally -
  To sum up:
 \begin_inset Formula 
 \begin{align*}
-E[x] & =m\\
-var[x]= & \frac{d^{2}}{12}
+ & E[x]=m\\
+ & var[x]=\frac{d^{2}}{12}
 \end{align*}
 
 \end_inset
@@ -901,17 +952,22 @@ We're back to the conditions of our original question, meaning the mean
 .
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsection
 Q6.
- Let 
-\begin_inset Formula $x,y$
+ 
+\begin_inset Formula $cov(x+y)=cov[x]+cov[y]$
 \end_inset
 
- be independent continuous random vectors 
+
 \end_layout
 
 \begin_layout Paragraph
-For each indexes 
+Let 
+\begin_inset Formula $x,y$
+\end_inset
+
+ be independent continuous random vectors.
+ For each indexes 
 \begin_inset Formula $i,j$
 \end_inset
 
@@ -1024,10 +1080,10 @@ And thus
 
 \end_layout
 
-\begin_layout Subsection*
+\begin_layout Subsection
 Q7.
  
-\begin_inset Formula $cov\left[Hx+\eta\right]$
+\begin_inset Formula $cov\left[Hx+\eta\right]=Hcov[x]H^{T}+cov(\eta)$
 \end_inset
 
 
@@ -1103,88 +1159,6 @@ Finally:
 \[
 cov(Hx+\eta)=Hcov[x]H^{T}+cov(\eta)
 \]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection*
-________________________________________________________________________
-\end_layout
-
-\begin_layout Paragraph
-Was it not enough???
-\end_layout
-
-\begin_layout Paragraph
-Now, again, due to E's linearity we can write: 
-\begin_inset Formula 
-\[
-E[Hx+\eta]=HE[x]+E[\eta]
-\]
-
-\end_inset
-
-Now:
-\begin_inset Formula 
-\[
-y-E[y]=Hx+\eta-HE[x]-E[\eta]=\left[Hx-HE[x]\right]+\left[\eta-E[\eta]\right]
-\]
-
-\end_inset
-
-And so:
-\begin_inset Formula 
-\[
-cov[y]=E\left[\left(\left[Hx-HE[x]\right]+\left[\eta-E[\eta]\right]\right)\left(\left[Hx-HE[x]\right]+\left[\eta-E[\eta]\right]^{T}\right)\right]
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-From the recitation (4.19) 
-\begin_inset Formula $cov[y]=cov[yy^{T}]=E[yy^{T}]-E[y]E[y^{T}]$
-\end_inset
-
- .
- Also 
-\begin_inset Formula $\left[Hx+\eta\right]_{i}=[Hx]_{i}+\eta_{i}=H_{i}^{T}x+\eta_{i}=\left[\sum H_{ik}x_{k}\right]+\eta_{i}$
-\end_inset
-
- (
-\begin_inset Formula $H_{i}^{T}$
-\end_inset
-
- is the i'th row of H as a row vector).
- So for i,j:
-\begin_inset Formula 
-\begin{align*}
-y_{i}y_{j} & =\left[Hx+\eta\right]_{i}\left[Hx+\eta\right]_{j}=\left(H_{i}^{T}x+\eta_{i}\right)\cdot\left(H_{j}^{T}x+\eta_{j}\right)\\
-= & H_{i}^{T}x\cdot H_{j}^{T}x+\eta_{i}\cdot H_{j}^{T}x+\eta_{j}\cdot H_{i}^{T}x+\eta_{i}\eta_{j}\\
-= & \left[Hx\right]_{i}\cdot\left[Hx\right]_{j}+\eta_{i}\cdot\left[Hx\right]_{j}+\left[Hx\right]_{i}\cdot\eta_{j}+\eta_{i}\eta_{j}
-\end{align*}
-
-\end_inset
-
-By the equality above:
-\end_layout
-
-\begin_layout Paragraph
-\begin_inset Formula 
-\begin{align*}
-yy^{T} & =\left[Hx+\eta\right]\left[Hx+\eta\right]^{T}=\left[\begin{array}{ccc}
-y_{1}y_{1} & ... & y_{1}y_{q}\\
- & \vdots\\
-y_{1}y_{q} & ... & y_{q}y_{q}
-\end{array}\right]=\\
-= & \left[\left[Hx\right]_{i}\cdot\left[Hx\right]_{j}+\eta_{i}\cdot\left[Hx\right]_{j}+\left[Hx\right]_{i}\cdot\eta_{j}+\eta_{i}\eta_{j}\right]_{i,j}\\
-= & \left[\left[Hx\right]_{i}\cdot\left[Hx\right]_{j}\right]_{i,j}+\left[\eta_{i}\cdot\left[Hx\right]_{j}+\left[Hx\right]_{i}\cdot\eta_{j}\right]_{i,j}+\left[\eta_{i}\eta_{j}\right]_{i,j}\\
-= & HxHx^{T}+\eta\eta^{T}+\eta Hx^{T}+Hx\eta^{T}
-\end{align*}
 
 \end_inset
 
