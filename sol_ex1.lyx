@@ -1,0 +1,401 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref true
+\pdf_bookmarks true
+\pdf_bookmarksnumbered false
+\pdf_bookmarksopen false
+\pdf_bookmarksopenlevel 1
+\pdf_breaklinks false
+\pdf_pdfborder true
+\pdf_colorlinks true
+\pdf_backref false
+\pdf_pdfusetitle true
+\pdf_quoted_options "linkcolor=blue"
+\papersize a4paper
+\use_geometry true
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\boxbgcolor #007df2
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Bayesian Machine Learning 
+\begin_inset Newline linebreak
+\end_inset
+
+Course 67564
+\begin_inset Newline linebreak
+\end_inset
+
+Solution To Exercise 1: Bayesian Statistics and Gaussians
+\end_layout
+
+\begin_layout Author
+Barak Haim 
+\begin_inset Newline linebreak
+\end_inset
+
+0
+\end_layout
+
+\begin_layout Date
+10/11/2022
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Bayesian Statistics
+\end_layout
+
+\begin_layout Subsection
+MSE and BMSE
+\end_layout
+
+\begin_layout Subsubsection
+Q1 
+\begin_inset Formula $\text{MSE}\left[\hat{\theta}\right]=bais^{2}\left(\hat{\theta}\right)+var\left[\hat{\theta}\right]$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Note 
+\begin_inset Formula 
+\begin{align*}
+bais^{2}\left(\hat{\theta}\right) & =\left(E_{D}\left[\hat{\theta}(D)\right]-\theta\right)^{2}=E_{D}\left[\hat{\theta}(D)\right]^{2}-2E_{D}\left[\hat{\theta}(D)\right]\theta+\theta^{2}
+\end{align*}
+
+\end_inset
+
+and so:
+\begin_inset Formula 
+\[
+bais^{2}\left(\hat{\theta}\right)+var\left[\hat{\theta}\right]=E_{D}\left[\hat{\theta}(D)^{2}\right]-2E_{D}\left[\hat{\theta}(D)\right]\theta+\theta^{2}
+\]
+
+\end_inset
+
+Moreover: 
+\begin_inset Formula 
+\begin{align*}
+\left\Vert \theta-\hat{\theta}(D)\right\Vert ^{2} & =\left\langle \theta-\hat{\theta}(D),\theta-\hat{\theta}(D)\right\rangle \\
+= & \left\langle \theta,\theta-\hat{\theta}(D)\right\rangle -\left\langle \hat{\theta}(D),\theta-\hat{\theta}(D)\right\rangle \\
+= & \left\langle \theta,\theta\right\rangle -\left\langle \theta,\hat{\theta}(D)\right\rangle -\left\langle \hat{\theta}(D),\theta\right\rangle +\left\langle \hat{\theta}(D),\hat{\theta}(D)\right\rangle \\
+= & \left\langle \theta,\theta\right\rangle -2\left\langle \theta,\hat{\theta}(D)\right\rangle +\left\langle \hat{\theta}(D),\hat{\theta}(D)\right\rangle \\
+= & \left\langle \hat{\theta}(D),\hat{\theta}(D)\right\rangle -2\left\langle \theta,\hat{\theta}(D)\right\rangle +\left\langle \theta,\theta\right\rangle 
+\end{align*}
+
+\end_inset
+
+Now, from linearity of E: 
+\begin_inset Formula 
+\[
+E_{D}\left\Vert \theta-\hat{\theta}(D)\right\Vert ^{2}=E_{D}\left[\hat{\theta}(D)^{2}\right]-2E_{D}\left[\left\langle \theta,\hat{\theta}(D)\right\rangle \right]+E_{D}\left[\theta^{2}\right]
+\]
+
+\end_inset
+
+Because 
+\begin_inset Formula $\theta$
+\end_inset
+
+ is constant with regards to D, 
+\begin_inset Formula $E_{D}$
+\end_inset
+
+ is not effected by 
+\begin_inset Formula $\theta$
+\end_inset
+
+ and so 
+\begin_inset Formula 
+\[
+E_{D}\left[\left\Vert \theta-\hat{\theta}(D)\right\Vert ^{2}\right]=E_{D}\left[\hat{\theta}(D)^{2}\right]-2E_{D}\left[\hat{\theta}(D)\right]\theta+\theta^{2}=bais^{2}\left(\hat{\theta}\right)+var\left[\hat{\theta}\right]
+\]
+
+\end_inset
+
+Q.E.D.
+\end_layout
+
+\begin_layout Subsubsection
+Q2 
+\begin_inset Formula $\hat{\theta}_{a}=a\cdot arg\underset{\tilde{\theta}}{min}\stackrel[i=1]{N}{\sum}\left(y_{i}-\tilde{\theta}\right)^{2}$
+\end_inset
+
+, 
+\begin_inset Formula $MSE\left[\hat{\theta}_{a}\right]=?$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+First we can compute 
+\begin_inset Formula $\hat{\theta}_{a}$
+\end_inset
+
+by finding the minima of 
+\begin_inset Formula $MD(\tilde{\theta})\overset{\Delta}{=}\stackrel[i=1]{N}{\sum}\left(y_{i}-\tilde{\theta}\right)^{2}$
+\end_inset
+
+ (we know there is such a unique term as 
+\begin_inset Formula $MD(\tilde{\theta})$
+\end_inset
+
+ is convex).
+ So:
+\begin_inset Formula 
+\[
+\frac{\partial MD(x)}{\partial x}=\frac{\partial}{\partial x}\stackrel[i=1]{N}{\sum}\left(y_{i}-x\right)^{2}=\stackrel[i=1]{N}{\sum}\frac{\partial}{\partial x}\left(y_{i}-x\right)^{2}=-2\stackrel[i=1]{N}{\sum}\left(y_{i}-x\right)=2\stackrel[i=1]{N}{\sum}\left(x-y_{i}\right)=2Nx-\stackrel[i=1]{N}{\sum}y_{i}
+\]
+
+\end_inset
+
+So, 
+\begin_inset Formula $\frac{\partial MD(x)}{\partial x}=0$
+\end_inset
+
+ iff 
+\begin_inset Formula $2Nx-\stackrel[i=1]{N}{\sum}y_{i}=0$
+\end_inset
+
+ iff 
+\begin_inset Formula $x=\stackrel[i=1]{N}{\sum}\frac{y_{i}}{2N}$
+\end_inset
+
+.
+ We get:
+\begin_inset Formula 
+\[
+\hat{\theta}_{a}=a\cdot arg\underset{\tilde{\theta}}{min}\stackrel[i=1]{N}{\sum}\left(y_{i}-\tilde{\theta}\right)^{2}=\frac{a}{2N}\stackrel[i=1]{N}{\sum}y_{i}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Now:
+\begin_inset Formula 
+\[
+E_{D}\left[\left\Vert \theta-\hat{\theta}_{a}(D)\right\Vert ^{2}\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Q3
+\end_layout
+
+\begin_layout Subsection
+Prior, Likelihood and Posterior
+\end_layout
+
+\begin_layout Subsubsection
+Q4 
+\begin_inset Formula $\theta\sim U[a,b]$
+\end_inset
+
+, 
+\begin_inset Formula $y|\theta\sim U\left([\theta-\delta,\theta+\delta]\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+So for a single data point 
+\begin_inset Formula $y$
+\end_inset
+
+, we get 
+\begin_inset Formula $p(y|\theta)=\frac{1}{2\delta}$
+\end_inset
+
+.
+ Furthermore - 
+\begin_inset Formula $p(\theta)=\frac{1}{b-a}$
+\end_inset
+
+.
+ So:
+\begin_inset Formula 
+\[
+p(\theta|y)\wasypropto\frac{1}{2\delta\left(b-a\right)}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Q5 
+\begin_inset Formula $\theta\sim U[a,b],\ y|\theta\sim N\left(\theta,\lambda^{2}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Again - 
+\begin_inset Formula $p(\theta)=\frac{1}{b-a}$
+\end_inset
+
+.
+ For a single data point y we get: 
+\begin_inset Formula $p(y|\theta)=\frac{1}{\sqrt{2\pi\lambda^{2}}}\exp\left(-\frac{1}{2\lambda^{2}}(y-\theta)^{2}\right)$
+\end_inset
+
+.
+ Using Bayes' law: 
+\begin_inset Formula 
+\[
+p(\theta|y)\wasypropto\frac{1}{\sqrt{2\pi\lambda^{2}\left(b-a\right)^{2}}}\exp\left(-\frac{1}{2\lambda^{2}}(y-\theta)^{2}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Q6 
+\begin_inset Formula $\theta\sim N\left(\mu,\sigma^{2}\right),\ y|\theta\sim N\left(h\cdot\theta,\lambda^{2}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Gaussians
+\end_layout
+
+\begin_layout Subsection
+Sampling from a Multivariate Normal
+\end_layout
+
+\begin_layout Subsubsection
+Q7
+\end_layout
+
+\begin_layout Subsubsection
+Q8
+\end_layout
+
+\begin_layout Subsection
+Product of Gaussians
+\end_layout
+
+\begin_layout Subsubsection
+Q9
+\end_layout
+
+\begin_layout Subsubsection
+Q10
+\end_layout
+
+\begin_layout Subsubsection
+Q11
+\end_layout
+
+\end_body
+\end_document
