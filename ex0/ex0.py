@@ -29,7 +29,11 @@ def max_lamda_theta(H, y, c: float):
 
 def rain_prob(p_r, p_fn, p_fp):
     num = p_r * p_fn
-    dnum = 1 - p_r * (1 - p_fn) + p_fp * (1 - p_r)
+    # This is a mistake in my solution becuse I got something wrong in the calculation 
+    # !!! dnum = 1 - p_r * (1 - p_fn) + p_fp * (1 - p_r)
+
+    # Here is the correct one - without doing the calculation
+    dnum = p_r * p_fn + (1 - p_fp) * (1 - p_r)
     return num / dnum
 
 def uniform_mean(m, d):
