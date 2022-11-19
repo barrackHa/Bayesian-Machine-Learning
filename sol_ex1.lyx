@@ -233,7 +233,7 @@ by finding the minima of
  So:
 \begin_inset Formula 
 \[
-\frac{\partial MD(x)}{\partial x}=\frac{\partial}{\partial x}\stackrel[i=1]{N}{\sum}\left(y_{i}-x\right)^{2}=\stackrel[i=1]{N}{\sum}\frac{\partial}{\partial x}\left(y_{i}-x\right)^{2}=-2\stackrel[i=1]{N}{\sum}\left(y_{i}-x\right)=2\stackrel[i=1]{N}{\sum}\left(x-y_{i}\right)=2Nx-\stackrel[i=1]{N}{\sum}y_{i}
+\frac{\partial MD(x)}{\partial x}=\frac{\partial}{\partial x}\stackrel[i=1]{N}{\sum}\left(y_{i}-x\right)^{2}=\stackrel[i=1]{N}{\sum}\frac{\partial}{\partial x}\left(y_{i}-x\right)^{2}=-2\stackrel[i=1]{N}{\sum}\left(y_{i}-x\right)=2\stackrel[i=1]{N}{\sum}\left(x-y_{i}\right)=2\left(Nx-\stackrel[i=1]{N}{\sum}y_{i}\right)
 \]
 
 \end_inset
@@ -243,18 +243,18 @@ So,
 \end_inset
 
  iff 
-\begin_inset Formula $2Nx-\stackrel[i=1]{N}{\sum}y_{i}=0$
+\begin_inset Formula $Nx-\stackrel[i=1]{N}{\sum}y_{i}=0$
 \end_inset
 
  iff 
-\begin_inset Formula $x=\stackrel[i=1]{N}{\sum}\frac{y_{i}}{2N}$
+\begin_inset Formula $x=\stackrel[i=1]{N}{\sum}\frac{y_{i}}{N}$
 \end_inset
 
 .
  We get:
 \begin_inset Formula 
 \[
-\hat{\theta}_{a}=a\cdot arg\underset{\tilde{\theta}}{min}\stackrel[i=1]{N}{\sum}\left(y_{i}-\tilde{\theta}\right)^{2}=\frac{a}{2N}\stackrel[i=1]{N}{\sum}y_{i}
+\hat{\theta}_{a}=a\cdot arg\underset{\tilde{\theta}}{min}\stackrel[i=1]{N}{\sum}\left(y_{i}-\tilde{\theta}\right)^{2}=\frac{a}{N}\stackrel[i=1]{N}{\sum}y_{i}
 \]
 
 \end_inset
@@ -262,12 +262,58 @@ So,
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph
 Now:
 \begin_inset Formula 
 \[
-E_{D}\left[\left\Vert \theta-\hat{\theta}_{a}(D)\right\Vert ^{2}\right]
+E_{D}\left[\hat{\theta}_{a}(D)\right]=E_{D}\left[\frac{a}{N}\stackrel[i=1]{N}{\sum}y_{i}\right]=\frac{a}{N}\stackrel[i=1]{N}{\sum}E_{D}\left[y_{i}\right]
 \]
+
+\end_inset
+
+Because 
+\begin_inset Formula $y_{i}'s$
+\end_inset
+
+ are sampled from 
+\begin_inset Formula $\theta$
+\end_inset
+
+ we get 
+\begin_inset Formula $E_{D}\left[y_{i}\right]=\theta$
+\end_inset
+
+ for each i and so:
+\begin_inset Formula 
+\[
+E_{D}\left[\hat{\theta}_{a}(D)\right]=\frac{a}{N}\stackrel[i=1]{N}{\sum}\theta=\frac{a}{N}N\theta=a\theta
+\]
+
+\end_inset
+
+And the bias is:
+\begin_inset Formula 
+\[
+bais\left(\hat{\theta}\right)=E_{D}\left[\hat{\theta}_{a}(D)\right]-\theta=a\theta-\theta=\theta\left(a-1\right)
+\]
+
+\end_inset
+
+And so:
+\begin_inset Formula 
+\[
+bais^{2}\left(\hat{\theta}\right)=\theta^{2}\left(a-1\right)^{2}
+\]
+
+\end_inset
+
+And the variance is:
+\begin_inset Formula 
+\begin{align*}
+var\left[\hat{\theta}_{a}(D)\right] & =E_{D}\left[\left(\hat{\theta}_{a}(D)-E_{D}\left[\hat{\theta}_{a}(D)\right]\right)^{2}\right]\\
+= & E_{D}\left[\left(\frac{a}{N}\stackrel[i=1]{N}{\sum}y_{i}-a\theta\right)^{2}\right]\\
+= & E_{D}\left[a^{2}\left(\frac{1}{N}\stackrel[i=1]{N}{\sum}y_{i}-\theta\right)^{2}\right]????
+\end{align*}
 
 \end_inset
 
@@ -294,7 +340,7 @@ Q4
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Paragraph
 So for a single data point 
 \begin_inset Formula $y$
 \end_inset
@@ -303,16 +349,81 @@ So for a single data point
 \begin_inset Formula $p(y|\theta)=\frac{1}{2\delta}$
 \end_inset
 
-.
- Furthermore - 
+ and - 
 \begin_inset Formula $p(\theta)=\frac{1}{b-a}$
 \end_inset
 
 .
- So:
+ Using Bayes' law:
+\begin_inset Formula 
+\begin{align*}
+p(\theta|y) & =\frac{1}{c}\cdot\begin{cases}
+\text{\ensuremath{\frac{\text{\ensuremath{p(y|\theta)}}}{b-a}}} & \theta\in[a,b]\\
+0 & else
+\end{cases}=\frac{1}{c}\cdot\begin{cases}
+\frac{1}{2\delta\left(b-a\right)} & \theta\in[a,b]\:and\:y\in[\theta-\delta,\theta+\delta]\\
+0 & else
+\end{cases}\\
+= & \frac{1}{c}\cdot\begin{cases}
+\frac{1}{2\delta\left(b-a\right)} & a\le\theta\le b\:and\:\theta-\delta\le y\le\theta+\delta\\
+0 & else
+\end{cases}=\bigstar
+\end{align*}
+
+\end_inset
+
+As 
+\begin_inset Formula $\theta-\delta\le y\le\theta+\delta$
+\end_inset
+
+ iff 
+\begin_inset Formula $y-\delta\le\theta\le y+\delta$
+\end_inset
+
+ we can rewrite the condition for 
+\begin_inset Formula $p(\theta|y)\ne0$
+\end_inset
+
+ as: 
+\begin_inset Formula $min\left\{ a,y-\delta\right\} \le\theta\le max\left\{ y+\delta,b\right\} $
+\end_inset
+
+.
+ Hence:
 \begin_inset Formula 
 \[
-p(\theta|y)\wasypropto\frac{1}{2\delta\left(b-a\right)}
+\bigstar=\frac{1}{c}\cdot\begin{cases}
+\frac{1}{2\delta\left(b-a\right)} & min\left\{ a,y-\delta\right\} \le\theta\le max\left\{ y+\delta,b\right\} \\
+0 & else
+\end{cases}
+\]
+
+\end_inset
+
+Now we know the PDF function holds the condition: 
+\begin_inset Formula $\stackrel[-\infty]{\infty}{\int}p(\theta|y)d\theta=1$
+\end_inset
+
+ so 
+\begin_inset Formula $c$
+\end_inset
+
+ above must be a normliztion factor in the range 
+\begin_inset Formula $[min\left\{ a,y-\delta\right\} ,max\left\{ y+\delta,b\right\} ]$
+\end_inset
+
+ so we can say 
+\begin_inset Formula $p(\theta|y)$
+\end_inset
+
+ is continues uniform in the range 
+\begin_inset Formula $[min\left\{ a,y-\delta\right\} ,max\left\{ y+\delta,b\right\} ]$
+\end_inset
+
+, i.e.:
+\begin_inset Formula 
+\[
+p(y|\theta)\sim U\left(\theta|[min\left\{ a,y-\delta\right\} ,max\left\{ y+\delta,b\right\} ]\right)
 \]
 
 \end_inset
@@ -328,21 +439,54 @@ Q5
 
 \end_layout
 
-\begin_layout Standard
-Again - 
+\begin_layout Paragraph
+We have - 
 \begin_inset Formula $p(\theta)=\frac{1}{b-a}$
 \end_inset
 
-.
- For a single data point y we get: 
-\begin_inset Formula $p(y|\theta)=\frac{1}{\sqrt{2\pi\lambda^{2}}}\exp\left(-\frac{1}{2\lambda^{2}}(y-\theta)^{2}\right)$
+ and 
+\begin_inset Formula $p(y|\theta)=\frac{1}{\sqrt{2\pi\lambda^{2}}}\exp\left(-\frac{1}{2\lambda^{2}}\left\Vert y-\theta\right\Vert ^{2}\right)$
 \end_inset
 
 .
  Using Bayes' law: 
 \begin_inset Formula 
 \[
-p(\theta|y)\wasypropto\frac{1}{\sqrt{2\pi\lambda^{2}\left(b-a\right)^{2}}}\exp\left(-\frac{1}{2\lambda^{2}}(y-\theta)^{2}\right)
+p(\theta|y)=\frac{1}{c}\cdot\begin{cases}
+\text{\ensuremath{\frac{\text{\ensuremath{1}}}{b-a}\cdot\frac{1}{\sqrt{2\pi\lambda^{2}}}\exp\left(-\frac{1}{2\lambda^{2}}\left\Vert y-\theta\right\Vert ^{2}\right)}} & \theta\in[a,b]\\
+0 & else
+\end{cases}
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $c=P(y)=\int_{\theta}p(\theta)p(y|\theta)d\theta$
+\end_inset
+
+ and because 
+\begin_inset Formula $p(\theta)=0$
+\end_inset
+
+ outside the range 
+\begin_inset Formula $[a,b]$
+\end_inset
+
+ we get:
+\begin_inset Formula 
+\[
+c=\frac{1}{b-a}\stackrel[a]{b}{\int}p(y|\theta)d\theta=\frac{1}{b-a}\stackrel[a]{b}{\int}\frac{1}{\sqrt{2\pi\lambda^{2}}}\exp\left(-\frac{1}{2\lambda^{2}}\left\Vert y-\theta\right\Vert ^{2}\right)d\theta
+\]
+
+\end_inset
+
+ Thus we can write 
+\begin_inset Formula 
+\[
+p(\theta|y)=\begin{cases}
+\frac{N\left(\theta|y,\lambda^{2}\right)}{\stackrel[a]{b}{\int}\frac{1}{\sqrt{2\pi\lambda^{2}}}\exp\left(-\frac{1}{2\lambda^{2}}\left\Vert y-\theta\right\Vert ^{2}\right)d\theta} & \theta\in[a,b]\\
+0 & else
+\end{cases}
 \]
 
 \end_inset
@@ -353,6 +497,63 @@ p(\theta|y)\wasypropto\frac{1}{\sqrt{2\pi\lambda^{2}\left(b-a\right)^{2}}}\exp\l
 \begin_layout Subsubsection
 Q6 
 \begin_inset Formula $\theta\sim N\left(\mu,\sigma^{2}\right),\ y|\theta\sim N\left(h\cdot\theta,\lambda^{2}\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+We have - 
+\begin_inset Formula $p(\theta)=\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp\left(-\frac{1}{2\sigma^{2}}\left\Vert \theta-\mu\right\Vert ^{2}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $p(y|\theta)=\frac{1}{\sqrt{2\pi\lambda^{2}}}\exp\left(-\frac{1}{2\lambda^{2}}\left\Vert y-h\theta\right\Vert ^{2}\right)$
+\end_inset
+
+.
+ Using Bayes' law:
+\begin_inset Formula 
+\begin{align*}
+p(\theta|y) & =\frac{1}{c}\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp\left(-\frac{1}{2\sigma^{2}}\left\Vert \theta-\mu\right\Vert ^{2}\right)\frac{1}{\sqrt{2\pi\lambda^{2}}}\exp\left(-\frac{1}{2\lambda^{2}}\left\Vert y-h\theta\right\Vert ^{2}\right)\\
+= & \frac{1}{c}\frac{1}{\sqrt{2\pi\sigma^{2}}}\cdot\frac{1}{\sqrt{2\pi\lambda^{2}}}\exp\left(-\frac{1}{2\sigma^{2}}\left\Vert \theta-\mu\right\Vert ^{2}-\frac{1}{2\lambda^{2}}\left\Vert y-h\theta\right\Vert ^{2}\right)\\
+= & \frac{1}{z}\exp\left(-\Delta\right)
+\end{align*}
+
+\end_inset
+
+As 
+\begin_inset Formula $\Delta$
+\end_inset
+
+is a quadratic term of 
+\begin_inset Formula $\theta$
+\end_inset
+
+ and we saw in the recitation this idicates 
+\begin_inset Formula $p(\theta|y)$
+\end_inset
+
+ is indeed a Gaussian, we're left to find its mean and variance and can
+ use the derivitive trick to do so.
+ So:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial\Delta}{\partial\theta} & =\frac{1}{\sigma^{2}}\left(\theta-\mu\right)+\frac{1}{\lambda^{2}}\left(y-h\theta\right)\\
+= & \frac{\lambda^{2}\theta-\lambda^{2}\mu+\sigma^{2}y-\sigma^{2}h\theta}{\left(\sigma\lambda\right)^{2}}\\
+= & \frac{\left(\lambda^{2}-\sigma^{2}h\right)\theta-\left(\lambda^{2}\mu+\sigma^{2}y\right)}{\left(\sigma\lambda\right)^{2}}\cdot\frac{\left(\lambda^{2}-\sigma^{2}h\right)}{\left(\lambda^{2}-\sigma^{2}h\right)}\\
+= & \frac{\theta}{\left(\sigma\lambda\right)^{2}}\cdot\frac{\left(\lambda^{2}-\sigma^{2}h\right)}{1}-\frac{\left(\lambda^{2}\mu+\sigma^{2}y\right)}{\left(\sigma\lambda\right)^{2}}\cdot\frac{\left(\lambda^{2}-\sigma^{2}h\right)}{\left(\lambda^{2}-\sigma^{2}h\right)}\\
+= & \frac{\left(\lambda^{2}-\sigma^{2}h\right)}{\left(\sigma\lambda\right)^{2}}\left(\theta-\frac{\left(\lambda^{2}\mu+\sigma^{2}y\right)}{\left(\lambda^{2}-\sigma^{2}h\right)}\right)
+\end{align*}
+
+\end_inset
+
+Hence - 
+\begin_inset Formula 
+\[
+p(\theta|y)\sim N\left(\frac{\left(\lambda^{2}\mu+\sigma^{2}y\right)}{\left(\lambda^{2}-\sigma^{2}h\right)},\left(\frac{\left(\lambda^{2}-\sigma^{2}h\right)}{\left(\sigma\lambda\right)^{2}}\right)^{-2}\right)
+\]
+
 \end_inset
 
 
@@ -377,24 +578,340 @@ Sampling from a Multivariate Normal
 Q7
 \end_layout
 
+\begin_layout Paragraph
+First note that - 
+\begin_inset Formula $f^{-1}(y)=A^{-1}(y-b)$
+\end_inset
+
+.
+ Now:
+\begin_inset Formula 
+\[
+\frac{\partial}{\partial y}f^{-1}(y)=\frac{\partial}{\partial y}A^{-1}(y-b)=\frac{\partial}{\partial y}(y-b)\cdot\frac{\partial}{\partial(y-b)}A^{-1}(y-b)=1\cdot A^{-1}=A^{-1}
+\]
+
+\end_inset
+
+Also:
+\begin_inset Formula 
+\begin{align*}
+p_{x}(f^{-1}(y)) & =\frac{1}{\sqrt{\left(2\pi\right)^{d}\left|\Sigma\right|}}\exp\left(-\frac{1}{2}(f^{-1}(y)-\mu)^{T}\Sigma^{-1}(f^{-1}(y)-\mu)\right)\\
+= & \frac{1}{\sqrt{\left(2\pi\right)^{d}\left|\Sigma\right|}}\exp\left(-\frac{1}{2}(A^{-1}(y-b)-\mu)^{T}\Sigma^{-1}(A^{-1}(y-b)-\mu)\right)
+\end{align*}
+
+\end_inset
+
+So togther:
+\begin_inset Formula 
+\begin{align*}
+p_{y}(y) & =p_{x}(f^{-1}(y))\cdot\left|\frac{\partial}{\partial y}f^{-1}(y)\right|\\
+= & \frac{\left|A\right|}{\sqrt{\left(2\pi\right)^{d}\left|\Sigma\right|}}\exp\left(-\frac{1}{2}(A^{-1}(y-b)-\mu)^{T}\Sigma^{-1}(A^{-1}(y-b)-\mu)\right)
+\end{align*}
+
+\end_inset
+
+Denote 
+\begin_inset Formula $\Delta=-\frac{1}{2}(A^{-1}(y-b)-\mu)^{T}\Sigma^{-1}(A^{-1}(y-b)-\mu)$
+\end_inset
+
+.
+ As we saw in recitation, in order to show 
+\begin_inset Formula $y\wasypropto N(\mu_{y},\Sigma_{y})$
+\end_inset
+
+ it's enough to show ...
+ From the chain role:
+\begin_inset Formula 
+\[
+\frac{\partial}{\partial y}\Delta=\frac{\partial f^{-1}(y)}{\partial y}\cdot\frac{\partial}{\partial f^{-1}(y)}\Delta
+\]
+
+\end_inset
+
+ We know 
+\begin_inset Formula $\Delta$
+\end_inset
+
+ is the term for the Mahalanobis distance and so 
+\begin_inset Formula $\frac{\partial}{\partial f^{-1}(y)}\Delta=\Sigma^{-1}(f^{-1}(y)-\mu)$
+\end_inset
+
+ and we already saw 
+\begin_inset Formula $\frac{\partial}{\partial y}f^{-1}(y)=\left(A^{-1}\right)^{T}=\left(A^{T}\right)^{-1}$
+\end_inset
+
+.
+ Togther we get: 
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial}{\partial y}\Delta & =\left(A^{-1}\right)^{T}\Sigma^{-1}(f^{-1}(y)-\mu)=\left(A^{-1}\right)^{T}\Sigma^{-1}(A^{-1}(y-b)-\mu)\\
+= & \left(A^{-1}\right)^{T}\Sigma^{-1}A^{-1}(y-b-A\mu)
+\end{align*}
+
+\end_inset
+
+ So 
+\begin_inset Formula $\mu_{y}=b-A\mu$
+\end_inset
+
+ and 
+\begin_inset Formula $\Sigma_{y}=A\Sigma A^{T}$
+\end_inset
+
+.
+ Lastly, we want to make sure 
+\begin_inset Formula $\Sigma_{y}$
+\end_inset
+
+ is indeed a PD.
+ As 
+\begin_inset Formula $A$
+\end_inset
+
+ is invertible, it is infact a homomorphism from 
+\begin_inset Formula $\mathbb{R}^{n}$
+\end_inset
+
+ onto itself.
+ Specificly, A has a decomposition to eignvalues 
+\begin_inset Formula $\{a_{i}\}_{i=1}^{n}$
+\end_inset
+
+ and the eigenvalues of 
+\begin_inset Formula $\Sigma_{y}$
+\end_inset
+
+ are 
+\begin_inset Formula $\{a_{i}^{2}\lambda_{i}\}_{i=1}^{n}$
+\end_inset
+
+.
+ Since for each i 
+\begin_inset Formula $0<a_{i}^{2},\lambda_{i}$
+\end_inset
+
+ we get that 
+\begin_inset Formula $\Sigma_{y}$
+\end_inset
+
+ is indeed a PD matrix.
+ Hence we can write:
+\begin_inset Formula 
+\[
+\frac{\partial}{\partial y}\Delta=\Sigma_{y}(y-\mu_{y})
+\]
+
+\end_inset
+
+ And so we get that 
+\begin_inset Formula $y\sim N(\mu_{y},\Sigma_{y})$
+\end_inset
+
+ is a Gaussian.
+\end_layout
+
 \begin_layout Subsubsection
 Q8
+\end_layout
+
+\begin_layout Paragraph
+In the terms of Q7 - we have x as y 
+\begin_inset Formula $\sim N\left(\mu_{x},\Sigma_{x}\right)$
+\end_inset
+
+ , A is R for 
+\begin_inset Formula $\Sigma_{x}=RR^{T}$
+\end_inset
+
+, b as 
+\begin_inset Formula $\mu$
+\end_inset
+
+.
+ we get 
+\begin_inset Formula $\Sigma_{x}=R\Sigma_{z}R^{T}=RIR^{T}=\Sigma$
+\end_inset
+
+ and 
+\begin_inset Formula $\mu_{x}=b-A\mu_{z}=\mu-0$
+\end_inset
+
+.
+ If we pretend the double meaning of x,y,z here were not confusing, we get
+ that by using 
+\begin_inset Formula $f(z)=Rz+\mu$
+\end_inset
+
+ we're able to move from 
+\begin_inset Formula $N(0,I)$
+\end_inset
+
+ To 
+\begin_inset Formula $N(\mu,\Sigma)$
+\end_inset
+
+
+\begin_inset Formula $\blacksquare$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
 Product of Gaussians
 \end_layout
 
-\begin_layout Subsubsection
-Q9
+\begin_layout Paragraph
+\begin_inset Formula 
+\begin{align*}
+x & \sim N(\mu,\Sigma)\\
+\eta & \sim N(0,\Gamma)\\
+ & y=Hx+\eta
+\end{align*}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
-Q10
+Q9 
+\begin_inset Formula $p(y|x)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+For a fixed x, y is an affine transformation of 
+\begin_inset Formula $\eta$
+\end_inset
+
+.
+ Hence - 
+\begin_inset Formula $p(y|x)\sim N(Hx,\varGamma)$
+\end_inset
+
+.
+ 
 \end_layout
 
 \begin_layout Subsubsection
-Q11
+Q10 
+\begin_inset Formula $p(y)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+\begin_inset Formula 
+\begin{align*}
+p(x)p(y|x) & =\frac{1}{z_{1}}\exp\left[-\frac{1}{2}(x-\mu)^{T}\Sigma^{-1}(x-\mu)\right]\cdot\frac{1}{z_{2}}\exp\left[-\frac{1}{2}(y-Hx)^{T}\Gamma^{-1}(y-Hx)\right]\\
+= & \frac{1}{z_{1}z_{2}}\exp\left[-\frac{1}{2}\left((x-\mu)^{T}\Sigma^{-1}(x-\mu)+(y-Hx)^{T}\Gamma^{-1}(y-Hx)\right)\right]
+\end{align*}
+
+\end_inset
+
+Now we know 
+\begin_inset Formula $(x-\mu)^{T}\Sigma^{-1}(x-\mu)^{T}$
+\end_inset
+
+ is a quadratic form and hence contains quadratic terms of x.
+ Moreover, 
+\begin_inset Formula $(y-Hx)^{T}\Gamma^{-1}(y-Hx)^{T}$
+\end_inset
+
+ is also a quadratic form, this time of the linear combibation 
+\begin_inset Formula $y-Hx$
+\end_inset
+
+.
+ Using its linearty we'll get quadratic terms of x,y or their product.
+ As we saw in class, having quadratic terms of the vector 
+\begin_inset Formula $(x,y)$
+\end_inset
+
+ in the exponent is enough in order to determine 
+\begin_inset Formula $p(x,y)=p(x)p(y|x)$
+\end_inset
+
+ is also a Guassion.
+ In turn, this implies 
+\begin_inset Formula $p(y)$
+\end_inset
+
+ is also a Guassion.
+ This infact is enough to describe the distribution as 
+\begin_inset Formula $p(y)\sim N\left(E[y],var[y]\right)$
+\end_inset
+
+.
+ Remeber that in exercise 0 we showed 
+\begin_inset Formula $var(y)=H\Sigma H^{T}+\Gamma$
+\end_inset
+
+ and from form linearity we get 
+\begin_inset Formula $E[y]=HE[x]+E[\eta]=H\mu+0$
+\end_inset
+
+.
+ Thus we get:
+\begin_inset Formula 
+\[
+y\sim N\left(H\mu,H\Sigma H^{T}+\Gamma\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Q11 
+\begin_inset Formula $p(x|y)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Using Bayes' law we know 
+\begin_inset Formula $p(x|y)\propto p(x)p(y|x)$
+\end_inset
+
+.
+ As we already know this is a Gaussion, we can use the derivative trick
+ in order to bring the derivative of the term in the exponent the canonical
+ form and deduce the mean and variance.
+ Denote 
+\begin_inset Formula 
+\begin{align*}
+\Delta & =\frac{1}{2}\left((x-\mu)^{T}\Sigma^{-1}(x-\mu)+(y-Hx)^{T}\Gamma^{-1}(y-Hx)\right)
+\end{align*}
+
+\end_inset
+
+Than:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial\Delta}{\partial x} & =\Sigma^{-1}(x-\mu)+H^{T}\Gamma^{-1}(y-Hx)\\
+= & \Sigma^{-1}x-\Sigma^{-1}\mu+H^{T}\Gamma^{-1}y-H^{T}\Gamma^{-1}Hx\\
+= & \left(\Sigma^{-1}-H^{T}\Gamma^{-1}H\right)x-\Sigma^{-1}\mu+H^{T}\Gamma^{-1}y\\
+= & \left(\Sigma^{-1}-H^{T}\Gamma^{-1}H\right)\left(x-\frac{\Sigma^{-1}\mu+H^{T}\Gamma^{-1}y}{\left(\Sigma^{-1}-H^{T}\Gamma^{-1}H\right)}\right)
+\end{align*}
+
+\end_inset
+
+Hence:
+\begin_inset Formula 
+\[
+x\sim N\left[\frac{\Sigma^{-1}\mu+H^{T}\Gamma^{-1}y}{\left(\Sigma^{-1}-H^{T}\Gamma^{-1}H\right)},\left(\Sigma^{-1}-H^{T}\Gamma^{-1}H\right)^{-1}\right]
+\]
+
+\end_inset
+
+Q.E.D.
 \end_layout
 
 \end_body
