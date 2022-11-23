@@ -309,19 +309,152 @@ bais^{2}\left(\hat{\theta}\right)=\theta^{2}\left(a-1\right)^{2}
 
 And the variance is:
 \begin_inset Formula 
-\begin{align*}
-var\left[\hat{\theta}_{a}(D)\right] & =E_{D}\left[\left(\hat{\theta}_{a}(D)-E_{D}\left[\hat{\theta}_{a}(D)\right]\right)^{2}\right]\\
-= & E_{D}\left[\left(\frac{a}{N}\stackrel[i=1]{N}{\sum}y_{i}-a\theta\right)^{2}\right]\\
-= & E_{D}\left[a^{2}\left(\frac{1}{N}\stackrel[i=1]{N}{\sum}y_{i}-\theta\right)^{2}\right]????
-\end{align*}
+\[
+E_{D}\left[\left(\hat{\theta}_{a}(D)\right)^{2}\right]=E_{D}\left[\left(\frac{a}{N}\stackrel[i=1]{N}{\sum}y_{i}\right)^{2}\right]=\left(\frac{a}{N}\right)^{2}E_{D}\left[\left(\stackrel[i=1]{N}{\sum}y_{i}\right)^{2}\right]
+\]
 
 \end_inset
 
 
 \end_layout
 
+\begin_layout Paragraph
+\begin_inset Formula 
+\begin{align*}
+var\left[\hat{\theta}_{a}(D)\right] & =var\left[\frac{a}{N}\stackrel[i=1]{N}{\sum}y_{i}\right]=\left(\frac{a}{N}\right)^{2}var\left[\stackrel[i=1]{N}{\sum}y_{i}\right]=\left(\frac{a}{N}\right)^{2}\stackrel[i=1]{N}{\sum}var\left[y_{i}\right]
+\end{align*}
+
+\end_inset
+
+Where the last transition is due to the fact the 
+\begin_inset Formula $y_{i}$
+\end_inset
+
+'s ar disjoint.
+ Since 
+\begin_inset Formula $y_{i}\sim N\left(\theta,\sigma^{2}\right)$
+\end_inset
+
+ we get 
+\begin_inset Formula $var\left[y_{i}\right]=\sigma_{2}$
+\end_inset
+
+ For each i.
+ Hence:
+\begin_inset Formula 
+\[
+var\left[\hat{\theta}_{a}(D)\right]=\frac{a^{2}}{N^{2}}N\sigma^{2}=\frac{a^{2}\sigma^{2}}{N}
+\]
+
+\end_inset
+
+Now, using Q1:
+\begin_inset Formula 
+\begin{align*}
+\text{MSE}\left[\hat{\theta}\right] & =bais^{2}\left(\hat{\theta}\right)+var\left[\hat{\theta}\right]\\
+= & \theta^{2}\left(a-1\right)^{2}+\frac{a^{2}\sigma^{2}}{N}
+\end{align*}
+
+\end_inset
+
+As 
+\begin_inset Formula $\text{MSE}\left[\hat{\theta}\right]$
+\end_inset
+
+ depends on 
+\begin_inset Formula $a$
+\end_inset
+
+ we're left to determine which 
+\begin_inset Formula $a$
+\end_inset
+
+ is optimal, if any.
+ We look for the extrama:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial}{\partial a}\text{MSE}\left[\hat{\theta}\right] & =\frac{\partial}{\partial a}\theta^{2}\left(a-1\right)^{2}+\frac{\partial}{\partial a}\frac{a^{2}\sigma^{2}}{N}=\theta^{2}\frac{\partial}{\partial a}\left(a-1\right)^{2}+\frac{\sigma^{2}}{N}\frac{\partial}{\partial a}a^{2}\\
+= & \theta^{2}\cdot2\left(a-1\right)+\frac{\sigma^{2}}{N}\cdot2a=2a\theta^{2}-2\theta^{2}+\frac{2a\sigma^{2}}{N}=2a\left(\theta^{2}+\frac{\sigma^{2}}{N}\right)-2\theta^{2}
+\end{align*}
+
+\end_inset
+
+Now 
+\begin_inset Formula $\frac{\partial}{\partial a}\text{MSE}\left[\hat{\theta}\right]=0$
+\end_inset
+
+ iff 
+\begin_inset Formula 
+\[
+a^{MSE}=\frac{2\theta^{2}}{2\left(\theta^{2}+\frac{\sigma^{2}}{N}\right)}=\frac{\theta^{2}}{N\theta^{2}+\sigma^{2}}\cdot\frac{1}{\frac{1}{N}}=\frac{N\theta^{2}}{N\theta^{2}+\sigma^{2}}
+\]
+
+\end_inset
+
+Since 
+\begin_inset Formula $a^{MSE}$
+\end_inset
+
+ is a function of 
+\begin_inset Formula $\theta$
+\end_inset
+
+, we can't say a single value of a is globaly optimal.
+\end_layout
+
 \begin_layout Subsubsection
-Q3
+Q3 
+\begin_inset Formula $\text{BMSE}\left[\hat{\theta}\right]=\int p(\theta),\text{MSE}\left[\hat{\theta}\right]d\theta$
+\end_inset
+
+, 
+\begin_inset Formula $\theta\sim N\left(0,1\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Note 
+\begin_inset Formula 
+\[
+\text{BMSE}\left[\hat{\theta}\right]=E_{\theta}\left[\text{MSE}\left[\hat{\theta}\right]\right]=E_{\theta}\left[\theta^{2}\left(a-1\right)^{2}+\frac{a^{2}\sigma^{2}}{N}\right]=\left(a-1\right)^{2}E_{\theta}\left[\theta^{2}\right]+\frac{a^{2}\sigma^{2}}{N}
+\]
+
+\end_inset
+
+Also, as we can write 
+\begin_inset Formula $p(\theta)$
+\end_inset
+
+ explicitly and use Wolfram Alpha, we get - 
+\begin_inset Formula $E_{\theta}[\theta^{2}]=\int p(\theta)\theta^{2}d\theta=1$
+\end_inset
+
+, than:
+\begin_inset Formula 
+\[
+\text{BMSE}\left[\hat{\theta}\right]=\left(a-1\right)^{2}+\frac{a^{2}\sigma^{2}}{N}
+\]
+
+\end_inset
+
+Again, we look for the max by a:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial}{\partial a}\text{BMSE}\left[\hat{\theta}\right] & =\frac{\partial}{\partial a}\left(a-1\right)^{2}+\frac{\partial}{\partial a}\frac{a^{2}\sigma^{2}}{N}\\
+= & 2a-2+\frac{2a\sigma^{2}}{N}=2a\left(1-\frac{\sigma^{2}}{N}\right)-2\overset{?}{=}0\\
+\Longleftrightarrow & a^{MMSE}=\frac{1}{\left(1-\frac{\sigma^{2}}{N}\right)}=\frac{N}{\left(N-\sigma^{2}\right)}
+\end{align*}
+
+\end_inset
+
+Hence we can find an optimal a regardless of 
+\begin_inset Formula $\theta$
+\end_inset
+
+, i.e.
+ a globally optimal a.
 \end_layout
 
 \begin_layout Subsection
@@ -539,11 +672,10 @@ is a quadratic term of
  So:
 \begin_inset Formula 
 \begin{align*}
-\frac{\partial\Delta}{\partial\theta} & =\frac{1}{\sigma^{2}}\left(\theta-\mu\right)+\frac{1}{\lambda^{2}}\left(y-h\theta\right)\\
-= & \frac{\lambda^{2}\theta-\lambda^{2}\mu+\sigma^{2}y-\sigma^{2}h\theta}{\left(\sigma\lambda\right)^{2}}\\
-= & \frac{\left(\lambda^{2}-\sigma^{2}h\right)\theta-\left(\lambda^{2}\mu+\sigma^{2}y\right)}{\left(\sigma\lambda\right)^{2}}\cdot\frac{\left(\lambda^{2}-\sigma^{2}h\right)}{\left(\lambda^{2}-\sigma^{2}h\right)}\\
-= & \frac{\theta}{\left(\sigma\lambda\right)^{2}}\cdot\frac{\left(\lambda^{2}-\sigma^{2}h\right)}{1}-\frac{\left(\lambda^{2}\mu+\sigma^{2}y\right)}{\left(\sigma\lambda\right)^{2}}\cdot\frac{\left(\lambda^{2}-\sigma^{2}h\right)}{\left(\lambda^{2}-\sigma^{2}h\right)}\\
-= & \frac{\left(\lambda^{2}-\sigma^{2}h\right)}{\left(\sigma\lambda\right)^{2}}\left(\theta-\frac{\left(\lambda^{2}\mu+\sigma^{2}y\right)}{\left(\lambda^{2}-\sigma^{2}h\right)}\right)
+\frac{\partial\Delta}{\partial\theta} & =\frac{1}{\sigma^{2}}\left(\theta-\mu\right)-\frac{h}{\lambda^{2}}\left(y-h\theta\right)\\
+= & \frac{\lambda^{2}\theta-\lambda^{2}\mu-\sigma^{2}hy+\sigma^{2}h^{2}\theta}{\left(\sigma\lambda\right)^{2}}\\
+= & \frac{\left(\lambda^{2}+\sigma^{2}h^{2}\right)\theta-\lambda^{2}\mu-\sigma^{2}hy}{\left(\sigma\lambda\right)^{2}}\\
+= & \frac{\left(\lambda^{2}+\sigma^{2}h^{2}\right)}{\left(\sigma\lambda\right)^{2}}\left(\theta-\frac{\lambda^{2}\mu+\sigma^{2}hy}{\left(\lambda^{2}+\sigma^{2}h^{2}\right)}\right)
 \end{align*}
 
 \end_inset
@@ -551,7 +683,7 @@ is a quadratic term of
 Hence - 
 \begin_inset Formula 
 \[
-p(\theta|y)\sim N\left(\frac{\left(\lambda^{2}\mu+\sigma^{2}y\right)}{\left(\lambda^{2}-\sigma^{2}h\right)},\left(\frac{\left(\lambda^{2}-\sigma^{2}h\right)}{\left(\sigma\lambda\right)^{2}}\right)^{-2}\right)
+p(\theta|y)\sim N\left(\frac{\left(\lambda^{2}\mu+\sigma^{2}hy\right)}{\left(\lambda^{2}+\sigma^{2}h^{2}\right)},\left(\frac{\left(\lambda^{2}+\sigma^{2}h^{2}\right)}{\left(\sigma\lambda\right)^{2}}\right)^{-1}\right)
 \]
 
 \end_inset
@@ -895,10 +1027,10 @@ Using Bayes' law we know
 Than:
 \begin_inset Formula 
 \begin{align*}
-\frac{\partial\Delta}{\partial x} & =\Sigma^{-1}(x-\mu)+H^{T}\Gamma^{-1}(y-Hx)\\
-= & \Sigma^{-1}x-\Sigma^{-1}\mu+H^{T}\Gamma^{-1}y-H^{T}\Gamma^{-1}Hx\\
-= & \left(\Sigma^{-1}-H^{T}\Gamma^{-1}H\right)x-\Sigma^{-1}\mu+H^{T}\Gamma^{-1}y\\
-= & \left(\Sigma^{-1}-H^{T}\Gamma^{-1}H\right)\left(x-\frac{\Sigma^{-1}\mu+H^{T}\Gamma^{-1}y}{\left(\Sigma^{-1}-H^{T}\Gamma^{-1}H\right)}\right)
+\frac{\partial\Delta}{\partial x} & =\Sigma^{-1}(x-\mu)-H^{T}\Gamma^{-1}(y-Hx)\\
+= & \Sigma^{-1}x-\Sigma^{-1}\mu-H^{T}\Gamma^{-1}y+H^{T}\Gamma^{-1}Hx\\
+= & \left(\Sigma^{-1}+H^{T}\Gamma^{-1}H\right)x-\Sigma^{-1}\mu-H^{T}\Gamma^{-1}y\\
+= & \left(\Sigma^{-1}+H^{T}\Gamma^{-1}H\right)\left(x-\frac{\Sigma^{-1}\mu+H^{T}\Gamma^{-1}y}{\left(\Sigma^{-1}+H^{T}\Gamma^{-1}H\right)}\right)
 \end{align*}
 
 \end_inset
@@ -906,7 +1038,7 @@ Than:
 Hence:
 \begin_inset Formula 
 \[
-x\sim N\left[\frac{\Sigma^{-1}\mu+H^{T}\Gamma^{-1}y}{\left(\Sigma^{-1}-H^{T}\Gamma^{-1}H\right)},\left(\Sigma^{-1}-H^{T}\Gamma^{-1}H\right)^{-1}\right]
+x\sim N\left[\frac{\Sigma^{-1}\mu+H^{T}\Gamma^{-1}y}{\left(\Sigma^{-1}+H^{T}\Gamma^{-1}H\right)},\left(\Sigma^{-1}+H^{T}\Gamma^{-1}H\right)^{-1}\right]
 \]
 
 \end_inset
