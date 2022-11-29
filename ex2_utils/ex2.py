@@ -110,8 +110,9 @@ class BayesianLinearRegression:
         theta_cov_inv = np.linalg.pinv(self.theta_cov)
         cov_theta_D = np.linalg.pinv(theta_cov_inv + (1 / self.sig**2) * (H.T @ H))
         mu_theta_D = cov_theta_D @ (theta_cov_inv @ self.theta_mean + (1 / self.sig**2) * (H.T @ y))
-        self.mu_theta_D = mu_theta_D
+        self.mu_theta_D = mu_theta_D # AKA theta MMSE
         self.cov_theta_D = cov_theta_D
+        self.chol = np.linalg.cholesky(cov_theta_D)
 
         # # theta_cov_det = np.linalg.det(self.theta_cov)
         # # normslizer = 1 / np.sqrt(np.li)
@@ -144,7 +145,10 @@ class BayesianLinearRegression:
         :return: a numpy array with the standard deviations (same shape as X)
         """
         # <your code here>
-        return None
+        H = self.H(X)
+        std = np.sqrt(np.diagonal(H@self.cov_theta_D@H.T))
+
+        return std
 
     def posterior_sample(self, X: np.ndarray) -> np.ndarray:
         """
@@ -153,7 +157,11 @@ class BayesianLinearRegression:
         :return: the predictions for X
         """
         # <your code here>
-        return None
+        H = self.H(X)
+        rand_theta = self.mu_theta_D + \
+                self.chol@np.random.randn(self.chol.shape[-1]) 
+
+        return (H @ rand_theta)
 
 
 class LinearRegression:
