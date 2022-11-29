@@ -80,7 +80,23 @@ class BayesianLinearRegression:
         :param basis_functions:     a function that receives data points as inputs and returns a design matrix
         """
         # <your code here>
-        pass
+        self.theta_mean = theta_mean
+        self.theta_cov = theta_cov
+        self.sig = sig
+        self.basis_functions = basis_functions
+
+        # x is a vector in R_d
+        # h(x) = [h1(x),...,hn(x)] and foreach i, hi(x) is a function from R_d to R
+        # h.shape = (n,) though h doesn't really have shape as it's a function
+        self.h = lambda x: np.array(
+            [np.squeeze(h(x)) for h in basis_functions]
+        )
+        
+        # X is a matix in R_dxm such that it has m vectors in R_d (as x above)
+        # H(X) = [h(x1),...,h(xm)]^T foreach xi row of the matrix X
+        self.H = lambda X: np.apply_along_axis(self.h, 1, X)
+
+        return
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> 'BayesianLinearRegression':
         """
@@ -90,7 +106,17 @@ class BayesianLinearRegression:
         :return: the fitted model
         """
         # <your code here>
-        return self
+        H = self.H(X)
+        theta_cov_inv = np.linalg.pinv(self.theta_cov)
+        cov_theta_D = np.linalg.pinv(theta_cov_inv + (1 / self.sig**2) * (H.T @ H))
+        mu_theta_D = cov_theta_D @ (theta_cov_inv @ self.theta_mean + (1 / self.sig**2) * (H.T @ y))
+        self.mu_theta_D = mu_theta_D
+        self.cov_theta_D = cov_theta_D
+
+        # # theta_cov_det = np.linalg.det(self.theta_cov)
+        # # normslizer = 1 / np.sqrt(np.li)
+        # # pdf = np.exp()
+        return cov_theta_D, mu_theta_D
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         """
@@ -99,7 +125,7 @@ class BayesianLinearRegression:
         :return: the predictions for X
         """
         # <your code here>
-        return None
+        return self.H(X).dot(self.mu_theta_D)
 
     def fit_predict(self, X: np.ndarray, y: np.ndarray) -> np.ndarray:
         """
@@ -172,7 +198,10 @@ class LinearRegression:
         :return: the predictions for X
         """
         # <your code here> 
-        return self.H(X).dot(self.theta.T)
+        # H(X)*theta is a vector in which each element is 
+        # the prediction for the corresponding x in X, 
+        # i.e. evalute the function h(x) times the wieght given by theta 
+        return self.H(X).dot(self.theta)
 
     def fit_predict(self, X: np.ndarray, y: np.ndarray) -> np.ndarray:
         """
