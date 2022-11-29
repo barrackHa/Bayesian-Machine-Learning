@@ -143,7 +143,9 @@ class LinearRegression:
         # x is a vector in R_d
         # h(x) = [h1(x),...,hn(x)] and foreach i, hi(x) is a function from R_d to R
         # h.shape = (n,) though h doesn't really have shape as it's a function
-        self.h = lambda x: np.array([h(x) for h in basis_functions],dtype=x.dtype)
+        self.h = lambda x: np.array(
+            [np.squeeze(h(x)) for h in basis_functions]
+        )
         
         # X is a matix in R_dxm such that it has m vectors in R_d (as x above)
         # H(X) = [h(x1),...,h(xm)]^T foreach xi row of the matrix X
@@ -158,8 +160,8 @@ class LinearRegression:
         :return: the fitted model
         """
         # <your code here>
-        H = self.h(X).astype(float)
-        theta = np.linalg.inv(H.T @ H) @ H.T @ y
+        H = self.H(X)
+        theta = np.linalg.pinv(H.T @ H) @ H.T @ y
         self.theta = theta
         return theta
 
@@ -169,9 +171,8 @@ class LinearRegression:
         :param X: the samples to predict
         :return: the predictions for X
         """
-        # <your code here>
-
-        return [np.dot(self.theta , self.H(x)) for x in X]
+        # <your code here> 
+        return self.H(X).dot(self.theta.T)
 
     def fit_predict(self, X: np.ndarray, y: np.ndarray) -> np.ndarray:
         """
