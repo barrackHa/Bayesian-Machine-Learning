@@ -2,9 +2,6 @@ import pytest
 from ex2 import *
 from matplotlib import pyplot as plt
 
-def test_ex2():
-    assert True
-
 def test_LinearRegression():
     # test that the linear regression model works
     model = LinearRegression([lambda x: 1, lambda x: x])
@@ -88,7 +85,5 @@ def test_BayesianLinearRegression():
     ax.legend()    
     plt.show()
 
-
-    
 if __name__ == '__main__':
     pytest.main()

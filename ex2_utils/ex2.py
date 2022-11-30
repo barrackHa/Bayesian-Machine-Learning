@@ -6,10 +6,12 @@ from pathlib import Path
 
 def polynomial_basis_functions(degree: int) -> Callable:
     """
-    Create a function that calculates the polynomial basis functions up to (and including) a degree
+    Create a function that calculates the polynomial basis functions up to 
+    (and including) a degree
     :param degree: the maximal degree of the polynomial basis functions
-    :return: a function that receives as input an array of values X of length N and returns the design matrix of the
-             polynomial basis functions, a numpy array of shape [N, degree+1]
+    :return: a function that receives as input an array of values X of length N and 
+            returns the design matrix of the polynomial basis functions, 
+            a numpy array of shape [N, degree+1]
     """
     def pbf(x: np.ndarray):
         # <your code here>
