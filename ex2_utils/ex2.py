@@ -62,11 +62,14 @@ def learn_prior(hours: np.ndarray, temps: np.ndarray, basis_func: Callable) -> t
     """
     Learn a Gaussian prior using historic data
     :param hours: an array of vectors to be used as the 'X' data
-    :param temps: a matrix of average daily temperatures in November, as loaded from 'jerus_daytemps.npy', with shape
-                  [# years, # hours]
-    :param basis_func: a function that returns the design matrix of the basis functions to be used
-    :return: the mean and covariance of the learned covariance - the mean is an array with length dim while the
-             covariance is a matrix with shape [dim, dim], where dim is the number of basis functions used
+    :param temps: a matrix of average daily temperatures in November, 
+                  as loaded from 'jerus_daytemps.npy', with shape [# years, # hours]
+    :param basis_func: a function that returns the design matrix of the basis 
+                       functions to be used
+    :return: the mean and covariance of the learned covariance - 
+             the mean is an array with length dim while the
+             covariance is a matrix with shape [dim, dim], 
+             where dim is the number of basis functions used
     """
     thetas = []
     # iterate over all past years
@@ -186,18 +189,7 @@ class LinearRegression:
         :param basis_functions: a function that receives data points as inputs and returns a design matrix
         """
         # <your code here>
-        self.basis_functions = basis_functions
-        
-        # x is a vector in R_d
-        # h(x) = [h1(x),...,hn(x)] and foreach i, hi(x) is a function from R_d to R
-        # h.shape = (n,) though h doesn't really have shape as it's a function
-        self.h = lambda x: np.array(
-            [np.squeeze(h(x)) for h in basis_functions]
-        )
-        
-        # X is a matix in R_dxm such that it has m vectors in R_d (as x above)
-        # H(X) = [h(x1),...,h(xm)]^T foreach xi row of the matrix X
-        self.H = lambda X: np.apply_along_axis(self.h, 1, X)
+        self.H = self.basis_functions = basis_functions
         return 
 
     def fit(self, X: np.ndarray, y: np.ndarray) -> 'LinearRegression':
@@ -245,21 +237,38 @@ def main():
     test = nov16[len(nov16)//2:]
     test_hours = nov16_hours[len(nov16)//2:]
 
-    print(nov16[1], nov16.shape)
-    exit()
 
     # setup the model parameters
     degrees = [3, 7]
     # ----------------------------------------- Classical Linear Regression
     for d in degrees:
-        ln = LinearRegression(polynomial_basis_functions(d)).fit(train_hours, train)
+        ln = LinearRegression(polynomial_basis_functions(d))
+        ln.fit(train_hours, train)
 
         # print average squared error performance
-        print(f'Average squared error with LR and d={d} is {np.mean((test - ln.predict(test_hours))**2):.2f}')
+        print(train_hours, train_hours.shape)
+        print(test_hours, test_hours.shape)
+        pred = ln.predict(test_hours)
+        
+        avg_sq_err = np.mean((test - pred)**2)
+        print(f'Average squared error with LR and d={d} is {avg_sq_err:.2f}')
 
         # plot graphs for linear regression part
         # <your code here>
-
+        fig, ax = plt.subplots()
+        ax.scatter(train_hours, train, label='Train')
+        ax.scatter(test_hours, test, label='Test')
+        ax.scatter(test_hours, pred, label='Predictions')
+        xx = np.arange(0, 24.5, .05)
+        ax.plot(xx, ln.predict(xx), label='Linear Regression Model', alpha=1, lw=2, c='black')
+        ax.set_xlabel('Hours')
+        ax.set_ylabel('temperature [C]')
+        ax.set_title(f'Linear Regression Model\n Polynomial of degree {d}\n Average squared error: {avg_sq_err:.2f}')
+        ax.legend()
+        ax.grid()
+    
+    
+    exit()
     # ----------------------------------------- Bayesian Linear Regression
 
     # load the historic data
