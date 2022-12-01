@@ -116,6 +116,21 @@ def test_gaussian_basis_functions():
     assert H[0,3] == np.exp(np.power(1-3,2) / (-2 * np.power(beta,2)))
     assert H.shape == (N, centers.shape[0] + 1)
 
+def test_spline_basis_functions():
+    N = 5
+    x = 2*np.ones(N)
+    x[-1] = 8
+    knots = np.array([6,12,18])
+    H = spline_basis_functions(knots)
+    H = H(x)
+    assert H.shape == (N, knots.size + 4)
+    tester = np.array([1, 8, 64, 512, 8, 0, 0])
+    assert np.array_equal(H[-1], tester)
+    tester = np.array([1, 2, 4, 8, 0, 0, 0])
+    for i in range(N-1):
+        assert np.array_equal(H[i], tester)
+    assert np.array_equal(H[:, 0], np.ones(N))
+
     
 
 if __name__ == '__main__':

@@ -51,7 +51,10 @@ def spline_basis_functions(knots: np.ndarray) -> Callable:
     """
     def csbf(x: np.ndarray):
         # <your code here>
-        return None
+        prefix = np.array([x**i for i in range(0, 4)])
+        suffix = np.array([(x-xi) for xi in knots])
+        suffix = np.where(suffix < 0, 0, suffix**3)
+        return np.vstack((prefix, suffix)).T
     return csbf
 
 
