@@ -268,11 +268,10 @@ def main():
         ax.grid()
     
     
-    exit()
     # ----------------------------------------- Bayesian Linear Regression
 
     # load the historic data
-    temps = np.load('jerus_daytemps.npy').astype(np.float64)
+    temps = np.load(Path(__file__).parent / 'jerus_daytemps.npy').astype(np.float64)
     hours = np.array([2, 5, 8, 11, 14, 17, 20, 23]).astype(np.float64)
     x = np.arange(0, 24, .1)
 

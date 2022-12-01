@@ -4,12 +4,13 @@ from matplotlib import pyplot as plt
 
 def test_LinearRegression():
     # test that the linear regression model works
-    model = LinearRegression([lambda x: 1, lambda x: x])
-    X = np.array([[1], [2], [3], [4], [5], [6]])
-    y = np.array([1, 2, 3, 4, 5, 6])
+    deg = 1
+    model = LinearRegression(polynomial_basis_functions(deg))
+    X = np.arange(1,7)
+    y = np.array(X/deg)
 
-    assert np.array_equal(model.h(X[1]), np.array([1, 2]))
-    assert np.array_equal(model.H(X), np.array([[1, i] for i in range(1, 7)]))
+    H = model.H(X)
+    assert np.array_equal(H, np.array([[1, i] for i in range(1, 7)]))
     
     t = model.fit(X, y)
     assert np.allclose(t, np.array([0, 1]), atol=1e-5)
@@ -29,20 +30,22 @@ def test_LinearRegression():
     
 def test_deg2_LinearRegression():
     # test that the linear regression model works
-    model = LinearRegression([lambda x: 1, lambda x: x, lambda x: x**2])
-    X = np.array([[1], [2], [3], [4], [5]])
+    deg = 2
+    model = LinearRegression(polynomial_basis_functions(deg))
+    X = np.arange(1,6)
+    print(X)
     # y = x^2
-    y = np.array([1, 4, 9, 16, 25])
+    y = np.array((X/deg)**2)
+    H = model.H(X)
 
-    assert np.array_equal(model.h(X[1]), np.array([1, 2, 4]))
-    assert np.array_equal(model.H(X), np.array([[1, i, i*i] for i in range(1, 6)]))
+    assert np.array_equal(H, np.array([[1, i/deg, (i/deg)**2] for i in range(1, 6)]))
     
     t = model.fit(X, y)
     assert np.allclose(t, np.array([0, 0, 1]), atol=1e-5)
 
-    new_X = np.array([[-1], [-2], [-3], [-4]])
-    predictied = model.predict(new_X)
-    assert np.allclose(predictied, np.array([1, 4, 9, 16]), atol=1e-5)
+    test = np.array([-1, -2, -3, -4])
+    predictied = model.predict(test)
+    assert np.allclose(predictied, (test/deg)**2, atol=1e-5)
     
     # # Uncoment to plot and see results
     # fig, ax = plt.subplots()
@@ -131,7 +134,10 @@ def test_spline_basis_functions():
         assert np.array_equal(H[i], tester)
     assert np.array_equal(H[:, 0], np.ones(N))
 
-    
+def test_learn_prior():
+    # mu, cov = learn_prior(hours, temps, pbf)
+    pass
+
 
 if __name__ == '__main__':
     pytest.main()
