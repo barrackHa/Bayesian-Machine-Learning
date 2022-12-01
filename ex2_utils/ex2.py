@@ -29,23 +29,25 @@ def gaussian_basis_functions(centers: np.ndarray, beta: float) -> Callable:
             returns the design matrix of the Gaussian basis functions, 
             a numpy array of shape [N, len(centers)+1]
     """
-    print([c for c in centers])
     def gbf(x: np.ndarray):
         # <your code here>
-        exps = [
+        phi0 = np.ones_like(x)
+        phi = np.array([
             np.exp(np.power((x - c*np.ones_like(x)), 2) / (-2*np.power(beta, 2))) 
             for c in centers
-        ]
-        return np.array(exps)
+        ])
+        return np.vstack((phi0, phi)).T
     return gbf
 
 
 def spline_basis_functions(knots: np.ndarray) -> Callable:
     """
-    Create a function that calculates the cubic regression spline basis functions around a set of knots
+    Create a function that calculates the cubic regression spline 
+    basis functions around a set of knots
     :param knots: an array of knots that should be used by the spline
-    :return: a function that receives as input an array of values X of length N and returns the design matrix of the
-             cubic regression spline basis functions, a numpy array of shape [N, len(knots)+4]
+    :return: a function that receives as input an array of values X of length N 
+            and returns the design matrix of the cubic regression 
+            spline basis functions, a numpy array of shape [N, len(knots)+4]
     """
     def csbf(x: np.ndarray):
         # <your code here>

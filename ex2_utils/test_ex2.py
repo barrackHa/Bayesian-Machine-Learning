@@ -86,25 +86,35 @@ def test_BayesianLinearRegression():
     # plt.show()
 
 def test_polynomial_basis_functions():
-    deg = 2
+    deg, N = 2, 5
     H = polynomial_basis_functions(deg)
-    x = np.ones(3)
-    tester = np.array([[1, 0.5, 0.25]]*3)
-    assert np.array_equal(H(x), tester)
+    x = np.ones(N)
+    H = H(x)
+    tester = np.array([[1, 0.5, 0.25]]*N)
+    assert np.array_equal(H, tester)
+    assert np.array_equal(H[:, 0], np.ones(N))
+    assert H.shape == (N, deg+1)
 
 def test_gaussian_basis_functions():
-    x = np.ones(3)
+    N = 5
+    x = np.ones(N)
     beta = 2
     centers = np.array([1,2,3])
     H = gaussian_basis_functions(centers=centers, beta=beta)
     H = H(centers)
-    print(H)
-    assert np.array_equal(H, H.T)
-    assert np.array_equal(np.diag(H), np.ones_like(centers))
-    assert H[0,1] == np.exp(np.power(1-2,2) / (-2 * np.power(beta,2)))
-    assert H[0,2] == np.exp(np.power(1-3,2) / (-2 * np.power(beta,2)))
-    assert H[2,0] == np.exp(np.power(3-1,2) / (-2 * np.power(beta,2)))
 
+    assert np.array_equal(H[:, 1:], H[:, 1:].T)
+    assert np.array_equal(np.diag(H[:, 1:]), np.ones_like(centers))
+    assert np.array_equal(H[:, 0], np.ones_like(centers))
+    assert H[0,2] == np.exp(np.power(1-2,2) / (-2 * np.power(beta,2)))
+    assert H[0,3] == np.exp(np.power(1-3,2) / (-2 * np.power(beta,2)))
+    assert H.shape == (centers.shape[0], centers.shape[0] + 1)
+
+    H = gaussian_basis_functions(centers=centers, beta=beta)
+    H = H(x)
+    assert H[0,2] == np.exp(np.power(1-2,2) / (-2 * np.power(beta,2)))
+    assert H[0,3] == np.exp(np.power(1-3,2) / (-2 * np.power(beta,2)))
+    assert H.shape == (N, centers.shape[0] + 1)
 
     
 
