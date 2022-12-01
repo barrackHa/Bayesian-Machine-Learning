@@ -15,7 +15,8 @@ def polynomial_basis_functions(degree: int) -> Callable:
     """
     def pbf(x: np.ndarray):
         # <your code here>
-        return None
+        H = [np.power((x/degree), i) for i in range(0, degree+1)]
+        return np.array(H).T
     return pbf
 
 
@@ -24,12 +25,18 @@ def gaussian_basis_functions(centers: np.ndarray, beta: float) -> Callable:
     Create a function that calculates Gaussian basis functions around a set of centers
     :param centers: an array of centers used by the basis functions
     :param beta: a float depicting the lengthscale of the Gaussians
-    :return: a function that receives as input an array of values X of length N and returns the design matrix of the
-             Gaussian basis functions, a numpy array of shape [N, len(centers)+1]
+    :return: a function that receives as input an array of values X of length N and 
+            returns the design matrix of the Gaussian basis functions, 
+            a numpy array of shape [N, len(centers)+1]
     """
+    print([c for c in centers])
     def gbf(x: np.ndarray):
         # <your code here>
-        return None
+        exps = [
+            np.exp(np.power((x - c*np.ones_like(x)), 2) / (-2*np.power(beta, 2))) 
+            for c in centers
+        ]
+        return np.array(exps)
     return gbf
 
 
@@ -233,9 +240,11 @@ def main():
     test = nov16[len(nov16)//2:]
     test_hours = nov16_hours[len(nov16)//2:]
 
+    print(nov16[1], nov16.shape)
+    exit()
+
     # setup the model parameters
     degrees = [3, 7]
-
     # ----------------------------------------- Classical Linear Regression
     for d in degrees:
         ln = LinearRegression(polynomial_basis_functions(d)).fit(train_hours, train)

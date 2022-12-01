@@ -83,7 +83,30 @@ def test_BayesianLinearRegression():
         rand = model.posterior_sample(new_X) 
         ax.plot(xx, rand, alpha=.5)
     ax.legend()    
-    plt.show()
+    # plt.show()
+
+def test_polynomial_basis_functions():
+    deg = 2
+    H = polynomial_basis_functions(deg)
+    x = np.ones(3)
+    tester = np.array([[1, 0.5, 0.25]]*3)
+    assert np.array_equal(H(x), tester)
+
+def test_gaussian_basis_functions():
+    x = np.ones(3)
+    beta = 2
+    centers = np.array([1,2,3])
+    H = gaussian_basis_functions(centers=centers, beta=beta)
+    H = H(centers)
+    print(H)
+    assert np.array_equal(H, H.T)
+    assert np.array_equal(np.diag(H), np.ones_like(centers))
+    assert H[0,1] == np.exp(np.power(1-2,2) / (-2 * np.power(beta,2)))
+    assert H[0,2] == np.exp(np.power(1-3,2) / (-2 * np.power(beta,2)))
+    assert H[2,0] == np.exp(np.power(3-1,2) / (-2 * np.power(beta,2)))
+
+
+    
 
 if __name__ == '__main__':
     pytest.main()
