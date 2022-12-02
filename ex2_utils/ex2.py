@@ -296,7 +296,7 @@ def add_filling_and_samples(
     return ax
 
 
-def main():
+def main(show=False):
     # load the data for November 16 2020
     nov16 = np.load(Path(__file__).parent / 'nov162020.npy')
     nov16_hours = np.arange(0, 24, .5)
@@ -448,7 +448,6 @@ def main():
         std = blr.predict_std(x)
         ax = add_filling_and_samples(ax, x, model, std, blr.posterior_sample)
 
-    plt.show()
 
     # ---------------------- cubic regression splines
     for ind, k in enumerate(knots):
@@ -457,12 +456,50 @@ def main():
 
         blr = BayesianLinearRegression(mu, cov, sigma, spline)
 
+        blr_cov_theta_D, blr_mu_theta_D = blr.fit(train_hours, train)
+        pred_post = blr.predict(test_hours)
+        pred_prior = blr.prior_predict(test_hours)
+        avg_sq_err = np.mean((test - pred_post)**2)
+        basis_type = f'K_{ind+1} Cubic Regression Splines'
+        print(f'Average squared error with Bayesian Linear Regression Model {basis_type} is {avg_sq_err:.2f}')
+
         # plot prior graphs
         # <your code here>
+        fig, ax = plt.subplots()
+        
+        fig.suptitle(f'Bayesian Linear Regression Model\n{basis_type}')
+        
+        model_lbl = f'Prior'
+        ax_title = f'Prior Graph'
+        model = blr.prior_predict(x)
+        ax = plot_results(
+            ax, train_hours, train, x, model, model_lbl, 
+            test_hours, test, pred_prior, ax_title
+        )
+
+        std = blr.prior_std(x)
+        ax = add_filling_and_samples(ax, x, model, std, blr.praior_sample)
 
         # plot posterior graphs
         # <your code here>
+        fig, ax = plt.subplots()
+        fig.suptitle(f'Bayesian Linear Regression Model\n{basis_type}')
+        
+        model_lbl = f'Postior'
+        ax_title = f'Postior Graph\n'
+        ax_title += f'Average squared error with BLR and {basis_type} is {avg_sq_err:.2f}'
+        model = blr.predict(x)
+        ax = plot_results(
+            ax, train_hours, train, x, model, model_lbl, 
+            test_hours, test, pred_post, ax_title
+        )
+
+        std = blr.predict_std(x)
+        ax = add_filling_and_samples(ax, x, model, std, blr.posterior_sample)
+
+    if show:
+        plt.show()
 
 
 if __name__ == '__main__':
-    main()
+    main(show=False)
