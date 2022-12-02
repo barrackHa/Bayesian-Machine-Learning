@@ -341,14 +341,14 @@ def main():
     x = np.arange(0, 24, .1)
 
     # setup the model parameters
-    sigma = 0.25
+    sigma = np.sqrt(0.25)
     degrees = [3, 7]  # polynomial basis functions degrees
-    beta = 2.5  # lengthscale for Gaussian basis functions
+    beta = 3  # lengthscale for Gaussian basis functions
 
     # sets of centers S_1, S_2, and S_3
     centers = [np.array([6, 12, 18]),
                np.array([4, 8, 12, 16, 20]),
-               np.array([3, 6, 9, 12, 15, 18, 21])]
+               np.array([2, 4, 8, 12, 16, 20, 22])]
 
     # sets of knots K_1, K_2 and K_3 for the regression splines
     knots = [np.array([12]),
@@ -373,7 +373,7 @@ def main():
         fig.suptitle(f'Bayesian Linear Regression Model\nDegree {deg} Polynomial\n ')
         
         model_lbl = f'Prior'
-        ax_title = f'Prior'
+        ax_title = f'Prior Graph'
         model = blr.prior_predict(x)
         ax = plot_results(
             ax, train_hours, train, x, model, model_lbl, 
@@ -389,7 +389,7 @@ def main():
         fig.suptitle(f'Bayesian Linear Regression Model\nDegree {deg} Polynomial\n ')
         
         model_lbl = f'Postior'
-        ax_title = f'Postior\n'
+        ax_title = f'Postior Graph\n'
         ax_title += f'Average squared error with BLR and d={d} is {avg_sq_err:.2f}'
         model = blr.predict(x)
         ax = plot_results(
@@ -400,8 +400,6 @@ def main():
         std = blr.predict_std(x)
         ax = add_filling_and_samples(ax, x, model, std, blr.posterior_sample)
 
-    plt.show()         
-    exit()
     # ---------------------- Gaussian basis functions
     for ind, c in enumerate(centers):
         rbf = gaussian_basis_functions(c, beta)
@@ -409,11 +407,48 @@ def main():
 
         blr = BayesianLinearRegression(mu, cov, sigma, rbf)
 
+        blr_cov_theta_D, blr_mu_theta_D = blr.fit(train_hours, train)
+        pred_post = blr.predict(test_hours)
+        pred_prior = blr.prior_predict(test_hours)
+        avg_sq_err = np.mean((test - pred_post)**2)
+        basis_type = f'S_{ind+1} Gaussian basis functions (Beta={beta})'
+        print(f'Average squared error with Bayesian Linear Regression Model {basis_type} is {avg_sq_err:.2f}')
+
         # plot prior graphs
         # <your code here>
+        fig, ax = plt.subplots()
+        
+        fig.suptitle(f'Bayesian Linear Regression Model\n{basis_type}')
+        
+        model_lbl = f'Prior'
+        ax_title = f'Prior Graph'
+        model = blr.prior_predict(x)
+        ax = plot_results(
+            ax, train_hours, train, x, model, model_lbl, 
+            test_hours, test, pred_prior, ax_title
+        )
+
+        std = blr.prior_std(x)
+        ax = add_filling_and_samples(ax, x, model, std, blr.praior_sample)
 
         # plot posterior graphs
         # <your code here>
+        fig, ax = plt.subplots()
+        fig.suptitle(f'Bayesian Linear Regression Model\n{basis_type}')
+        
+        model_lbl = f'Postior'
+        ax_title = f'Postior Graph\n'
+        ax_title += f'Average squared error with BLR and {basis_type} is {avg_sq_err:.2f}'
+        model = blr.predict(x)
+        ax = plot_results(
+            ax, train_hours, train, x, model, model_lbl, 
+            test_hours, test, pred_post, ax_title
+        )
+
+        std = blr.predict_std(x)
+        ax = add_filling_and_samples(ax, x, model, std, blr.posterior_sample)
+
+    plt.show()
 
     # ---------------------- cubic regression splines
     for ind, k in enumerate(knots):
