@@ -57,13 +57,14 @@ def test_deg2_LinearRegression():
     # plt.show()
 
 def test_BayesianLinearRegression():
-    baseis_funcs = [lambda x: 1, lambda x: x]
+    deg = 1
+    baseis_funcs = polynomial_basis_functions(deg)
     theta_mean = np.array([0])
-    theta_cov = np.array([[1]]) 
+    theta_cov = np.array([1]) 
     sig = 3
     model = BayesianLinearRegression(theta_mean, theta_cov, sig, baseis_funcs)
-    X = np.array([[1], [2], [3], [4], [5], [6]])
-    y = np.array([1, 2, 3, 4, 5, 6])
+    X = np.arange(1,7)
+    y = np.arange(1,7)
 
     S, mu = model.fit(X, y)
     # print(S, S.shape)
@@ -71,19 +72,19 @@ def test_BayesianLinearRegression():
     test = model.predict(X)
     assert np.allclose(test, y, atol=np.sqrt(sig))    
 
-    fig, ax = plt.subplots()
+    _, ax = plt.subplots()
 
     ax.scatter(x=X, y=y, s=20, marker='o', c='r')
     ax.plot(X, test, color='b', lw=2, label='orig')
     xx = np.arange(-6, 8, .05)
-    new_X = xx.reshape((xx.size, 1))
-    mean = model.predict(new_X)
+    # new_X = xx.reshape((xx.size, 1))
+    mean = model.predict(xx)
     ax.plot(xx, mean, 'k', lw=3, label='mean')
-    std = model.predict_std(new_X)
+    std = model.predict_std(xx)
     ax.fill_between(xx, mean-std, mean+std, alpha=.5, label='confidence interval')
     
     for _ in range(4):
-        rand = model.posterior_sample(new_X) 
+        rand = model.posterior_sample(xx) 
         ax.plot(xx, rand, alpha=.5)
     ax.legend()    
     # plt.show()
@@ -135,8 +136,25 @@ def test_spline_basis_functions():
     assert np.array_equal(H[:, 0], np.ones(N))
 
 def test_learn_prior():
-    # mu, cov = learn_prior(hours, temps, pbf)
-    pass
+    deg = 1
+    pbf = polynomial_basis_functions(1)
+    temps = np.load(Path(__file__).parent / 'jerus_daytemps.npy').astype(np.float64)
+    hours = np.array([2, 5, 8, 11, 14, 17, 20, 23]).astype(np.float64)
+    x = np.arange(0, 24, .1)
+    tmp = np.sum(temps, axis=0) / temps.shape[0]
+    print(temps[1], temps.shape, tmp.shape, hours.shape)
+    fig, ax = plt.subplots()
+    variance = np.var(temps, axis=0)
+    ax.bar(hours, tmp, yerr=variance)
+    ax.set_xticks(hours)
+    mu, var = np.mean(tmp), np.var(tmp)
+    ax.set_title('Mean: {:.2f}, Variance: {:.2f}'.format(mu, var))
+    # plt.show()
+    
+    mu, cov = learn_prior(hours, temps, pbf)
+    print(mu.shape, cov.shape)
+    # assert False
+
 
 
 if __name__ == '__main__':

@@ -74,9 +74,10 @@ def learn_prior(hours: np.ndarray, temps: np.ndarray, basis_func: Callable) -> t
     thetas = []
     # iterate over all past years
     for i, t in enumerate(temps):
-        ln = LinearRegression(basis_func).fit(hours, t)
+        ln = LinearRegression(basis_func)
+        theta = ln.fit(hours, t)
         # todo <your code here>
-        thetas.append(None)  # append learned parameters here
+        thetas.append(theta)  # append learned parameters here
 
     thetas = np.array(thetas)
 
@@ -100,18 +101,7 @@ class BayesianLinearRegression:
         self.theta_mean = theta_mean
         self.theta_cov = theta_cov
         self.sig = sig
-        self.basis_functions = basis_functions
-
-        # x is a vector in R_d
-        # h(x) = [h1(x),...,hn(x)] and foreach i, hi(x) is a function from R_d to R
-        # h.shape = (n,) though h doesn't really have shape as it's a function
-        self.h = lambda x: np.array(
-            [np.squeeze(h(x)) for h in basis_functions]
-        )
-        
-        # X is a matix in R_dxm such that it has m vectors in R_d (as x above)
-        # H(X) = [h(x1),...,h(xm)]^T foreach xi row of the matrix X
-        self.H = lambda X: np.apply_along_axis(self.h, 1, X)
+        self.H = self.basis_functions = basis_functions
 
         return
 
@@ -124,16 +114,21 @@ class BayesianLinearRegression:
         """
         # <your code here>
         H = self.H(X)
-        theta_cov_inv = np.linalg.pinv(self.theta_cov)
-        cov_theta_D = np.linalg.pinv(theta_cov_inv + (1 / self.sig**2) * (H.T @ H))
-        mu_theta_D = cov_theta_D @ (theta_cov_inv @ self.theta_mean + (1 / self.sig**2) * (H.T @ y))
+
+        # Using Woodbury identity from Rec4
+        M_inverse = np.linalg.pinv(self.sig**2 * np.eye(H.shape[0]) + H @ self.theta_cov @ H.T)
+         
+        mu_theta_D =  self.theta_cov @ H.T @ M_inverse
+        mu_theta_D = mu_theta_D @ (y - H @ self.theta_mean)
+        mu_theta_D += self.theta_mean
+
+        cov_theta_D = self.theta_cov - \
+                    self.theta_cov @ H.T @ M_inverse @ H @ self.theta_cov
+
         self.mu_theta_D = mu_theta_D # AKA theta MMSE
         self.cov_theta_D = cov_theta_D
         self.chol = np.linalg.cholesky(cov_theta_D)
 
-        # # theta_cov_det = np.linalg.det(self.theta_cov)
-        # # normslizer = 1 / np.sqrt(np.li)
-        # # pdf = np.exp()
         return cov_theta_D, mu_theta_D
 
     def predict(self, X: np.ndarray) -> np.ndarray:
@@ -144,6 +139,14 @@ class BayesianLinearRegression:
         """
         # <your code here>
         return self.H(X).dot(self.mu_theta_D)
+
+    def prior_predict(self, X: np.ndarray) -> np.ndarray:
+        """
+        Predicts the regression values of X using the prior
+        :param X: the samples to predict
+        :return: the predictions for X
+        """
+        return self.H(X).dot(self.theta_mean)
 
     def fit_predict(self, X: np.ndarray, y: np.ndarray) -> np.ndarray:
         """
@@ -227,6 +230,31 @@ class LinearRegression:
         self.fit(X, y)
         return self.predict(X)
 
+def plot_results(
+    ax: plt.axes, train_hours: np.ndarray, train: np.ndarray, 
+    x: np.ndarray, model: np.ndarray, model_lbl: str,
+    test_hours: np.ndarray, test: np.ndarray, pred: np.ndarray,
+    ax_title: str
+    ):
+    """
+    Plot the results of the regression
+    """
+
+    # ax.plot(train_hours, train, 'b.', label='train')
+    ax.scatter(train_hours, train, label='Train')
+    ax.scatter(test_hours, test, label='Test')
+    ax.scatter(test_hours, pred, label='Predictions')
+    ax.plot(x, model, label=model_lbl, alpha=1, lw=2, c='black')
+    ax.set_xlabel('Hours')
+    ax.set_ylabel('temperature [C]')
+    ax.set_title(f'{ax_title}')
+    
+    ax.legend()
+    ax.grid()
+
+    return ax
+    
+
 
 def main():
     # load the data for November 16 2020
@@ -240,14 +268,13 @@ def main():
 
     # setup the model parameters
     degrees = [3, 7]
+    x = np.arange(0, 24, .1)
     # ----------------------------------------- Classical Linear Regression
     for d in degrees:
         ln = LinearRegression(polynomial_basis_functions(d))
         ln.fit(train_hours, train)
 
         # print average squared error performance
-        print(train_hours, train_hours.shape)
-        print(test_hours, test_hours.shape)
         pred = ln.predict(test_hours)
         
         avg_sq_err = np.mean((test - pred)**2)
@@ -255,18 +282,16 @@ def main():
 
         # plot graphs for linear regression part
         # <your code here>
+        model = ln.predict(x)
+        model_lbl = f'Linear Regression Model of degree {d}'
         fig, ax = plt.subplots()
-        ax.scatter(train_hours, train, label='Train')
-        ax.scatter(test_hours, test, label='Test')
-        ax.scatter(test_hours, pred, label='Predictions')
-        xx = np.arange(0, 24.5, .05)
-        ax.plot(xx, ln.predict(xx), label='Linear Regression Model', alpha=1, lw=2, c='black')
-        ax.set_xlabel('Hours')
-        ax.set_ylabel('temperature [C]')
-        ax.set_title(f'Linear Regression Model\n Polynomial of degree {d}\n Average squared error: {avg_sq_err:.2f}')
-        ax.legend()
-        ax.grid()
-    
+        fig.suptitle(f'Linear Regression Model\n Polynomial of degree {d}')
+        ax_title = f'Average squared error with LR and d={d} is {avg_sq_err:.2f}'
+        ax = plot_results(
+            ax, train_hours, train, x, model, model_lbl, 
+            test_hours, test, pred, ax_title
+        )
+
     
     # ----------------------------------------- Bayesian Linear Regression
 
@@ -291,18 +316,46 @@ def main():
              np.array([6, 12, 18])]
 
     # ---------------------- polynomial basis functions
-    for deg in degrees:
+    for i, deg in enumerate(degrees):
         pbf = polynomial_basis_functions(deg)
         mu, cov = learn_prior(hours, temps, pbf)
 
         blr = BayesianLinearRegression(mu, cov, sigma, pbf)
+        blr_cov_theta_D, blr_mu_theta_D = blr.fit(train_hours, train)
+        pred_post = blr.predict(test_hours)
+        pred_prior = blr.prior_predict(test_hours)
+        avg_sq_err = np.mean((test - pred_post)**2)
+        print(f'Average squared error with Bayesian Linear Regression Model and d={d} is {avg_sq_err:.2f}')
 
         # plot prior graphs
         # <your code here>
+        fig, ax = plt.subplots()
+        fig.suptitle(f'Bayesian Linear Regression Model\nDegree {deg} Polynomial\n ')
+        
+        model_lbl = f'Prior'
+        ax_title = f'Prior'
+        model = blr.prior_predict(x)
+        ax = plot_results(
+            ax, train_hours, train, x, model, model_lbl, 
+            test_hours, test, pred_prior, ax_title
+        )
 
         # plot posterior graphs
         # <your code here>
+        fig, ax = plt.subplots()
+        fig.suptitle(f'Bayesian Linear Regression Model\nDegree {deg} Polynomial\n ')
+        
+        model_lbl = f'Postior'
+        ax_title = f'Postior\n'
+        ax_title += f'Average squared error with BLR and d={d} is {avg_sq_err:.2f}'
+        model = blr.predict(x)
+        ax = plot_results(
+            ax, train_hours, train, x, model, model_lbl, 
+            test_hours, test, pred_post, ax_title
+        )
 
+    plt.show()         
+    exit()
     # ---------------------- Gaussian basis functions
     for ind, c in enumerate(centers):
         rbf = gaussian_basis_functions(c, beta)
