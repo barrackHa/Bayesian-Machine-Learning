@@ -170,6 +170,17 @@ class BayesianLinearRegression:
 
         return std
 
+    def prior_std(self, X: np.ndarray) -> np.ndarray:
+        """
+        Calculates the Priors's standard deviation around the mean prediction for the values of X
+        :param X: the samples around which to calculate the standard deviation
+        :return: a numpy array with the standard deviations (same shape as X)
+        """
+        H = self.H(X)
+        std = np.sqrt(np.diagonal(H@self.theta_cov@H.T))
+
+        return std
+
     def posterior_sample(self, X: np.ndarray) -> np.ndarray:
         """
         Predicts the regression values of X with the trained model and sampling from the posterior
@@ -178,8 +189,26 @@ class BayesianLinearRegression:
         """
         # <your code here>
         H = self.H(X)
+        # print(self.chol)
+        # rand_theta = np.random.normal(self.theta_mean, self.chol)
         rand_theta = self.mu_theta_D + \
                 self.chol@np.random.randn(self.chol.shape[-1]) 
+
+        return (H @ rand_theta)
+
+    def praior_sample(self, X: np.ndarray) -> np.ndarray:
+        """
+        Predicts the regression values of X with the trained model and sampling from the prior
+        :param X: the samples to predict
+        :return: the predictions for X
+        """
+        # <your code here>
+        H = self.H(X)
+        chol = np.linalg.cholesky(self.theta_cov)
+        # print(chol)
+        # rand_theta = np.random.normal(self.theta_mean, chol)
+        rand_theta = self.theta_mean + \
+                chol@np.random.randn(chol.shape[-1]) 
 
         return (H @ rand_theta)
 
@@ -240,7 +269,6 @@ def plot_results(
     Plot the results of the regression
     """
 
-    # ax.plot(train_hours, train, 'b.', label='train')
     ax.scatter(train_hours, train, label='Train')
     ax.scatter(test_hours, test, label='Test')
     ax.scatter(test_hours, pred, label='Predictions')
@@ -254,6 +282,18 @@ def plot_results(
 
     return ax
     
+def add_filling_and_samples(
+    ax: plt.axes, x: np.ndarray, model: np.ndarray, 
+    std: np.ndarray, samples_func: np.ndarray
+    ):
+    ax.fill_between(x, model-std, model+std, alpha=.5, label='confidence interval', color='#A4DBE8')
+    ax.legend()
+
+    for i in range(5):
+        tmp = samples_func(x)
+        ax.plot(x, tmp, alpha=.5, label=f'Sample #{i}')
+    
+    return ax
 
 
 def main():
@@ -340,6 +380,9 @@ def main():
             test_hours, test, pred_prior, ax_title
         )
 
+        std = blr.prior_std(x)
+        ax = add_filling_and_samples(ax, x, model, std, blr.praior_sample)
+
         # plot posterior graphs
         # <your code here>
         fig, ax = plt.subplots()
@@ -353,6 +396,9 @@ def main():
             ax, train_hours, train, x, model, model_lbl, 
             test_hours, test, pred_post, ax_title
         )
+
+        std = blr.predict_std(x)
+        ax = add_filling_and_samples(ax, x, model, std, blr.posterior_sample)
 
     plt.show()         
     exit()
