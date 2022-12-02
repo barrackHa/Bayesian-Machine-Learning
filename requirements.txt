@@ -1,0 +1,4 @@
+pytest
+scikit-image
+scipy
+numpy
