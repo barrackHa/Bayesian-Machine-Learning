@@ -116,7 +116,10 @@ class BayesianLinearRegression:
         H = self.H(X)
 
         # Using Woodbury identity from Rec4
-        M_inverse = np.linalg.pinv(self.sig**2 * np.eye(H.shape[0]) + H @ self.theta_cov @ H.T)
+        M_inverse = np.linalg.pinv(
+            self.sig**2 * np.eye(H.shape[0]) + \
+            H @ self.theta_cov @ H.T
+        )
          
         mu_theta_D =  self.theta_cov @ H.T @ M_inverse
         mu_theta_D = mu_theta_D @ (y - H @ self.theta_mean)
@@ -191,6 +194,9 @@ class BayesianLinearRegression:
         H = self.H(X)
         # print(self.chol)
         # rand_theta = np.random.normal(self.theta_mean, self.chol)
+        # print(self.cov_theta_D)
+        # print(np.linalg.eigvals(self.cov_theta_D))
+        # rand_theta = np.random.normal(self.mu_theta_D, self.cov_theta_D)
         rand_theta = self.mu_theta_D + \
                 self.chol@np.random.randn(self.chol.shape[-1]) 
 

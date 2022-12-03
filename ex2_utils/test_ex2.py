@@ -59,17 +59,16 @@ def test_deg2_LinearRegression():
 def test_BayesianLinearRegression():
     deg = 1
     baseis_funcs = polynomial_basis_functions(deg)
-    theta_mean = np.array([0])
-    theta_cov = np.array([1]) 
-    sig = 3
-    model = BayesianLinearRegression(theta_mean, theta_cov, sig, baseis_funcs)
+    theta_mean = np.array([0,1])
+    # theta_cov = np.array([1]) 
+    theta_cov = np.eye(2)
+    sig = 1
+    blr = BayesianLinearRegression(theta_mean, theta_cov, sig, baseis_funcs)
     X = np.arange(1,7)
     y = np.arange(1,7)
 
-    S, mu = model.fit(X, y)
-    # print(S, S.shape)
-    # print(mu, mu.shape)
-    test = model.predict(X)
+    S, mu = blr.fit(X, y)
+    test = blr.predict(X)
     assert np.allclose(test, y, atol=np.sqrt(sig))    
 
     _, ax = plt.subplots()
@@ -77,14 +76,14 @@ def test_BayesianLinearRegression():
     ax.scatter(x=X, y=y, s=20, marker='o', c='r')
     ax.plot(X, test, color='b', lw=2, label='orig')
     xx = np.arange(-6, 8, .05)
-    # new_X = xx.reshape((xx.size, 1))
-    mean = model.predict(xx)
+    ax.set_title(f'Bayesian Linear Regression\nmu={mu}\nS={S}')
+    mean = blr.predict(xx)
     ax.plot(xx, mean, 'k', lw=3, label='mean')
-    std = model.predict_std(xx)
+    std = blr.predict_std(xx)
     ax.fill_between(xx, mean-std, mean+std, alpha=.5, label='confidence interval')
     
     for _ in range(4):
-        rand = model.posterior_sample(xx) 
+        rand = blr.posterior_sample(xx) 
         ax.plot(xx, rand, alpha=.5)
     ax.legend()    
     # plt.show()
