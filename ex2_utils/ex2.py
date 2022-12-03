@@ -75,9 +75,9 @@ def learn_prior(hours: np.ndarray, temps: np.ndarray, basis_func: Callable) -> t
     # iterate over all past years
     for i, t in enumerate(temps):
         ln = LinearRegression(basis_func)
-        theta = ln.fit(hours, t)
+        ln.fit(hours, t)
         # todo <your code here>
-        thetas.append(theta)  # append learned parameters here
+        thetas.append(ln.theta)  # append learned parameters here
 
     thetas = np.array(thetas)
 
@@ -132,7 +132,7 @@ class BayesianLinearRegression:
         self.cov_theta_D = cov_theta_D
         self.chol = np.linalg.cholesky(cov_theta_D)
 
-        return cov_theta_D, mu_theta_D
+        return self
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         """
@@ -241,7 +241,7 @@ class LinearRegression:
         H = self.H(X)
         theta = np.linalg.pinv(H.T @ H) @ H.T @ y
         self.theta = theta
-        return theta
+        return self
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         """
@@ -367,7 +367,7 @@ def main(show=False):
         mu, cov = learn_prior(hours, temps, pbf)
 
         blr = BayesianLinearRegression(mu, cov, sigma, pbf)
-        blr_cov_theta_D, blr_mu_theta_D = blr.fit(train_hours, train)
+        blr.fit(train_hours, train)
         pred_post = blr.predict(test_hours)
         pred_prior = blr.prior_predict(test_hours)
         avg_sq_err = np.mean((test - pred_post)**2)
@@ -413,7 +413,7 @@ def main(show=False):
 
         blr = BayesianLinearRegression(mu, cov, sigma, rbf)
 
-        blr_cov_theta_D, blr_mu_theta_D = blr.fit(train_hours, train)
+        blr.fit(train_hours, train)
         pred_post = blr.predict(test_hours)
         pred_prior = blr.prior_predict(test_hours)
         avg_sq_err = np.mean((test - pred_post)**2)
@@ -462,7 +462,7 @@ def main(show=False):
 
         blr = BayesianLinearRegression(mu, cov, sigma, spline)
 
-        blr_cov_theta_D, blr_mu_theta_D = blr.fit(train_hours, train)
+        blr.fit(train_hours, train)
         pred_post = blr.predict(test_hours)
         pred_prior = blr.prior_predict(test_hours)
         avg_sq_err = np.mean((test - pred_post)**2)

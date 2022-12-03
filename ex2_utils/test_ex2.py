@@ -12,7 +12,8 @@ def test_LinearRegression():
     H = model.H(X)
     assert np.array_equal(H, np.array([[1, i] for i in range(1, 7)]))
     
-    t = model.fit(X, y)
+    model.fit(X, y)
+    t = model.theta
     assert np.allclose(t, np.array([0, 1]), atol=1e-5)
 
     new_X = np.array([[7], [8], [9], [10]])
@@ -40,7 +41,8 @@ def test_deg2_LinearRegression():
 
     assert np.array_equal(H, np.array([[1, i/deg, (i/deg)**2] for i in range(1, 6)]))
     
-    t = model.fit(X, y)
+    model.fit(X, y)
+    t = model.theta
     assert np.allclose(t, np.array([0, 0, 1]), atol=1e-5)
 
     test = np.array([-1, -2, -3, -4])
@@ -67,7 +69,8 @@ def test_BayesianLinearRegression():
     X = np.arange(1,7)
     y = np.arange(1,7)
 
-    S, mu = blr.fit(X, y)
+    blr.fit(X, y)
+    S, mu = blr.cov_theta_D, blr.mu_theta_D
     test = blr.predict(X)
     assert np.allclose(test, y, atol=np.sqrt(sig))    
 
