@@ -1,0 +1,182 @@
+#LyX 2.3 created this file. For more info see http://www.lyx.org/
+\lyxformat 544
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\use_default_options true
+\begin_modules
+eqs-within-sections
+theorems-named
+figs-within-sections
+tabs-within-sections
+subequations
+theorems-starred
+\end_modules
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures true
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 1
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 1
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 1
+\use_minted 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Paragraph
+Bayes' law (Inverse Probability): 
+\begin_inset Formula 
+\[
+P(A|B)=\frac{P(A,B)}{P(B)}=\frac{P(A)P(B|A)}{P(B)}
+\]
+
+\end_inset
+
+In our terms: 
+\begin_inset Formula 
+\[
+P(\theta|D)=\frac{P(\theta)P(D|\theta)}{P(D)}=\frac{P(\theta)P(D|\theta)}{\int P(\theta)P(D|\theta)d\theta}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Definition
+MSE Estimator: 
+\begin_inset Formula 
+\[
+MSE(\hat{\theta}(D))=E_{D}\left[\left\Vert \theta-\hat{\theta}(D)\right\Vert ^{2}\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Definition
+BMSE Estimator: 
+\begin_inset Formula 
+\[
+BMSE(\hat{\theta}(D))=E_{\theta,D}\left[\left\Vert \theta-\hat{\theta}(D)\right\Vert ^{2}\right]=\int_{\theta,D}P(\theta,D)\left\Vert \theta-\hat{\theta}(D)\right\Vert ^{2}d\theta dD
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Theorem*
+Regarding the BMSE estimator, the optimal bayesian estimation of 
+\begin_inset Formula $\theta$
+\end_inset
+
+ is: 
+\begin_inset Formula 
+\[
+\hat{\theta}_{MMSE}=E[\theta|D]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+For a new likelihood function: 
+\begin_inset Formula 
+\[
+L_{\epsilon}\left(\theta,\hat{\theta}\right)\begin{cases}
+0 & \left\Vert \theta-\hat{\theta}\right\Vert <\epsilon\\
+1 & else
+\end{cases}
+\]
+
+\end_inset
+
+And a new astimator - Max Aposeriori 
+\begin_inset Formula $\left(\hat{\theta}_{MAP}\right)$
+\end_inset
+
+ the following are optimal estimators with regards to their likelihood function
+ 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{align*}
+\hat{\theta}_{MLE}= & \underset{\theta}{agrmax}P(D|\theta)\\
+\hat{\theta}_{MMSE}= & E[\theta|D]\\
+\hat{\theta}_{MAP}= & \underset{\theta}{agrmax}P(\theta|D)
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
