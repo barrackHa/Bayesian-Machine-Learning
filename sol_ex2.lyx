@@ -166,48 +166,32 @@ FIX THIS!!!!!
 \end_layout
 
 \begin_layout Paragraph
-Denote 
-\begin_inset Formula $f(\theta)=10\alpha$
+Note 
+\begin_inset Formula $\theta_{n}=10\alpha_{n}$
+\end_inset
+
+ foreach 
+\begin_inset Formula $n$
 \end_inset
 
 , so 
-\begin_inset Formula $f^{-1}(\alpha)=\frac{\theta}{10}$
+\begin_inset Formula $\alpha_{n}=\frac{\theta_{n}}{10}$
 \end_inset
 
 .
- Using the change variable role we get:
+ We can write 
+\begin_inset Formula $\theta=f()$
+\end_inset
+
+Using the change variable role we get:
 \begin_inset Formula 
 \[
-p_{\alpha}(\alpha|D)=\frac{\partial}{\partial\alpha}f^{-1}(\alpha)\cdot p_{\theta}(f^{-1}(\alpha)|D)=\frac{\partial}{\partial\theta}p_{\theta}(\theta|D)\cdot p_{\theta}(\frac{\theta}{10}|D)
+p_{\alpha}(\alpha|D)=\left|\frac{\partial}{\partial\alpha}f^{-1}(\alpha)\right|\cdot p_{\theta}(f^{-1}(\alpha)|D)=\frac{p_{\theta}(\frac{\theta}{10}|D)}{10}
 \]
 
 \end_inset
 
 
-\end_layout
-
-\begin_layout Paragraph
-Similarly for 
-\begin_inset Formula $g(\theta)=\gamma^{3}$
-\end_inset
-
- we get 
-\begin_inset Formula $g^{-1}(\gamma)=\sqrt[3]{\theta}$
-\end_inset
-
- and:
-\begin_inset Formula 
-\[
-p_{\alpha}(\alpha|D)=\frac{\partial}{\partial\theta}p_{\theta}(\theta|D)\cdot p_{\theta}(f^{-1}(\alpha)|D)=\frac{\partial}{\partial\theta}p_{\theta}(\theta|D)\cdot p_{\theta}(\frac{\theta}{10}|D)
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Q2 
 \end_layout
 
 \begin_layout Subsection
@@ -224,23 +208,56 @@ Q3
 
 \begin_layout Paragraph
 Using Baye's law: 
-\begin_inset Formula $p(D_{2}|\theta)=\frac{p(D_{2})p(\theta|D_{2})}{p(\theta)}$
-\end_inset
-
- and 
-\begin_inset Formula $p(D_{1}|\theta)=\frac{p(D_{1})p(\theta|D_{1})}{p(\theta)}$
+\begin_inset Formula $p(\theta,(D_{1},D_{2}))=p(D_{1},D_{2})\cdot p(\theta|(D_{1},D_{2}))$
 \end_inset
 
 .
- 
+ Also - 
+\begin_inset Formula $p(\theta|(D_{1},D_{2}))=\frac{p(\theta)p(D_{1},D_{2}|\theta)}{p(D_{1},D_{2})}$
+\end_inset
+
+.
+ Togther we get: 
 \begin_inset Formula 
 \[
-p(\theta)p(\theta|D_{1})p(D_{2}|\theta)=p(\theta)\cdot\frac{p(D_{2})p(\theta|D_{2})}{p(\theta)}\cdot\frac{p(D_{1})p(\theta|D_{1})}{p(\theta)}=\frac{p(D_{1},D_{2})p(\theta|D_{1},D_{2})}{p(\theta)}=p(D_{1},D_{2}|\theta)
+p(\theta,(D_{1},D_{2}))=p(D_{1},D_{2})\cdot\frac{p(\theta)p(D_{1},D_{2}|\theta)}{p(D_{1},D_{2})}=p(\theta)p(D_{1},D_{2}|\theta)
 \]
 
 \end_inset
 
+We assume the data is 
+\begin_inset Formula $iid$
+\end_inset
 
+ so it's independent.
+ Hence 
+\begin_inset Formula $D_{1}$
+\end_inset
+
+and 
+\begin_inset Formula $D_{2}$
+\end_inset
+
+are independent and so for every 
+\begin_inset Formula $\theta$
+\end_inset
+
+ they're independent.
+ I.e.
+ 
+\begin_inset Formula $p(D_{1},D_{2}|\theta)=p(D_{1}|\theta)p(D_{2}|\theta)$
+\end_inset
+
+.
+ Finally - 
+\begin_inset Formula 
+\[
+p(\theta,D_{1},D_{2})=p(\theta)p(D_{1}|\theta)p(D_{2}|\theta)
+\]
+
+\end_inset
+
+Q.E.D
 \end_layout
 
 \begin_layout Subsubsection
@@ -252,14 +269,35 @@ Q4
 \end_layout
 
 \begin_layout Paragraph
+Note that:
+\end_layout
+
+\begin_layout Paragraph
 \begin_inset Formula 
 \[
-p(\theta|D_{1},D_{2})=\frac{p(\theta)p(D_{1},D_{2}|\theta)}{p(D_{1},D_{2})}=\frac{p(D_{1},D_{2},\theta)}{p(D_{1},D_{2})}
+p(\theta|D_{1},D_{2})=\frac{p(\theta)p(D_{1},D_{2}|\theta)}{p(D_{1},D_{2})}=\frac{p(\theta)p(D_{1}|\theta)p(D_{2}|\theta)}{p(D_{1})p(D_{2})}=\frac{1}{p(\theta)}\cdot\frac{p(\theta)p(D_{1}|\theta)}{p(D_{1})}\cdot\frac{p(\theta)p(D_{2}|\theta)}{p(D_{2})}=\frac{p(\theta|D_{1})p(\theta|D_{2})}{p(\theta)}
 \]
 
 \end_inset
 
+ 
+\end_layout
 
+\begin_layout Subsubsection
+Q5 
+\end_layout
+
+\begin_layout Paragraph
+From Q4 above we can see the postirior given the 2 datasets is in fact the
+ multiplication of the 2 postiroirs normalized by the prior for 
+\begin_inset Formula $\theta$
+\end_inset
+
+.
+ Hence, once we've computed the regression for each dataset, we can use
+ the above formula to compute the overall regression which would still be
+ a Gaussion as the product of Gaussions.
+ 
 \end_layout
 
 \begin_layout Standard
@@ -275,6 +313,30 @@ Practical
 
 \begin_layout Subsection
 Polynomial Basis Functions
+\end_layout
+
+\begin_layout Subsubsection
+Q3 Linear Regression Model
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename tmp_figs/q3_deg3.png
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Graphics
+	filename tmp_figs/q3_deg7.png
+	rotateOrigin center
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection

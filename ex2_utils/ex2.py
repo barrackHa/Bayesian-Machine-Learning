@@ -169,7 +169,7 @@ class BayesianLinearRegression:
         """
         # <your code here>
         H = self.H(X)
-        std = np.sqrt(np.diagonal(H@self.cov_theta_D@H.T))
+        std = np.sqrt(np.diagonal(H@self.cov_theta_D@H.T + self.sig**2))
 
         return std
 
@@ -279,11 +279,11 @@ def plot_results(
     ax.scatter(test_hours, test, label='Test')
     ax.scatter(test_hours, pred, label='Predictions')
     ax.plot(x, model, label=model_lbl, alpha=1, lw=2, c='black')
-    ax.set_xlabel('Hours')
-    ax.set_ylabel('temperature [C]')
-    ax.set_title(f'{ax_title}')
+    ax.set_xlabel('Hours', fontsize=10)
+    ax.set_ylabel('temperature [C]', fontsize=10)
+    ax.set_title(f'{ax_title}', fontsize=12)
     
-    ax.legend()
+    ax.legend(fontsize=10)
     ax.grid()
 
     return ax
@@ -292,7 +292,7 @@ def add_filling_and_samples(
     ax: plt.axes, x: np.ndarray, model: np.ndarray, 
     std: np.ndarray, samples_func: np.ndarray
     ):
-    ax.fill_between(x, model-std, model+std, alpha=.5, label='confidence interval', color='#A4DBE8')
+    ax.fill_between(x, model-std, model+std, alpha=.5, label='confidence interval', color='lightpink')
     ax.legend()
 
     for i in range(5):
@@ -302,7 +302,7 @@ def add_filling_and_samples(
     return ax
 
 
-def main(show=False):
+def main(show=False, save=False, fig_sup_fontsize=14):
     # load the data for November 16 2020
     nov16 = np.load(Path(__file__).parent / 'nov162020.npy')
     nov16_hours = np.arange(0, 24, .5)
@@ -331,12 +331,15 @@ def main(show=False):
         model = ln.predict(x)
         model_lbl = f'Linear Regression Model of degree {d}'
         fig, ax = plt.subplots()
-        fig.suptitle(f'Linear Regression Model\n Polynomial of degree {d}')
+        fig.suptitle(f'Linear Regression Model - Polynomial of degree {d}', fontsize=fig_sup_fontsize)
         ax_title = f'Average squared error with LR and d={d} is {avg_sq_err:.2f}'
         ax = plot_results(
             ax, train_hours, train, x, model, model_lbl, 
             test_hours, test, pred, ax_title
         )
+
+        if save:
+            fig.savefig(Path(__file__).parents[1]/f'tmp_figs/q3_deg{d}.png')
 
     
     # ----------------------------------------- Bayesian Linear Regression
@@ -371,12 +374,12 @@ def main(show=False):
         pred_post = blr.predict(test_hours)
         pred_prior = blr.prior_predict(test_hours)
         avg_sq_err = np.mean((test - pred_post)**2)
-        print(f'Average squared error with Bayesian Linear Regression Model and d={d} is {avg_sq_err:.2f}')
+        print(f'Average squared error with Bayesian Linear Regression Model and d={deg} is {avg_sq_err:.2f}')
 
         # plot prior graphs
         # <your code here>
         fig, ax = plt.subplots()
-        fig.suptitle(f'Bayesian Linear Regression Model\nDegree {deg} Polynomial\n ')
+        fig.suptitle(f'Bayesian Linear Regression Model - Degree {deg} Polynomial\n ')
         
         model_lbl = f'Prior'
         ax_title = f'Prior Graph'
@@ -389,10 +392,13 @@ def main(show=False):
         std = blr.prior_std(x)
         ax = add_filling_and_samples(ax, x, model, std, blr.praior_sample)
 
+        if save:
+            fig.savefig(Path(__file__).parents[1]/f'tmp_figs/q5_bayesian_deg{deg}_prior.png')
+
         # plot posterior graphs
         # <your code here>
         fig, ax = plt.subplots()
-        fig.suptitle(f'Bayesian Linear Regression Model\nDegree {deg} Polynomial\n ')
+        fig.suptitle(f'Bayesian Linear Regression Model - Degree {deg} Polynomial\n',fontsize=fig_sup_fontsize)
         
         model_lbl = f'Postior'
         ax_title = f'Postior Graph\n'
@@ -405,6 +411,10 @@ def main(show=False):
 
         std = blr.predict_std(x)
         ax = add_filling_and_samples(ax, x, model, std, blr.posterior_sample)
+
+        if save:
+            fig.savefig(Path(__file__).parents[1]/f'tmp_figs/q6_bayesian_deg{deg}_post.png')
+
 
     # ---------------------- Gaussian basis functions
     for ind, c in enumerate(centers):
@@ -424,7 +434,7 @@ def main(show=False):
         # <your code here>
         fig, ax = plt.subplots()
         
-        fig.suptitle(f'Bayesian Linear Regression Model\n{basis_type}')
+        fig.suptitle(f'Bayesian Linear Regression Model - {basis_type}',fontsize=fig_sup_fontsize)
         
         model_lbl = f'Prior'
         ax_title = f'Prior Graph'
@@ -437,10 +447,14 @@ def main(show=False):
         std = blr.prior_std(x)
         ax = add_filling_and_samples(ax, x, model, std, blr.praior_sample)
 
+        if save:
+            p = Path(__file__).parents[1]/f'tmp_figs/q7_gaussian_S_{ind+1}_prior.png'
+            fig.savefig(p)
+
         # plot posterior graphs
         # <your code here>
         fig, ax = plt.subplots()
-        fig.suptitle(f'Bayesian Linear Regression Model\n{basis_type}')
+        fig.suptitle(f'Bayesian Linear Regression Model - {basis_type}',fontsize=fig_sup_fontsize)
         
         model_lbl = f'Postior'
         ax_title = f'Postior Graph\n'
@@ -454,6 +468,9 @@ def main(show=False):
         std = blr.predict_std(x)
         ax = add_filling_and_samples(ax, x, model, std, blr.posterior_sample)
 
+        if save:
+            p = Path(__file__).parents[1]/f'tmp_figs/q7_gaussian_S_{ind+1}_post.png'
+            fig.savefig(p)
 
     # ---------------------- cubic regression splines
     for ind, k in enumerate(knots):
@@ -473,7 +490,7 @@ def main(show=False):
         # <your code here>
         fig, ax = plt.subplots()
         
-        fig.suptitle(f'Bayesian Linear Regression Model\n{basis_type}')
+        fig.suptitle(f'Bayesian Linear Regression Model - {basis_type}',fontsize=fig_sup_fontsize)
         
         model_lbl = f'Prior'
         ax_title = f'Prior Graph'
@@ -486,10 +503,14 @@ def main(show=False):
         std = blr.prior_std(x)
         ax = add_filling_and_samples(ax, x, model, std, blr.praior_sample)
 
+        if save:
+            p = Path(__file__).parents[1]/f'tmp_figs/q8_splines_k_{ind+1}_prior.png'
+            fig.savefig(p)
+
         # plot posterior graphs
         # <your code here>
         fig, ax = plt.subplots()
-        fig.suptitle(f'Bayesian Linear Regression Model\n{basis_type}')
+        fig.suptitle(f'Bayesian Linear Regression Model - {basis_type}',fontsize=fig_sup_fontsize)
         
         model_lbl = f'Postior'
         ax_title = f'Postior Graph\n'
@@ -503,9 +524,13 @@ def main(show=False):
         std = blr.predict_std(x)
         ax = add_filling_and_samples(ax, x, model, std, blr.posterior_sample)
 
+        if save:
+            p = Path(__file__).parents[1]/f'tmp_figs/q8_splines_k_{ind+1}_post.png'
+            fig.savefig(p)
+
     if show:
         plt.show()
 
 
 if __name__ == '__main__':
-    main(show=True)
+    main(show=False, save=True)
