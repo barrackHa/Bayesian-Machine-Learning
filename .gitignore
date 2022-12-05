@@ -3,6 +3,9 @@
 *.lyx#
 *.lyx.emergency
 
+# figuers
+*.png
+
 # ide's
 *.idea/
 .vscode/
