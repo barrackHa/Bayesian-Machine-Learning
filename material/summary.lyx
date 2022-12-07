@@ -85,6 +85,10 @@ theorems-starred
 
 \begin_body
 
+\begin_layout Part
+Lec
+\end_layout
+
 \begin_layout Paragraph
 Bayes' law (Inverse Probability): 
 \begin_inset Formula 
@@ -175,6 +179,158 @@ And a new astimator - Max Aposeriori
 
 \end_inset
 
+
+\end_layout
+
+\begin_layout Part
+Rec
+\end_layout
+
+\begin_layout Definition
+1D Gaussion: 
+\begin_inset Formula $x\sim N(\mu,\sigma^{2})\equiv N(x|\mu,\sigma^{2})$
+\end_inset
+
+
+\begin_inset Formula 
+\[
+p(x)=\frac{1}{\sqrt{2\pi\sigma^{2}}}\exp\left[-\frac{1}{2\sigma^{2}}(x-\mu)^{2}\right]
+\]
+
+\end_inset
+
+d-Dims Gaussion: 
+\begin_inset Formula $x\sim N(\mu,\Sigma)$
+\end_inset
+
+
+\begin_inset Formula 
+\[
+p(x)=\frac{1}{\sqrt{\left(2\pi\right)^{d}\left|\Sigma\right|}}\exp\left[-\frac{1}{2}(x-\mu)^{T}\Sigma^{-1}(x-\mu)\right]
+\]
+
+\end_inset
+
+ Where's 
+\begin_inset Formula $\Sigma$
+\end_inset
+
+ is symmetric.
+ 
+\begin_inset Newline newline
+\end_inset
+
+Mahalanobis distance, Denoted with 
+\begin_inset Formula $\Delta$
+\end_inset
+
+ is: 
+\begin_inset Formula 
+\[
+\Delta=D_{M}\left(x|\mu,\Sigma\right)^{2}=(x-\mu)^{T}\Sigma^{-1}(x-\mu)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Lemma
+For 
+\begin_inset Formula $x\sim N(\mu,\Sigma)$
+\end_inset
+
+ we get 
+\begin_inset Formula 
+\begin{align*}
+E[x]= & \mu\\
+E[xx^{T}]= & \Sigma+\mu\mu^{T}\\
+cov(x)= & \Sigma
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Fact*
+As 
+\begin_inset Formula $\Sigma$
+\end_inset
+
+ is symmetric, it's PD, so we can write 
+\begin_inset Formula $\Sigma^{-1}=\sum\frac{1}{\lambda_{i}}u_{i}u_{i}^{T}$
+\end_inset
+
+ such that the 
+\begin_inset Formula $\{\lambda_{i}\}'s$
+\end_inset
+
+ are the eignvalues of 
+\begin_inset Formula $\Sigma$
+\end_inset
+
+ and 
+\begin_inset Formula $\{u_{i}\}_{i}$
+\end_inset
+
+ is the orthonormal basis for which 
+\begin_inset Formula $\Sigma$
+\end_inset
+
+ is a diagonal matix.
+ Under those terms we can present the contour lines of the distribution
+ as an ellipsoids:
+\begin_inset Formula 
+\[
+\Delta=\sum_{i}\left(\frac{u_{i}^{T}(x-\mu)}{\sqrt{\lambda}_{i}}\right)^{2}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Notice any distribution of the form: 
+\begin_inset Formula $p(x)\propto\exp\left[x^{T}\Gamma x+b^{T}x+c\right]$
+\end_inset
+
+ is a Gaussion.
+ I.e.
+ any bilinear form in an exponent is a Gaussion.
+\end_layout
+
+\begin_layout Corollary
+The Derivative Trick: 
+\begin_inset Formula $\frac{\partial\Delta}{\partial x}=\Sigma^{-1}(x-\mu)$
+\end_inset
+
+ and 
+\begin_inset Formula $\frac{\partial\Delta}{\partial x\partial x^{T}}=\Sigma^{-1}$
+\end_inset
+
+.
+ So given such a distribution, if we can write down 
+\begin_inset Formula 
+\[
+\frac{\partial}{\partial x}-\log(p(x))=\Sigma^{-1}(x-\mu)
+\]
+
+\end_inset
+
+for some 
+\begin_inset Formula $\Sigma$
+\end_inset
+
+ and 
+\begin_inset Formula $\mu$
+\end_inset
+
+, we can describe the distribution.
+\end_layout
+
+\begin_layout Corollary
 
 \end_layout
 
