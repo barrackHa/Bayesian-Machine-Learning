@@ -169,7 +169,7 @@ class BayesianLinearRegression:
         """
         # <your code here>
         H = self.H(X)
-        std = np.sqrt(np.diagonal(H@self.cov_theta_D@H.T + self.sig**2))
+        std = np.sqrt(np.diagonal(H@self.cov_theta_D@H.T) + self.sig**2)
 
         return std
 
@@ -302,7 +302,7 @@ def add_filling_and_samples(
     return ax
 
 
-def main(show=False, save=False, fig_sup_fontsize=14):
+def main(show=False, save=False, fig_sup_fontsize=12):
     # load the data for November 16 2020
     nov16 = np.load(Path(__file__).parent / 'nov162020.npy')
     nov16_hours = np.arange(0, 24, .5)
@@ -332,7 +332,7 @@ def main(show=False, save=False, fig_sup_fontsize=14):
         model_lbl = f'Linear Regression Model of degree {d}'
         fig, ax = plt.subplots()
         fig.suptitle(f'Linear Regression Model - Polynomial of degree {d}', fontsize=fig_sup_fontsize)
-        ax_title = f'Average squared error with LR and d={d} is {avg_sq_err:.2f}'
+        ax_title = f'Average squared error: {avg_sq_err:.2f}'
         ax = plot_results(
             ax, train_hours, train, x, model, model_lbl, 
             test_hours, test, pred, ax_title
@@ -379,14 +379,14 @@ def main(show=False, save=False, fig_sup_fontsize=14):
         # plot prior graphs
         # <your code here>
         fig, ax = plt.subplots()
-        fig.suptitle(f'Bayesian Linear Regression Model - Degree {deg} Polynomial\n ')
+        fig.suptitle(f'Bayesian LR - Prior Model - Deg {deg} Polynomial', fontsize=fig_sup_fontsize)
         
-        model_lbl = f'Prior'
+        model_lbl = f'Prior Mean'
         ax_title = f'Prior Graph'
         model = blr.prior_predict(x)
         ax = plot_results(
-            ax, train_hours, train, x, model, model_lbl, 
-            test_hours, test, pred_prior, ax_title
+            ax, [], [], x, model, model_lbl, 
+            [], [], [], ax_title
         )
 
         std = blr.prior_std(x)
@@ -398,11 +398,11 @@ def main(show=False, save=False, fig_sup_fontsize=14):
         # plot posterior graphs
         # <your code here>
         fig, ax = plt.subplots()
-        fig.suptitle(f'Bayesian Linear Regression Model - Degree {deg} Polynomial\n',fontsize=fig_sup_fontsize)
+        fig.suptitle(f'Bayesian LR - Posterior Model - Deg {deg} Polynomial\n',fontsize=fig_sup_fontsize)
         
-        model_lbl = f'Postior'
-        ax_title = f'Postior Graph\n'
-        ax_title += f'Average squared error with BLR and d={d} is {avg_sq_err:.2f}'
+        model_lbl = f'Posterior Mean'
+        ax_title = f'Posterior Graph '
+        ax_title = f'Average squared error: {avg_sq_err:.2f}'
         model = blr.predict(x)
         ax = plot_results(
             ax, train_hours, train, x, model, model_lbl, 
@@ -428,20 +428,20 @@ def main(show=False, save=False, fig_sup_fontsize=14):
         pred_prior = blr.prior_predict(test_hours)
         avg_sq_err = np.mean((test - pred_post)**2)
         basis_type = f'S_{ind+1} Gaussian basis functions (Beta={beta})'
-        print(f'Average squared error with Bayesian Linear Regression Model {basis_type} is {avg_sq_err:.2f}')
+        print(f'Average squared error BLR {basis_type} is {avg_sq_err:.2f}')
 
         # plot prior graphs
         # <your code here>
         fig, ax = plt.subplots()
         
-        fig.suptitle(f'Bayesian Linear Regression Model - {basis_type}',fontsize=fig_sup_fontsize)
+        fig.suptitle(f'Bayesian LR - Prior Model - {basis_type}',fontsize=fig_sup_fontsize)
         
-        model_lbl = f'Prior'
+        model_lbl = f'Prior Mean'
         ax_title = f'Prior Graph'
         model = blr.prior_predict(x)
         ax = plot_results(
-            ax, train_hours, train, x, model, model_lbl, 
-            test_hours, test, pred_prior, ax_title
+            ax, [], [], x, model, model_lbl, 
+            [], [], [], ax_title
         )
 
         std = blr.prior_std(x)
@@ -454,11 +454,11 @@ def main(show=False, save=False, fig_sup_fontsize=14):
         # plot posterior graphs
         # <your code here>
         fig, ax = plt.subplots()
-        fig.suptitle(f'Bayesian Linear Regression Model - {basis_type}',fontsize=fig_sup_fontsize)
+        fig.suptitle(f'Bayesian LR - Posterior Model - {basis_type}',fontsize=fig_sup_fontsize)
         
-        model_lbl = f'Postior'
-        ax_title = f'Postior Graph\n'
-        ax_title += f'Average squared error with BLR and {basis_type} is {avg_sq_err:.2f}'
+        model_lbl = f'Posterior Mean'
+        ax_title = f'Posterior Graph '
+        ax_title = f'Average squared error: {avg_sq_err:.2f}'
         model = blr.predict(x)
         ax = plot_results(
             ax, train_hours, train, x, model, model_lbl, 
@@ -484,20 +484,20 @@ def main(show=False, save=False, fig_sup_fontsize=14):
         pred_prior = blr.prior_predict(test_hours)
         avg_sq_err = np.mean((test - pred_post)**2)
         basis_type = f'K_{ind+1} Cubic Regression Splines'
-        print(f'Average squared error with Bayesian Linear Regression Model {basis_type} is {avg_sq_err:.2f}')
+        print(f'Average squared error BLR {basis_type} is {avg_sq_err:.2f}')
 
         # plot prior graphs
         # <your code here>
         fig, ax = plt.subplots()
         
-        fig.suptitle(f'Bayesian Linear Regression Model - {basis_type}',fontsize=fig_sup_fontsize)
+        fig.suptitle(f'Bayesian LR - Prior Model - {basis_type}',fontsize=fig_sup_fontsize)
         
-        model_lbl = f'Prior'
+        model_lbl = f'Prior Mean'
         ax_title = f'Prior Graph'
         model = blr.prior_predict(x)
         ax = plot_results(
-            ax, train_hours, train, x, model, model_lbl, 
-            test_hours, test, pred_prior, ax_title
+            ax, [], [], x, model, model_lbl, 
+            [], [], [], ax_title
         )
 
         std = blr.prior_std(x)
@@ -510,11 +510,11 @@ def main(show=False, save=False, fig_sup_fontsize=14):
         # plot posterior graphs
         # <your code here>
         fig, ax = plt.subplots()
-        fig.suptitle(f'Bayesian Linear Regression Model - {basis_type}',fontsize=fig_sup_fontsize)
+        fig.suptitle(f'Bayesian LR - Posterior Model - {basis_type}',fontsize=fig_sup_fontsize)
         
-        model_lbl = f'Postior'
-        ax_title = f'Postior Graph\n'
-        ax_title += f'Average squared error with BLR and {basis_type} is {avg_sq_err:.2f}'
+        model_lbl = f'Posterior Mean'
+        ax_title = f'posterior Graph '
+        ax_title = f'Average squared error: {avg_sq_err:.2f}'
         model = blr.predict(x)
         ax = plot_results(
             ax, train_hours, train, x, model, model_lbl, 
