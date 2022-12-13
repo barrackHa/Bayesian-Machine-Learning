@@ -217,9 +217,16 @@ p(x)=\frac{1}{\sqrt{\left(2\pi\right)^{d}\left|\Sigma\right|}}\exp\left[-\frac{1
 
  is symmetric.
  
-\begin_inset Newline newline
+\end_layout
+
+\begin_layout Standard
+\begin_inset Separator plain
 \end_inset
 
+
+\end_layout
+
+\begin_layout Definition
 Mahalanobis distance, Denoted with 
 \begin_inset Formula $\Delta$
 \end_inset
@@ -330,7 +337,49 @@ for some
 , we can describe the distribution.
 \end_layout
 
-\begin_layout Corollary
+\begin_layout Standard
+\begin_inset Separator plain
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+——————————–
+\end_layout
+
+\begin_layout Paragraph
+We know 
+\begin_inset Formula $\theta\sim N\left(\mu,\Sigma\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $D_{i}|\theta\sim N(H_{i}\theta,\sigma^{2}I)$
+\end_inset
+
+ so using Bayes' law and Q3 we know:
+\begin_inset Formula 
+\[
+p(\theta|D_{1},D_{2})=\frac{p(\theta,D_{1},D_{2})}{p(D_{1},D_{2})}\propto p(\theta,D_{1},D_{2})=p(\theta)p(D_{1}|\theta)p(D_{2}|\theta)
+\]
+
+\end_inset
+
+So, we can write the PDF of 
+\begin_inset Formula $p(\theta|D_{1},D_{2})$
+\end_inset
+
+ as the multiplication of three Guassions.
+ Specifically, it's also a Guassion and in order to descibe it we need its
+ mean and covariance.
+ Using the derivative trick we only need to look at the sum in the exponent:
+\begin_inset Formula 
+\[
+2\Delta=(x-\mu)^{T}\Sigma^{-1}(x-\mu)+\frac{1}{\sigma^{2}}\sum_{i=[1,2]}\left\Vert H_{i}\theta-x\right\Vert 
+\]
+
+\end_inset
+
 
 \end_layout
 

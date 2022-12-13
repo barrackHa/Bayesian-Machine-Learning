@@ -356,6 +356,10 @@ Q3
 \end_layout
 
 \begin_layout Paragraph
+Using conditional probability:
+\end_layout
+
+\begin_layout Paragraph
 Using Bayes' law: 
 \begin_inset Formula $p(\theta,(D_{1},D_{2}))=p(D_{1},D_{2})\cdot p(\theta|(D_{1},D_{2}))$
 \end_inset
@@ -429,7 +433,58 @@ p(\theta|D_{1},D_{2})=\frac{p(\theta)p(D_{1},D_{2}|\theta)}{p(D_{1},D_{2})}=\fra
 
 \end_inset
 
- 
+
+\end_layout
+
+\begin_layout Paragraph
+We know 
+\begin_inset Formula $\theta\sim N\left(\mu,\Sigma\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $D_{i}|\theta\sim N(H_{i}\theta,\sigma^{2}I)$
+\end_inset
+
+ so using Bayes' law and Q3 we know:
+\begin_inset Formula 
+\[
+p(\theta|D_{1},D_{2})=\frac{p(\theta,D_{1},D_{2})}{p(D_{1},D_{2})}\propto p(\theta,D_{1},D_{2})=p(\theta)p(D_{1}|\theta)p(D_{2}|\theta)
+\]
+
+\end_inset
+
+So, we can write the PDF of 
+\begin_inset Formula $p(\theta|D_{1},D_{2})$
+\end_inset
+
+ as the multiplication of three Guassions.
+ Specifically, it's also a Guassion and in order to descibe it we need its
+ mean and covariance.
+ Using the derivative trick we only need to look at the sum in the exponent:
+\begin_inset Formula 
+\[
+2\Delta=(x-\mu)^{T}\Sigma^{-1}(x-\mu)+\frac{1}{\sigma^{2}}\sum_{i=[1,2]}\left\Vert H_{i}\theta-y_{i}\right\Vert ^{2}
+\]
+
+\end_inset
+
+So:
+\begin_inset Formula 
+\[
+2\frac{\partial\Delta}{\partial\theta}=\left(\Sigma_{\theta|D_{1}}^{-1}+\Sigma_{\theta|D_{2}}^{-1}-\Sigma^{-1}\right)\left(\theta-\left(\left(\Sigma_{\theta|D_{1}}^{-1}+\Sigma_{\theta|D_{2}}^{-1}-\Sigma^{-1}\right)^{-1}\left(\Sigma^{-1}\mu+\frac{1}{\sigma^{2}}H_{1}^{T}y_{1}+\frac{1}{\sigma^{2}}H_{2}^{T}y_{2}\right)\right)\right)
+\]
+
+\end_inset
+
+I.E.: 
+\begin_inset Formula 
+\[
+\theta|D_{1},D2\sim N\left(\left(\left(\Sigma_{\theta|D_{1}}^{-1}+\Sigma_{\theta|D_{2}}^{-1}-\Sigma^{-1}\right)^{-1}\left(\Sigma^{-1}\mu+\frac{1}{\sigma^{2}}H_{1}^{T}y_{1}+\frac{1}{\sigma^{2}}H_{2}^{T}y_{2}\right)\right),\left(\Sigma_{\theta|D_{1}}^{-1}+\Sigma_{\theta|D_{2}}^{-1}-\Sigma^{-1}\right)\right)
+\]
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsubsection
@@ -437,8 +492,8 @@ Q5 Sequential Calculation Of Regression
 \end_layout
 
 \begin_layout Paragraph
-From Q4 above we can see the posterior given the 2 datasets is in fact the
- multiplication of the 2 posteriors normalized by the prior for 
+From Q4 above we can see the posterior given the 2 datasets is in fact a
+ function of the 2 separate posteriors and the prior for 
 \begin_inset Formula $\theta$
 \end_inset
 
