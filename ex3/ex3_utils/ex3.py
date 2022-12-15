@@ -14,7 +14,8 @@ def log_evidence(model: BayesianLinearRegression, X, y):
     # extract the variables of the prior distribution
     mu = model.mu
     sig = model.cov
-    n = model.sig
+    sig_inv = model.prec
+    noise = model.sig
 
     # extract the variables of the posterior distribution
     model.fit(X, y)
@@ -22,8 +23,18 @@ def log_evidence(model: BayesianLinearRegression, X, y):
     map_cov = model.fit_cov
 
     # calculate the log-evidence
-    # <your code here>
-    return 0.0
+    H = model.h(X)
+    a = 0.5 * np.log(
+        np.linalg.det(map_cov) / np.linalg.det(sig)
+    )
+    mahala_means = (map - mu).T @ sig_inv @ (map - mu)
+    mahala_y = 1/noise * np.linalg.norm(y - H @ map)**2
+    b = 0.5 * (mahala_means + mahala_y + (X.shape[0] * np.log(noise)))
+    c = H.shape[-1] * np.log(2 * np.pi) / 2 
+
+    model_log_evidence = a - b - c
+    
+    return model_log_evidence
 
 
 def main():

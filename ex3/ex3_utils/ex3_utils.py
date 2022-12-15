@@ -1,7 +1,7 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from typing import Callable
-
+from pathlib import Path
 
 def polynomial_basis_functions(degree: int) -> Callable:
     """
@@ -26,7 +26,7 @@ class BayesianLinearRegression:
         """
         self.mu = theta_mean                        # prior mean
         self.cov = theta_cov                        # prior covariance
-        self.prec = np.linalg.inv(theta_cov)        # prior precision (inverse covariance)
+        self.prec = np.linalg.pinv(theta_cov)        # prior precision (inverse covariance)
 
         self.fit_mu = None                          # posterior mean
         self.fit_prec = None                        # posterior precision
@@ -119,7 +119,7 @@ def load_prior():
     An example of how to load the supplied prior for questions 5-7
     :return: the mean and covariance of the prior needed for questions 5-7
     """
-    params = np.load('temp_prior.npy')
+    params = np.load(Path(__file__).parent / 'temp_prior.npy')
 
     # load the mean of the prior
     mean = params[:, 0]
