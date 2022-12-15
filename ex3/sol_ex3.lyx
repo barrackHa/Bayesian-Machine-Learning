@@ -6,6 +6,16 @@
 \origin unavailable
 \textclass article
 \use_default_options true
+\begin_modules
+algorithm2e
+theorems-named
+eqs-within-sections
+figs-within-sections
+tabs-within-sections
+theorems-std
+enumitem
+tcolorbox
+\end_modules
 \maintain_unincluded_children false
 \language english
 \language_package default
@@ -88,6 +98,49 @@
 
 \begin_body
 
+\begin_layout Standard
+\begin_inset FormulaMacro
+\newcommand{\expec}[1]{\mathbb{E}\left[#1\right]}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\var}[1]{\text{var}\left[#1\right]}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\cov}[1]{\text{cov}\left[#1\right]}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\data}{\mathcal{D}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\defin}{\stackrel{\Delta}{=}}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\mvn}[2]{\mathcal{N}\left(#1,#2\right)}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\cmvn}[3]{\mathcal{N}\left(#1\,|\,#2,#3\right)}
+\end_inset
+
+
+\begin_inset FormulaMacro
+\newcommand{\mahala}[3]{\frac{1}{2}\left(#1-#2\right)^{T}#3\left(#1-#2\right)}
+\end_inset
+
+
+\end_layout
+
 \begin_layout Title
 Bayesian Machine Learning 
 \begin_inset Newline linebreak
@@ -97,7 +150,7 @@ Course 67564
 \begin_inset Newline linebreak
 \end_inset
 
-Solution To Exercise 2: Bayesian Linear Regression
+Solution To Exercise 3: Evidence and Kernels
 \end_layout
 
 \begin_layout Author
@@ -109,7 +162,7 @@ Barak Haim
 \end_layout
 
 \begin_layout Date
-8/12/2022
+22/12/2022
 \end_layout
 
 \begin_layout Standard
@@ -133,16 +186,14 @@ Theoretical
 \end_layout
 
 \begin_layout Subsection
-Reparameterization of Estimators
+Input-Specific Noise
 \end_layout
 
 \begin_layout Paragraph
 \begin_inset Formula 
-\begin{align*}
-y_{\theta}= & \sum_{n=1}^{k}\theta_{n}x^{n}+\eta\\
-y_{\alpha}= & \sum_{n=1}^{k}\left(10\alpha_{n}\right)x^{n}+\eta\\
-y_{\gamma}= & \sum_{n=1}^{k}\gamma_{n}^{3}x^{n}+\eta
-\end{align*}
+\[
+y(x_{i})=\theta h(x_{i})+\eta_{i}\qquad\eta_{i}\sim\mvn 0{\sigma_{i}^{2}}
+\]
 
 \end_inset
 
@@ -151,357 +202,89 @@ y_{\gamma}= & \sum_{n=1}^{k}\gamma_{n}^{3}x^{n}+\eta
 
 \begin_layout Subsubsection
 Q1 
-\begin_inset Formula $p_{\alpha}(\alpha|D)$
-\end_inset
-
- And 
-\begin_inset Formula $p_{\gamma}(\gamma|D)$
+\begin_inset Formula $p(y|\theta)=?$
 \end_inset
 
 
+\end_layout
+
+\begin_layout Subsubsection
+Q2 
+\begin_inset Formula $\hat{\theta}_{MLE}=?$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Q3 
+\begin_inset Formula $\theta\sim\mvn{\mu_{0}}{\Sigma_{0}},$
+\end_inset
+
+
+\begin_inset Formula $p(\theta|y)=?$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Product of Kernels
+\end_layout
+
+\begin_layout Subsubsection
+Q4
+\end_layout
+
+\begin_layout Subsection
+Kernel Functions
+\end_layout
+
+\begin_layout Subsubsection
+Q6 
+\begin_inset Formula $k(x,y)=\exp\left[\beta\left\Vert g(x)-g(y)\right\Vert ^{2}\right]$
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Paragraph
 Note 
-\begin_inset Formula $\theta_{n}=10\alpha_{n}$
+\begin_inset Formula $p(x,y)\defin\left\Vert g(x)-g(y)\right\Vert ^{2}=\left(g(x)-g(y)\right)^{T}I\left(g(x)-g(y)\right)$
 \end_inset
 
- foreach 
-\begin_inset Formula $n$
+ is a valid kernel as 
+\begin_inset Formula $I$
 \end_inset
 
-, so 
-\begin_inset Formula $\alpha_{n}=\frac{\theta_{n}}{10}$
+ is PD.
+ So, for any constant 
+\begin_inset Formula $\beta>0$
 \end_inset
 
-.
- We can write 
-\begin_inset Formula $\alpha=f(\theta)=f([\theta_{1,...,}\theta_{k}])=\frac{\theta}{10}$
+ it holds that 
+\begin_inset Formula $q\defin\beta\cdot p$
 \end_inset
 
- and so 
-\begin_inset Formula $f^{-1}(\alpha)=10\alpha=10[\alpha_{1},...,\alpha_{n}]$
+ is a valid kernel.
+ Lastly, 
+\begin_inset Formula $k=\exp(q(x,y))$
 \end_inset
 
- Using the change variable role we get:
-\begin_inset Formula 
-\[
-p_{\alpha}(\alpha|D)=\left|\frac{\partial}{\partial\alpha}f^{-1}(\alpha)\right|\cdot p_{\theta}(f^{-1}(\alpha)|D)=10^{k}p_{\theta}(10\alpha|D)
-\]
-
-\end_inset
-
- Where's 
-\begin_inset Formula 
-\begin{align*}
-\frac{\partial}{\partial\alpha}f^{-1}(\alpha)= & \frac{\partial\left[f_{1}^{-1}(\alpha),...,f_{k}^{-1}(\alpha)\right]^{T}}{\partial\alpha_{1},...,\partial\alpha_{k}}=\\
-\left[\begin{array}{ccc}
-\frac{\partial f_{1}^{-1}(\alpha)}{\partial\alpha_{1}} & ... & \frac{\partial f_{k}^{-1}(\alpha)}{\partial\alpha_{1}}\\
-\vdots & \ddots & \vdots\\
-\frac{\partial f_{1}^{-1}(\alpha)}{\partial\alpha_{k}} & ... & \frac{\partial f_{k}^{-1}(\alpha)}{\partial\alpha_{k}}
-\end{array}\right]= & \left[\begin{array}{ccc}
-\frac{\partial}{\partial\alpha_{1}}10\alpha_{1} & ... & \frac{\partial}{\partial\alpha_{1}}10\alpha_{k}\\
-\vdots & \ddots & \vdots\\
-\frac{\partial}{\partial\alpha_{k}}10\alpha_{1} & ... & \frac{\partial}{\partial\alpha_{k}}10\alpha_{k}
-\end{array}\right]=\\
-\left[\frac{\partial}{\partial\alpha_{j}}10\alpha_{i}\right]_{i,j}= & 10\cdot I
-\end{align*}
-
-\end_inset
-
-So, 
-\begin_inset Formula 
-\[
-det\left(\frac{\partial}{\partial\alpha}f^{-1}(\alpha)\right)=det\left(10I\right)=10^{k}
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
-Similarly, 
-\begin_inset Formula $\theta=g^{-1}(\gamma)=\gamma^{3}$
-\end_inset
-
- (note 
-\begin_inset Formula $\gamma^{3}\stackrel{\Delta}{=}\left[\gamma_{i}^{3}\right]_{i=[1,..,k]}^{T}$
-\end_inset
-
-).
- Now: 
-\begin_inset Formula 
-\begin{align*}
-\frac{\partial}{\partial\gamma}g^{-1}(\gamma)= & \frac{\partial\left[g_{1}^{-1}(\gamma),...,g_{k}^{-1}(\gamma)\right]^{T}}{\partial\gamma_{1},...,\partial\gamma_{k}}=\\
-\left[\begin{array}{ccc}
-\frac{\partial}{\partial\gamma_{1}}\gamma_{1}^{3} & ... & \frac{\partial}{\partial\gamma_{1}}\gamma_{k}^{3}\\
-\vdots & \ddots & \vdots\\
-\frac{\partial}{\partial\gamma_{k}}\gamma_{1}^{3} & ... & \frac{\partial}{\partial\gamma_{k}}\gamma_{k}^{3}
-\end{array}\right]= & \left[\frac{\partial}{\partial\alpha_{j}}\gamma_{i}^{3}\right]_{i,j}=\left[\begin{array}{ccc}
-\ddots &  & 0\\
- & 3\gamma_{i}^{2}\\
-0 &  & \ddots
-\end{array}\right]
-\end{align*}
-
-\end_inset
-
-So:
-\begin_inset Formula 
-\[
-det\left(\left[\begin{array}{ccc}
-\ddots &  & 0\\
- & 3\gamma_{i}^{2}\\
-0 &  & \ddots
-\end{array}\right]\right)=\prod_{i=1}^{k}3\gamma_{i}^{2}=3^{k}\prod_{i=1}^{k}\gamma_{i}^{2}
-\]
-
-\end_inset
-
-Finally: 
-\begin_inset Formula 
-\[
-p_{\gamma}(\gamma|D)=\left|\frac{\partial}{\partial\gamma}g^{-1}(\gamma)\right|\cdot p_{\theta}(f^{-1}(\gamma)|D)=\left(3^{k}\prod_{i=1}^{k}\gamma_{i}^{2}\right)p_{\theta}(\gamma^{3}|D)
-\]
-
-\end_inset
-
-
+ is a valid kernel .
+ Q.E.D.
 \end_layout
 
 \begin_layout Subsubsection
-Q2 MMSE Estimators Of 
-\begin_inset Formula $\theta,\alpha$
-\end_inset
-
- And 
-\begin_inset Formula $\gamma$
+Q7 
+\begin_inset Formula $k(x,y)=k_{1}(x,y)-k_{2}(x,y)$
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
-We know 
-\begin_inset Formula $k=1$
-\end_inset
-
- and for 
-\begin_inset Formula $x\in\{\theta,\alpha,\gamma\}$
-\end_inset
-
-: 
-\begin_inset Formula 
-\[
-\hat{x}_{MMSE}=E[x|D]
-\]
-
-\end_inset
-
-
-\begin_inset Formula 
-\begin{align*}
-E[\alpha|D] & =\int\alpha\cdot p_{\alpha}(\alpha|D)d\alpha=\int\alpha\cdot10^{1}p_{\theta}(10\alpha|D)d\alpha=\\
-\int f^{-1}(\alpha)\cdot10p_{\theta}(10f^{-1}(\alpha)|D)df^{-1}(\alpha)= & \int\frac{1}{10}\cdot10\theta p_{\theta}(\theta|D)\frac{1}{10}d\theta=\frac{1}{10}\int\theta p_{\theta}(\theta|D)d\theta=\frac{E[\theta|D]}{10}
-\end{align*}
-
-\end_inset
-
-I.e.
- - 
-\begin_inset Formula $\hat{\theta}_{MMSE}=10\hat{\alpha}_{MMSE}$
-\end_inset
-
-, hence - 
-\begin_inset Formula $y_{\hat{\theta}}(x)=y_{\hat{\alpha}}(x)$
-\end_inset
-
-.
- 
-\end_layout
-
-\begin_layout Paragraph
-Moreover:
-\begin_inset Formula 
-\begin{align*}
-E[\gamma|D] & =\int\gamma\cdot p_{\gamma}(\gamma|D)d\gamma=\int\gamma\cdot3\gamma^{2}\cdot p_{\theta}(\gamma^{3}|D)d\gamma=\\
-\int\theta^{\frac{1}{3}}\cdot3\theta^{\frac{2}{3}}\cdot p_{\theta}(\theta^{\frac{3}{3}}|D)\left(\frac{\theta^{-\frac{2}{3}}}{3}\right)d\theta= & \int p_{\theta}(\theta|D)d\theta\ne\sqrt[3]{E[\gamma|D]}
-\end{align*}
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
-Hence - 
-\begin_inset Formula $y_{\hat{\theta}}(x)\ne y_{\hat{\gamma}}(x)$
-\end_inset
-
-.
- 
 \end_layout
 
 \begin_layout Subsection
-Sequential Bayesian Linear Regression
-\end_layout
-
-\begin_layout Subsubsection
-Q3 
-\begin_inset Formula $p(\theta,D_{1},D_{2})=p(\theta)p(D_{1}|\theta)p(D_{2}|\theta)$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
-Using conditional probability:
-\end_layout
-
-\begin_layout Paragraph
-Using Bayes' law: 
-\begin_inset Formula $p(\theta,(D_{1},D_{2}))=p(D_{1},D_{2})\cdot p(\theta|(D_{1},D_{2}))$
-\end_inset
-
-.
- Also - 
-\begin_inset Formula $p(\theta|(D_{1},D_{2}))=\frac{p(\theta)p(D_{1},D_{2}|\theta)}{p(D_{1},D_{2})}$
-\end_inset
-
-.
- Together we get: 
-\begin_inset Formula 
-\[
-p(\theta,(D_{1},D_{2}))=p(D_{1},D_{2})\cdot\frac{p(\theta)p(D_{1},D_{2}|\theta)}{p(D_{1},D_{2})}=p(\theta)p(D_{1},D_{2}|\theta)
-\]
-
-\end_inset
-
-We assume the data is 
-\begin_inset Formula $iid$
-\end_inset
-
- so it's independent.
- Hence 
-\begin_inset Formula $D_{1}$
-\end_inset
-
-and 
-\begin_inset Formula $D_{2}$
-\end_inset
-
-are independent and so for every 
-\begin_inset Formula $\theta$
-\end_inset
-
- they're independent.
- I.e.
- 
-\begin_inset Formula $p(D_{1},D_{2}|\theta)=p(D_{1}|\theta)p(D_{2}|\theta)$
-\end_inset
-
-.
- Finally - 
-\begin_inset Formula 
-\[
-p(\theta,D_{1},D_{2})=p(\theta)p(D_{1}|\theta)p(D_{2}|\theta)
-\]
-
-\end_inset
-
-Q.E.D
-\end_layout
-
-\begin_layout Subsubsection
-Q4 
-\begin_inset Formula $p(\theta|D_{1},D_{2})=?$
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
-Note that:
-\end_layout
-
-\begin_layout Paragraph
-\begin_inset Formula 
-\[
-p(\theta|D_{1},D_{2})=\frac{p(\theta)p(D_{1},D_{2}|\theta)}{p(D_{1},D_{2})}=\frac{p(\theta)p(D_{1}|\theta)p(D_{2}|\theta)}{p(D_{1})p(D_{2})}=\frac{1}{p(\theta)}\cdot\frac{p(\theta)p(D_{1}|\theta)}{p(D_{1})}\cdot\frac{p(\theta)p(D_{2}|\theta)}{p(D_{2})}=\frac{p(\theta|D_{1})p(\theta|D_{2})}{p(\theta)}
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Paragraph
-We know 
-\begin_inset Formula $\theta\sim N\left(\mu,\Sigma\right)$
-\end_inset
-
- and 
-\begin_inset Formula $D_{i}|\theta\sim N(H_{i}\theta,\sigma^{2}I)$
-\end_inset
-
- so using Bayes' law and Q3 we know:
-\begin_inset Formula 
-\[
-p(\theta|D_{1},D_{2})=\frac{p(\theta,D_{1},D_{2})}{p(D_{1},D_{2})}\propto p(\theta,D_{1},D_{2})=p(\theta)p(D_{1}|\theta)p(D_{2}|\theta)
-\]
-
-\end_inset
-
-So, we can write the PDF of 
-\begin_inset Formula $p(\theta|D_{1},D_{2})$
-\end_inset
-
- as the multiplication of three Guassions.
- Specifically, it's also a Guassion and in order to descibe it we need its
- mean and covariance.
- Using the derivative trick we only need to look at the sum in the exponent:
-\begin_inset Formula 
-\[
-2\Delta=(x-\mu)^{T}\Sigma^{-1}(x-\mu)+\frac{1}{\sigma^{2}}\sum_{i=[1,2]}\left\Vert H_{i}\theta-y_{i}\right\Vert ^{2}
-\]
-
-\end_inset
-
-So:
-\begin_inset Formula 
-\[
-2\frac{\partial\Delta}{\partial\theta}=\left(\Sigma_{\theta|D_{1}}^{-1}+\Sigma_{\theta|D_{2}}^{-1}-\Sigma^{-1}\right)\left(\theta-\left(\left(\Sigma_{\theta|D_{1}}^{-1}+\Sigma_{\theta|D_{2}}^{-1}-\Sigma^{-1}\right)^{-1}\left(\Sigma^{-1}\mu+\frac{1}{\sigma^{2}}H_{1}^{T}y_{1}+\frac{1}{\sigma^{2}}H_{2}^{T}y_{2}\right)\right)\right)
-\]
-
-\end_inset
-
-I.E.: 
-\begin_inset Formula 
-\[
-\theta|D_{1},D2\sim N\left(\left(\left(\Sigma_{\theta|D_{1}}^{-1}+\Sigma_{\theta|D_{2}}^{-1}-\Sigma^{-1}\right)^{-1}\left(\Sigma^{-1}\mu+\frac{1}{\sigma^{2}}H_{1}^{T}y_{1}+\frac{1}{\sigma^{2}}H_{2}^{T}y_{2}\right)\right),\left(\Sigma_{\theta|D_{1}}^{-1}+\Sigma_{\theta|D_{2}}^{-1}-\Sigma^{-1}\right)\right)
-\]
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Q5 Sequential Calculation Of Regression 
-\end_layout
-
-\begin_layout Paragraph
-From Q4 above we can see the posterior given the 2 datasets is in fact a
- function of the 2 separate posteriors and the prior for 
-\begin_inset Formula $\theta$
-\end_inset
-
-.
- Hence, once we've computed the regression for each dataset, we can use
- the above formula to compute the overall regression which would still be
- a Gaussian as the product of Gaussian.
- 
+Evidence in the Dual Space
 \end_layout
 
 \begin_layout Standard
@@ -515,14 +298,6 @@ From Q4 above we can see the posterior given the 2 datasets is in fact a
 Practical
 \end_layout
 
-\begin_layout Subsection
-Polynomial Basis Functions
-\end_layout
-
-\begin_layout Subsubsection
-Q3 Linear Regression Model
-\end_layout
-
 \begin_layout Standard
 \begin_inset Box Frameless
 position "t"
@@ -562,13 +337,6 @@ backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q3_deg3.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
 
 \end_layout
 
@@ -594,781 +362,6 @@ backgroundcolor "none"
 status open
 
 \begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q3_deg7.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Q5 Bayesian Linear Regression Prior
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q5_bayesian_deg3_prior.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q5_bayesian_deg7_prior.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Q6 Bayesian Linear Regression Posterior
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q6_bayesian_deg3_post.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q6_bayesian_deg7_post.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Gaussian Basis Functions
-\end_layout
-
-\begin_layout Subsubsection
-Prior and posterior for S_1
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q7_gaussian_S_1_prior.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q7_gaussian_S_1_post.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Prior and posterior for S_2:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q7_gaussian_S_2_prior.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q7_gaussian_S_2_post.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Prior and posterior for S_3
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q7_gaussian_S_3_prior.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q7_gaussian_S_3_post.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsection
-Cubic Regression Splines
-\end_layout
-
-\begin_layout Subsubsection
-Prior and posterior for K_1
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q8_splines_k_1_prior.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q8_splines_k_1_post.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Prior and posterior for K_2
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q8_splines_k_2_prior.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q8_splines_k_2_post.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Subsubsection
-Prior and posterior for K_3
-\end_layout
-
-\begin_layout Standard
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q8_splines_k_3_prior.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../tmp_figs/q8_splines_k_3_post.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
 
 \end_layout
 
