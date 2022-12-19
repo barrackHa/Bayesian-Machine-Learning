@@ -202,7 +202,64 @@ y(x_{i})=\theta h(x_{i})+\eta_{i}\qquad\eta_{i}\sim\mvn 0{\sigma_{i}^{2}}
 
 \begin_layout Subsubsection
 Q1 
-\begin_inset Formula $p(y|\theta)=?$
+\begin_inset Formula $p(y|\theta)\sim\mvn{H\theta}{\Gamma}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+For each i: 
+\begin_inset Formula 
+\[
+p(y_{i}|\theta)\sim\cmvn{yi}{\theta^{T}h(x_{i})}{I\sigma_{i}^{2}}
+\]
+
+\end_inset
+
+Explicitly:
+\begin_inset Formula 
+\[
+p(y_{i}|\theta)=\frac{1}{\sqrt{2\pi\sigma_{i}^{2}}}\exp\left[-\frac{1}{2\sigma_{i}^{2}}\left(h(x_{i})^{T}\theta-y_{i}\right)^{2}\right]
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Denote 
+\begin_inset Formula $\eta=\mvn 0{\Gamma}$
+\end_inset
+
+ where 
+\begin_inset Formula $\Gamma=daig(\sigma_{i}^{2})$
+\end_inset
+
+.
+ As y is an affine transformation of 
+\begin_inset Formula $\theta$
+\end_inset
+
+ and 
+\begin_inset Formula $\eta$
+\end_inset
+
+ we get:
+\begin_inset Formula 
+\[
+p(y|\theta)\sim\mvn{H\theta}{\Gamma}
+\]
+
+\end_inset
+
+Explicitly:
+\begin_inset Formula 
+\[
+p(y|\theta)=\frac{1}{\sqrt{\left(2\pi\right)^{d}\left|\Gamma\right|}}\exp\left[-\mahala y{H\theta}{\Gamma^{-1}}\right]
+\]
+
 \end_inset
 
 
@@ -211,6 +268,70 @@ Q1
 \begin_layout Subsubsection
 Q2 
 \begin_inset Formula $\hat{\theta}_{MLE}=?$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+We write the log-likelyhood:
+\begin_inset Formula 
+\[
+\ell(y|\theta)=\log\mvn{H\theta}{\Gamma}=-\mahala y{H\theta}{\Gamma^{-1}}+const
+\]
+
+\end_inset
+
+So in fact we try to minimize:
+\begin_inset Formula 
+\[
+L=\mahala y{H\theta}{\Gamma^{-1}}
+\]
+
+\end_inset
+
+And so:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial L}{\partial\theta} & =-H^{T}\Gamma^{-1}(y-H\theta)\overset{!}{=}0\\
+iff & H^{T}\Gamma^{-1}y=H^{T}\Gamma^{-1}H\theta\\
+iff & \hat{\theta}_{MLE}=\left(H^{T}\Gamma^{-1}H\right)^{-1}H^{T}\Gamma^{-1}y
+\end{align*}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+———————————————————————————————————-
+\end_layout
+
+\begin_layout Paragraph
+\begin_inset Formula 
+\begin{align*}
+\ell(y|\theta) & =\sum_{i=1}^{N}\log\cmvn{yi}{\theta^{T}h(x_{i})}{I\sigma_{i}^{2}}\\
+= & -\frac{1}{2}\sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}\left\Vert h(x_{i})^{T}\theta-y_{i}\right\Vert ^{2}+const
+\end{align*}
+
+\end_inset
+
+So in fact we try to minimize:
+\begin_inset Formula 
+\[
+L=\sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}\left\Vert h(x_{i})^{T}\theta-y_{i}\right\Vert ^{2}
+\]
+
+\end_inset
+
+And so:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial L}{\partial\theta} & =\sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}\frac{\partial L}{\partial\theta}\left\Vert h(x_{i})^{T}\theta-y_{i}\right\Vert ^{2}=\sum_{i=1}^{N}\frac{2}{\sigma_{i}^{2}}\left(h(x_{i})^{T}\theta-y_{i}\right)h(x_{i})\\
+= & \sum_{i=1}^{N}\frac{2}{\sigma_{i}^{2}}h(x_{i})^{T}\theta h(x_{i})-\sum_{i=1}^{N}\frac{2}{\sigma_{i}^{2}}y_{i}h(x_{i})\overset{!}{=}0\\
+iff & \sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}h(x_{i})^{T}\theta h(x_{i})=\sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}y_{i}h(x_{i})
+\end{align*}
+
 \end_inset
 
 
@@ -234,6 +355,54 @@ Product of Kernels
 
 \begin_layout Subsubsection
 Q4
+\end_layout
+
+\begin_layout Paragraph
+Let 
+\begin_inset Formula $\left\{ x_{i}\right\} _{i=1}^{N}\subseteq\mathbb{R}^{N}$
+\end_inset
+
+.
+ Denote 
+\begin_inset Formula $X=span\left(\left\{ x_{i}\right\} _{i=1}^{N}\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $K=\left[k(x_{i},x_{j})\right]_{i,j=1}^{N}$
+\end_inset
+
+ Grahm's matrix for 
+\begin_inset Formula $k(\cdot,\cdot)$
+\end_inset
+
+ and 
+\begin_inset Formula $\left\{ x_{i}\right\} _{i=1}^{N}$
+\end_inset
+
+.
+ Since 
+\begin_inset Formula $k(\cdot,\cdot)$
+\end_inset
+
+ is a valid kernel function, we can write 
+\begin_inset Formula $K=RR^{T}$
+\end_inset
+
+ for some 
+\begin_inset Formula $R$
+\end_inset
+
+.
+ 
+\begin_inset Formula 
+\begin{align*}
+f(x) & \overset{\Delta}{=}R^{T}Ux\\
+f^{T}(x_{i})f(x_{j})= & \left(R^{T}Ux_{i}\right)^{T}R^{T}Ux_{j}=x^{T}U^{T}RR^{T}Ux=e_{i}Ke_{j}=\left[K\right]_{i,j}=k(x_{i},x_{j})
+\end{align*}
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection

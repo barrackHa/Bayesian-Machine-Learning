@@ -52,10 +52,13 @@ def main():
     degrees = [2, 3, 4, 5, 6, 7, 8, 9, 10]
     noise_var = .25
     alpha = 5
+    tot_evidence = []
 
     # go over each response function and polynomial basis function
     for i, f in enumerate(functions):
         y = f(x) + np.sqrt(noise_var) * np.random.randn(len(x))
+        evidence_dict = {}
+        evidence_lst = []
 
         for j, d in enumerate(degrees):
             # set up model parameters
@@ -65,9 +68,28 @@ def main():
             # calculate evidence
             ev = log_evidence(BayesianLinearRegression(mean, cov, noise_var, pbf), x, y)
             # <your code here>
+            evidence_dict[d] = ev
+            evidence_lst.append(ev)
+        
+        # For each function in functions we get a dictionary 
+        # of evidence values per degree
+        # looks like - 
+        # [function1: {degree1: evidence1, degree2: evidence2, ...},...]
+        tot_evidence.append(evidence_dict)
+
 
         # plot evidence versus degree and predicted fit
         # <your code here>
+        plt.figure()
+        # plt.plot(x, y, 'o')
+        # plt.fill_between(x, pred-std, pred+std, alpha=.5)
+        plt.plot(degrees, evidence_lst, 'k', lw=2)
+        plt.xlabel('$x$')
+        plt.ylabel(r'log-evidence')
+        plt.title(f'log-evidence versus degree for function {i+1}')
+        plt.grid()
+        # plt.legend()
+        # plt.show()
 
     # ------------------------------------------------------ section 2.2
     # load relevant data
