@@ -1,3 +1,4 @@
+from pathlib import Path
 import numpy as np
 from matplotlib import pyplot as plt
 from ex3_utils import BayesianLinearRegression, polynomial_basis_functions, load_prior
@@ -37,7 +38,7 @@ def log_evidence(model: BayesianLinearRegression, X, y):
     return model_log_evidence
 
 
-def main():
+def main(save=False, show=True):
     # ------------------------------------------------------ section 2.1
     # set up the response functions
     f1 = lambda x: x**2 - 1
@@ -81,19 +82,51 @@ def main():
         # plot evidence versus degree and predicted fit
         # <your code here>
         plt.figure()
-        # plt.plot(x, y, 'o')
-        # plt.fill_between(x, pred-std, pred+std, alpha=.5)
         plt.plot(degrees, evidence_lst, 'k', lw=2)
+        argMax = degrees[np.argmax(evidence_lst)]
+        argMin = degrees[np.argmin(evidence_lst)]
         plt.xlabel('$x$')
         plt.ylabel(r'log-evidence')
-        plt.title(f'log-evidence versus degree for function {i+1}')
+        plt.suptitle(f'log-evidence versus degree for function {i+1}')
+        plt.title(f'Best Fit: {argMax}, Worst Fit: {argMin}')
         plt.grid()
-        # plt.legend()
-        # plt.show()
 
+        if save:
+            p = Path(__file__).parents[1]/f'tmp_figs/q3_f_{i}_log_evidence.png'
+            plt.savefig(p)
+
+        best = polynomial_basis_functions(argMax)
+        worst = polynomial_basis_functions(argMin)
+        best_mean, best_cov = np.zeros(argMax + 1), np.eye(argMax + 1) * alpha
+        worst_mean, worst_cov = np.zeros(argMin + 1), np.eye(argMin + 1) * alpha
+
+        best_blr = BayesianLinearRegression(best_mean, best_cov, noise_var, best)
+        worst_blr = BayesianLinearRegression(worst_mean, worst_cov, noise_var, worst)
+        
+        best_pred = best_blr.fit_predict(x, y)
+        best_std = best_blr.predict_std(x)
+        worst_pred = worst_blr.fit_predict(x, y)
+        worst_std = worst_blr.predict_std(x)
+
+        plt.figure()
+        plt.plot(x, y, 'o',  lw=0.1, alpha=0.3, label='data', color='k')
+        plt.plot(x, best_pred, lw=2, label=f'best fit d={argMax}')
+        plt.fill_between(x, best_pred-best_std, best_pred+best_std, alpha=.5)
+        plt.plot(x, worst_pred, lw=2, label=f'worst fit d={argMin}')
+        plt.fill_between(x, worst_pred-worst_std, worst_pred+worst_std, alpha=.5)
+        plt.title(f'Function {i+1} - Best And Worst Evidence Compared To Data')
+        plt.legend()
+
+        if save:
+            p = Path(__file__).parents[1]/f'tmp_figs/q4_f_{i}_best_and_worst.png'
+            plt.savefig(p)
+
+
+    if show:     
+        plt.show()
     # ------------------------------------------------------ section 2.2
     # load relevant data
-    nov16 = np.load('nov162020.npy')
+    nov16 = np.load(Path(__file__).parent / 'nov162020.npy')
     hours = np.arange(0, 24, .5)
     train = nov16[:len(nov16) // 2]
     hours_train = hours[:len(nov16) // 2]
@@ -103,19 +136,37 @@ def main():
     pbf = polynomial_basis_functions(7)
 
     noise_vars = np.linspace(.05, 2, 100)
+    temps_log_evidence = []
     evs = np.zeros(noise_vars.shape)
     for i, n in enumerate(noise_vars):
         # calculate the evidence
         mdl = BayesianLinearRegression(mu, cov, n, pbf)
         ev = log_evidence(mdl, hours_train, train)
         # <your code here>
+        temps_log_evidence.append(ev)
 
     # plot log-evidence versus amount of sample noise
     # <your code here>
+    plt.figure()
+    plt.plot(noise_vars, temps_log_evidence)
+    noise_argMax = noise_vars[np.argmax(temps_log_evidence)]
+    noise_max = np.max(temps_log_evidence)
+    plt.title(f'Sample Noise With Highest Evidence: {noise_argMax}')
+    plt.xlabel('Sample Noise')
+    plt.ylabel('Log-Evidence')
+    plt.suptitle('Log-Evidence Score As A Function Of Sample Noise')
+    plt.grid()
+
+    if save:
+        p = Path(__file__).parents[1]/f'tmp_figs/q6_log_evidence_per_noise.png'
+        plt.savefig(p)
+    
+    if show:
+        plt.show()
 
 
 if __name__ == '__main__':
-    main()
+    main(show=False, save=True)
 
 
 
