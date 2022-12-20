@@ -136,22 +136,21 @@ def main(save=False, show=True):
     pbf = polynomial_basis_functions(7)
 
     noise_vars = np.linspace(.05, 2, 100)
-    temps_log_evidence = []
+    # temps_log_evidence = []
     evs = np.zeros(noise_vars.shape)
     for i, n in enumerate(noise_vars):
         # calculate the evidence
         mdl = BayesianLinearRegression(mu, cov, n, pbf)
         ev = log_evidence(mdl, hours_train, train)
         # <your code here>
-        temps_log_evidence.append(ev)
+        evs[i] = (ev)
 
     # plot log-evidence versus amount of sample noise
     # <your code here>
     plt.figure()
-    plt.plot(noise_vars, temps_log_evidence)
-    noise_argMax = noise_vars[np.argmax(temps_log_evidence)]
-    noise_max = np.max(temps_log_evidence)
-    plt.title(f'Sample Noise With Highest Evidence: {noise_argMax}')
+    plt.plot(noise_vars, evs)
+    noise_argMax = noise_vars[np.argmax(evs)]
+    plt.title(f'Sample Noise With Highest Evidence: {noise_argMax:.4f}')
     plt.xlabel('Sample Noise')
     plt.ylabel('Log-Evidence')
     plt.suptitle('Log-Evidence Score As A Function Of Sample Noise')
@@ -164,9 +163,8 @@ def main(save=False, show=True):
     if show:
         plt.show()
 
-
 if __name__ == '__main__':
-    main(show=False, save=True)
+    main(show=True, save=True)
 
 
 
