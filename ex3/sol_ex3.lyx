@@ -257,7 +257,7 @@ p(y|\theta)\sim\mvn{H\theta}{\Gamma}
 Explicitly:
 \begin_inset Formula 
 \[
-p(y|\theta)=\frac{1}{\sqrt{\left(2\pi\right)^{d}\left|\Gamma\right|}}\exp\left[-\mahala y{H\theta}{\Gamma^{-1}}\right]
+p(y|\theta)=\frac{1}{\sqrt{\left(2\pi\right)^{d}\left|\Gamma\right|}}\exp\left[-\mahala{H\theta}y{\Gamma^{-1}}\right]
 \]
 
 \end_inset
@@ -267,7 +267,7 @@ p(y|\theta)=\frac{1}{\sqrt{\left(2\pi\right)^{d}\left|\Gamma\right|}}\exp\left[-
 
 \begin_layout Subsubsection
 Q2 
-\begin_inset Formula $\hat{\theta}_{MLE}=?$
+\begin_inset Formula $\hat{\theta}_{MLE}=\left(H^{T}\Gamma^{-1}H\right)^{-1}H^{T}\Gamma^{-1}y$
 \end_inset
 
 
@@ -277,7 +277,7 @@ Q2
 We write the log-likelyhood:
 \begin_inset Formula 
 \[
-\ell(y|\theta)=\log\mvn{H\theta}{\Gamma}=-\mahala y{H\theta}{\Gamma^{-1}}+const
+\ell(y|\theta)=\ln\mvn{H\theta}{\Gamma}=-\mahala{H\theta}y{\Gamma^{-1}}+const
 \]
 
 \end_inset
@@ -285,7 +285,7 @@ We write the log-likelyhood:
 So in fact we try to minimize:
 \begin_inset Formula 
 \[
-L=\mahala y{H\theta}{\Gamma^{-1}}
+L=\mahala{H\theta}y{\Gamma^{-1}}
 \]
 
 \end_inset
@@ -293,7 +293,7 @@ L=\mahala y{H\theta}{\Gamma^{-1}}
 And so:
 \begin_inset Formula 
 \begin{align*}
-\frac{\partial L}{\partial\theta} & =-H^{T}\Gamma^{-1}(y-H\theta)\overset{!}{=}0\\
+\frac{\partial L}{\partial\theta} & =H^{T}\Gamma^{-1}(H\theta-y)\overset{!}{=}0\\
 iff & H^{T}\Gamma^{-1}y=H^{T}\Gamma^{-1}H\theta\\
 iff & \hat{\theta}_{MLE}=\left(H^{T}\Gamma^{-1}H\right)^{-1}H^{T}\Gamma^{-1}y
 \end{align*}
@@ -303,47 +303,73 @@ iff & \hat{\theta}_{MLE}=\left(H^{T}\Gamma^{-1}H\right)^{-1}H^{T}\Gamma^{-1}y
 
 \end_layout
 
-\begin_layout Standard
-———————————————————————————————————-
-\end_layout
-
-\begin_layout Paragraph
-\begin_inset Formula 
-\begin{align*}
-\ell(y|\theta) & =\sum_{i=1}^{N}\log\cmvn{yi}{\theta^{T}h(x_{i})}{I\sigma_{i}^{2}}\\
-= & -\frac{1}{2}\sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}\left\Vert h(x_{i})^{T}\theta-y_{i}\right\Vert ^{2}+const
-\end{align*}
-
-\end_inset
-
-So in fact we try to minimize:
-\begin_inset Formula 
-\[
-L=\sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}\left\Vert h(x_{i})^{T}\theta-y_{i}\right\Vert ^{2}
-\]
-
-\end_inset
-
-And so:
-\begin_inset Formula 
-\begin{align*}
-\frac{\partial L}{\partial\theta} & =\sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}\frac{\partial L}{\partial\theta}\left\Vert h(x_{i})^{T}\theta-y_{i}\right\Vert ^{2}=\sum_{i=1}^{N}\frac{2}{\sigma_{i}^{2}}\left(h(x_{i})^{T}\theta-y_{i}\right)h(x_{i})\\
-= & \sum_{i=1}^{N}\frac{2}{\sigma_{i}^{2}}h(x_{i})^{T}\theta h(x_{i})-\sum_{i=1}^{N}\frac{2}{\sigma_{i}^{2}}y_{i}h(x_{i})\overset{!}{=}0\\
-iff & \sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}h(x_{i})^{T}\theta h(x_{i})=\sum_{i=1}^{N}\frac{1}{\sigma_{i}^{2}}y_{i}h(x_{i})
-\end{align*}
-
-\end_inset
-
-
-\end_layout
-
 \begin_layout Subsubsection
 Q3 
-\begin_inset Formula $\theta\sim\mvn{\mu_{0}}{\Sigma_{0}},$
+\begin_inset Formula $\theta\sim\mvn{\mu_{0}}{\Sigma_{0}}\rightarrow$
 \end_inset
 
 
 \begin_inset Formula $p(\theta|y)=?$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+With Bayes' law we know: 
+\begin_inset Formula $p(\theta|y)\propto p(\theta)p(y|\theta)$
+\end_inset
+
+ and so 
+\begin_inset Formula $p(\theta|y)\sim\mvn{\mu_{\theta|y}}{C_{\theta|y}}$
+\end_inset
+
+ as the product of 2 Gaussions.
+ Also 
+\begin_inset Formula 
+\begin{align*}
+\mu_{\theta|y}= & \underset{\theta}{argmax}p(\theta)p(y|\theta)=\underset{\theta}{argmax}\ln p(\theta)p(y|\theta)\\
+C_{\theta|y}= & -\left(\frac{\partial^{2}}{\partial\theta^{2}}p(\theta)p(y|\theta)\right)^{-1}
+\end{align*}
+
+\end_inset
+
+So we can directly compute the values:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial}{\partial\theta}\ln p(\theta)p(y|\theta)+const & =\frac{\partial}{\partial\theta}\left[-\mahala{\theta}{\mu_{0}}{\Sigma_{0}^{-1}}-\mahala{H\theta}y{\Gamma^{-1}}\right]\\
+= & -\Sigma_{0}^{-1}(\theta-\mu_{0})-H^{T}\Gamma^{-1}(H\theta-y)\\
+= & -\Sigma_{0}^{-1}\theta+\Sigma_{0}^{-1}\mu_{0}-H^{T}\Gamma^{-1}H\theta+H^{T}\Gamma^{-1}y\\
+= & \Sigma_{0}^{-1}\mu_{0}+H^{T}\Gamma^{-1}y-\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)\theta\overset{!}{=}0\\
+iff\: & \Sigma_{0}^{-1}\mu_{0}+H^{T}\Gamma^{-1}y=\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)\theta\\
+iff\: & \mu_{\theta|y}=\left(\Sigma_{0}^{-1}\mu_{0}+H^{T}\Gamma^{-1}y\right)\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)^{-1}
+\end{align*}
+
+\end_inset
+
+And:
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial^{2}}{\partial\theta^{2}}p(\theta)p(y|\theta) & =\frac{\partial}{\partial\theta}\left[-\Sigma_{0}^{-1}(\theta-\mu_{0})-H^{T}\Gamma^{-1}H\theta+H^{T}\Gamma^{-1}y\right]\\
+= & -\Sigma_{0}^{-1}-H^{T}\Gamma^{-1}H
+\end{align*}
+
+\end_inset
+
+So: 
+\begin_inset Formula 
+\[
+C_{\theta|y}=\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)^{-1}
+\]
+
+\end_inset
+
+Finally:
+\begin_inset Formula 
+\[
+p(\theta|y)\sim\mvn{\left(\Sigma_{0}^{-1}\mu_{0}+H^{T}\Gamma^{-1}y\right)\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)^{-1}}{\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)^{-1}}
+\]
+
 \end_inset
 
 
@@ -354,7 +380,11 @@ Product of Kernels
 \end_layout
 
 \begin_layout Subsubsection
-Q4
+Q4 
+\begin_inset Formula $k(x,y)=\sum_{i}\sum_{j}g_{i}(x)f_{j}(x)f_{j}(y)g_{i}(y)$
+\end_inset
+
+
 \end_layout
 
 \begin_layout Paragraph
@@ -392,8 +422,16 @@ Let
 \begin_inset Formula $R$
 \end_inset
 
+ and 
+\begin_inset Formula $U$
+\end_inset
+
+ is a basis transformation matrix such that 
+\begin_inset Formula $Ux_{i}=e_{i}$
+\end_inset
+
 .
- 
+ Now: 
 \begin_inset Formula 
 \begin{align*}
 f(x) & \overset{\Delta}{=}R^{T}Ux\\
@@ -402,7 +440,88 @@ f^{T}(x_{i})f(x_{j})= & \left(R^{T}Ux_{i}\right)^{T}R^{T}Ux_{j}=x^{T}U^{T}RR^{T}
 
 \end_inset
 
+ Now let 
+\begin_inset Formula $f,g$
+\end_inset
 
+ be functions which hold the above equality for 
+\begin_inset Formula $k_{1,}k_{2}$
+\end_inset
+
+ respectivlly.
+ So:
+\begin_inset Formula 
+\[
+k(x,y)=k_{1}(x,y)\cdot k_{2}(x,y)=f^{T}(x)f(y)\cdot g^{T}(x)g(y)
+\]
+
+\end_inset
+
+Denote 
+\begin_inset Formula $f^{T}(x)=\left[\cdots,f_{i}(x),\cdots\right]$
+\end_inset
+
+ and the same for 
+\begin_inset Formula $g$
+\end_inset
+
+.
+ Now:
+\begin_inset Formula 
+\[
+k(x,y)=\left(\sum_{i}f_{i}(x)f_{i}(y)\right)\cdot\left(\sum_{j}g_{j}(x)g_{j}(y)\right)=\sum_{j}\left(\sum_{i}f_{i}(x)f_{i}(y)g_{j}(x)g_{j}(y)\right)
+\]
+
+\end_inset
+
+Q.E.D.
+ 
+\end_layout
+
+\begin_layout Subsubsection
+Q5 
+\begin_inset Formula $k(x,y)=k_{1}(x,y)\cdot k_{2}(x,y)$
+\end_inset
+
+ Is A Valid Kernel
+\end_layout
+
+\begin_layout Paragraph
+Finally, given such kernels and their respective functions 
+\begin_inset Formula $f$
+\end_inset
+
+ and 
+\begin_inset Formula $g$
+\end_inset
+
+ (as in Q4) we define: 
+\begin_inset Formula 
+\begin{align*}
+h(x) & =reshape\left(f(x)g^{T}(x),(,N\times N)\right)=reshape\left(\left[\begin{array}{ccc}
+f_{1}(x)g_{1}(x) & \cdots & f_{1}(x)g_{n}(x)\\
+\vdots & \ddots & \vdots\\
+f_{n}(x)g_{1}(x) & \cdots & f_{n}(x)g_{n}(x)
+\end{array}\right],(,N\times N)\right)\\
+= & [f_{1}(x)g_{1}(x),...,f_{1}(x)g_{n}(x),f_{2}(x)g_{1}(x),...,f_{2}(x)g_{n}(x),f_{n}(x)g_{1}(x),...,f_{n}(x)g_{n}(x)]^{T}
+\end{align*}
+
+\end_inset
+
+So we get:
+\begin_inset Formula 
+\[
+h^{T}(x)h(y)=\sum_{j}\sum_{i}f_{i}(x)g_{i}(x)f_{j}(y)g_{j}(y)
+\]
+
+\end_inset
+
+and 
+\begin_inset Formula $k(\cdot,\cdot)$
+\end_inset
+
+ is a valid kernel as a dot product of to vector functions.
+ Q.E.D
 \end_layout
 
 \begin_layout Subsection
@@ -414,7 +533,7 @@ Q6
 \begin_inset Formula $k(x,y)=\exp\left[\beta\left\Vert g(x)-g(y)\right\Vert ^{2}\right]$
 \end_inset
 
- 
+ Is Valid
 \end_layout
 
 \begin_layout Paragraph
@@ -449,11 +568,150 @@ Q7
 \begin_inset Formula $k(x,y)=k_{1}(x,y)-k_{2}(x,y)$
 \end_inset
 
+ Is Not Valid
+\end_layout
 
+\begin_layout Paragraph
+Let 
+\begin_inset Formula $k_{1}(x,y)\defin xy$
+\end_inset
+
+.
+ K is a valid kernel as a pruduct of the identity function of real numbers.
+ Also 
+\begin_inset Formula $k_{2}(x,y)=2\cdot k_{1}(x,y)$
+\end_inset
+
+ is a valid kernel as the multiplication of a valid kernel by a positive
+ constant.
+ Now 
+\begin_inset Formula $k(x,y)=k_{1}(x,y)-k_{2}(x,y)=-xy$
+\end_inset
+
+ is not a valid kernel because 
+\begin_inset Formula $\forall x\rightarrow k(x,x)\le0$
+\end_inset
+
+, specifically for the unit vector 
+\begin_inset Formula $e_{1}$
+\end_inset
+
+and 
+\begin_inset Formula $k's$
+\end_inset
+
+ Grahm metrix 
+\begin_inset Formula $K$
+\end_inset
+
+we get:
+\begin_inset Formula 
+\[
+e_{1}^{T}Ke_{1}=-1
+\]
+
+\end_inset
+
+So K is not a PSD.
+\end_layout
+
+\begin_layout Subsubsection
+Q8 
+\begin_inset Formula $k(x,y)=k_{a}(x_{a},y_{a})+k_{b}(x_{b},y_{b})$
+\end_inset
+
+ Is Valid
+\end_layout
+
+\begin_layout Paragraph
+Note that in this case 
+\begin_inset Formula $k's$
+\end_inset
+
+ Grahm matrix 
+\begin_inset Formula $K=K_{a}+K_{b}$
+\end_inset
+
+.
+ For each vector 
+\begin_inset Formula $v$
+\end_inset
+
+ it holds that 
+\begin_inset Formula $0\le v^{T}K_{x}v$
+\end_inset
+
+ (x=a,b) as 
+\begin_inset Formula $k_{x}$
+\end_inset
+
+is a valid kernel and so:
+\begin_inset Formula 
+\[
+0\le v^{T}K_{a}v+v^{T}K_{b}v=v^{T}Kv
+\]
+
+\end_inset
+
+Q.E.D.
+\end_layout
+
+\begin_layout Subsubsection
+Q9 
+\begin_inset Formula $k(x,y)=\sqrt{\ell^{T}(x)\ell(y)}$
+\end_inset
+
+ Is Not Valid
+\end_layout
+
+\begin_layout Standard
+Proff online...
 \end_layout
 
 \begin_layout Subsection
 Evidence in the Dual Space
+\end_layout
+
+\begin_layout Subsubsection
+Q10 
+\begin_inset Formula $p(y|k(\cdot,\cdot),\sigma_{2})=\cmvn y0{K+I\sigma^{2}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note 
+\begin_inset Formula $y=K\alpha+\eta$
+\end_inset
+
+ and as such is an affine transformation of a Guassion and so - a Gaussion.
+ We just need to find its mean and cov:
+\begin_inset Formula 
+\[
+\expec{y|k(\cdot,\cdot),\sigma_{2}}=\expec{K\alpha+\eta}=K\expec{\alpha}+\expec{\eta}=K0+0=0
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\cov{y|k(\cdot,\cdot),\sigma_{2}}=\cov{K\alpha+\eta}=\cov{K\alpha}+\cov{\eta}=K^{T}\cov{\alpha}K+I\sigma^{2}=K^{T}K^{-1}K+I\sigma^{2}=K+I\sigma^{2}
+\]
+
+\end_inset
+
+ Where the last transition is due to K's symmetry.
+ Hence:
+\begin_inset Formula 
+\[
+p(y|k(\cdot,\cdot),\sigma_{2})=\cmvn y0{K+I\sigma^{2}}
+\]
+
+\end_inset
+
+ 
 \end_layout
 
 \begin_layout Standard
