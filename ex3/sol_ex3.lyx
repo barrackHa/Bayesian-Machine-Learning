@@ -233,12 +233,19 @@ Denote
 \begin_inset Formula $\eta=\mvn 0{\Gamma}$
 \end_inset
 
- where 
-\begin_inset Formula $\Gamma=daig(\sigma_{i}^{2})$
+ where:
+\begin_inset Formula 
+\[
+\Gamma=daig(\left\{ \sigma_{i}^{2}\right\} _{i=1}^{n})=\left[\begin{array}{ccc}
+\sigma_{1}^{2} &  & 0\\
+ & \ddots\\
+0 &  & \sigma_{n}^{2}
+\end{array}\right]
+\]
+
 \end_inset
 
-.
- As y is an affine transformation of 
+As y is an affine transformation of 
 \begin_inset Formula $\theta$
 \end_inset
 
@@ -342,7 +349,7 @@ So we can directly compute the values:
 = & -\Sigma_{0}^{-1}\theta+\Sigma_{0}^{-1}\mu_{0}-H^{T}\Gamma^{-1}H\theta+H^{T}\Gamma^{-1}y\\
 = & \Sigma_{0}^{-1}\mu_{0}+H^{T}\Gamma^{-1}y-\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)\theta\overset{!}{=}0\\
 iff\: & \Sigma_{0}^{-1}\mu_{0}+H^{T}\Gamma^{-1}y=\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)\theta\\
-iff\: & \mu_{\theta|y}=\left(\Sigma_{0}^{-1}\mu_{0}+H^{T}\Gamma^{-1}y\right)\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)^{-1}
+iff\: & \mu_{\theta|y}=\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)^{-1}\left(\Sigma_{0}^{-1}\mu_{0}+H^{T}\Gamma^{-1}y\right)
 \end{align*}
 
 \end_inset
@@ -367,7 +374,7 @@ C_{\theta|y}=\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)^{-1}
 Finally:
 \begin_inset Formula 
 \[
-p(\theta|y)\sim\mvn{\left(\Sigma_{0}^{-1}\mu_{0}+H^{T}\Gamma^{-1}y\right)\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)^{-1}}{\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)^{-1}}
+p(\theta|y)\sim\mvn{\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)^{-1}\left(\Sigma_{0}^{-1}\mu_{0}+H^{T}\Gamma^{-1}y\right)}{\left(\Sigma_{0}^{-1}+H^{T}\Gamma^{-1}H\right)^{-1}}
 \]
 
 \end_inset
@@ -729,6 +736,13 @@ Practical
 Evidence for Artificial Functions
 \end_layout
 
+\begin_layout Subsubsection
+\begin_inset Formula $f_{1}(x)=x^{2}-1$
+\end_inset
+
+
+\end_layout
+
 \begin_layout Paragraph
 \begin_inset Box Frameless
 position "t"
@@ -815,6 +829,13 @@ status open
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset Formula $f_{2}(x)=-x^{4}+3x^{2}+50\sin\left(\frac{x}{6}\right)$
 \end_inset
 
 
@@ -911,6 +932,13 @@ status open
 
 \end_layout
 
+\begin_layout Subsubsection
+\begin_inset Formula $f_{3}(x)=\frac{1}{2}x^{6}-0.75x^{4}+2.75x^{2}$
+\end_inset
+
+
+\end_layout
+
 \begin_layout Paragraph
 \begin_inset Box Frameless
 position "t"
@@ -1002,6 +1030,16 @@ status open
 
 \end_layout
 
+\begin_layout Subsubsection
+\begin_inset Formula $f_{4}(x)=\frac{5}{1+e^{-4x}}-\begin{cases}
+x & x-2>0\\
+0 & o.w.
+\end{cases}$
+\end_inset
+
+
+\end_layout
+
 \begin_layout Paragraph
 \begin_inset Box Frameless
 position "t"
@@ -1088,6 +1126,13 @@ status open
 
 \end_layout
 
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+\begin_inset Formula $f_{5}(x)=\cos4x+4\left|x-2\right|$
 \end_inset
 
 
@@ -1229,7 +1274,11 @@ Q7
 
 \begin_layout Paragraph
 The sample noise with the highest evidence is not the necessarily sample
- noise of the original measurements
+ noise of the original measurements.
+ The log-evidence of the noise is computed with regards to a spacific base
+ function.
+ As we've seen in Q3/4 the log-evidence may change when changing the base
+ functions
 \end_layout
 
 \end_body
