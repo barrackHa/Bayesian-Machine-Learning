@@ -25,9 +25,14 @@ def log_evidence(model: BayesianLinearRegression, X, y):
 
     # calculate the log-evidence
     H = model.h(X)
-    a = 0.5 * np.log(
-        np.linalg.det(map_cov) / np.linalg.det(sig)
-    )
+    
+    ## Tow way to calculate the log determinant of a matrix:
+    ## The secode way is theoreticly more stable but I see no difference in the results
+
+    # a = 0.5 * np.log(
+    #     np.linalg.det(map_cov) / np.linalg.det(sig)
+    # )
+    a = 0.5 *(np.linalg.slogdet(map_cov)[1] - np.linalg.slogdet(sig)[1])
     mahala_means = (map - mu).T @ sig_inv @ (map - mu)
     mahala_y = 1/noise * np.linalg.norm(y - H @ map)**2
     b = 0.5 * (mahala_means + mahala_y + (X.shape[0] * np.log(noise)))
@@ -164,7 +169,7 @@ def main(save=False, show=True):
         plt.show()
 
 if __name__ == '__main__':
-    main(show=True, save=True)
+    main(show=True, save=False)
 
 
 
