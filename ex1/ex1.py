@@ -1,7 +1,10 @@
 import numpy as np
 
 def multiply_uniforms(a, b, y, d):
-    return [min(a, y-d), max(b, y+d)]
+    ## This was a mistake in the original code:
+    # return [min(a, y-d), max(b, y+d)]
+    ## correct code:
+    return [max(a, y-d), min(b, y+d)]
 
 def multiply_gaussions(m,ss, h, y, ll):
     mean = ((ll*m) + (ss*h*y)) / (ll + ss*h*h)
