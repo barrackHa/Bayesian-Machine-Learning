@@ -48,7 +48,7 @@ def main(save=False, show=True):
     # set up the response functions
     f1 = lambda x: x**2 - 1
     f2 = lambda x: -x**4 + 3*x**2 + 50*np.sin(x/6)
-    f3 = lambda x: .05*x**6 - .75*x**4 + 2.75*x**2
+    f3 = lambda x: .5*x**6 - .75*x**4 + 2.75*x**2
     f4 = lambda x: 5 / (1 + np.exp(-4*x)) - (x - 2 > 0)*x
     f5 = lambda x: np.cos(x*4) + 4*np.abs(x - 2)
     functions = [f1, f2, f3, f4, f5]
