@@ -162,7 +162,7 @@ Barak Haim
 \end_layout
 
 \begin_layout Date
-22/12/2022
+27/12/2022
 \end_layout
 
 \begin_layout Standard
@@ -281,7 +281,7 @@ Q2
 \end_layout
 
 \begin_layout Paragraph
-We write the log-likelyhood:
+We write the log-likelihood:
 \begin_inset Formula 
 \[
 \ell(y|\theta)=\ln\mvn{H\theta}{\Gamma}=-\mahala{H\theta}y{\Gamma^{-1}}+const
@@ -331,7 +331,7 @@ With Bayes' law we know:
 \begin_inset Formula $p(\theta|y)\sim\mvn{\mu_{\theta|y}}{C_{\theta|y}}$
 \end_inset
 
- as the product of 2 Gaussions.
+ as the product of 2 Gaussian.
  Also 
 \begin_inset Formula 
 \begin{align*}
@@ -408,7 +408,7 @@ Let
 \begin_inset Formula $K=\left[k(x_{i},x_{j})\right]_{i,j=1}^{N}$
 \end_inset
 
- Grahm's matrix for 
+ Gram's matrix for 
 \begin_inset Formula $k(\cdot,\cdot)$
 \end_inset
 
@@ -455,7 +455,7 @@ f^{T}(x_{i})f(x_{j})= & \left(R^{T}Ux_{i}\right)^{T}R^{T}Ux_{j}=x^{T}U^{T}RR^{T}
 \begin_inset Formula $k_{1,}k_{2}$
 \end_inset
 
- respectivlly.
+ respectively.
  So:
 \begin_inset Formula 
 \[
@@ -540,7 +540,70 @@ Q6
 \begin_inset Formula $k(x,y)=\exp\left[\beta\left\Vert g(x)-g(y)\right\Vert ^{2}\right]$
 \end_inset
 
- Is Valid
+ Is Not Valid
+\end_layout
+
+\begin_layout Paragraph
+Let 
+\begin_inset Formula $\beta=1$
+\end_inset
+
+ and 
+\begin_inset Formula $g(x)\overset{\Delta}{=}x$
+\end_inset
+
+ so, for 
+\begin_inset Formula $D=\{x,y\}$
+\end_inset
+
+we get:
+\begin_inset Formula 
+\[
+K=\left[\begin{array}{cc}
+1 & \exp\left[\left\Vert x-y\right\Vert \right]\\
+\exp\left[\left\Vert x-y\right\Vert \right] & 1
+\end{array}\right]
+\]
+
+\end_inset
+
+and 
+\begin_inset Formula 
+\[
+det(K)=1-\exp\left[2\left\Vert x-y\right\Vert \right]
+\]
+
+\end_inset
+
+So, 
+\begin_inset Formula $det(K)<0$
+\end_inset
+
+ iff 
+\begin_inset Formula $1<\exp\left[2\left\Vert x-y\right\Vert \right]$
+\end_inset
+
+ iff 
+\begin_inset Formula $0<2\left\Vert x-y\right\Vert $
+\end_inset
+
+ iff 
+\begin_inset Formula $0<\left\Vert x-y\right\Vert $
+\end_inset
+
+.
+ I.e.
+ for every strictlly diffarent 
+\begin_inset Formula $x,y$
+\end_inset
+
+ K is not PSD.
+ If it where, we'd get 
+\begin_inset Formula $0\le det(K)$
+\end_inset
+
+ which isn't the case here.
+ Q.E.D.
 \end_layout
 
 \begin_layout Paragraph
@@ -584,7 +647,7 @@ Let
 \end_inset
 
 .
- K is a valid kernel as a pruduct of the identity function of real numbers.
+ K is a valid kernel as a product of the identity function of real numbers.
  Also 
 \begin_inset Formula $k_{2}(x,y)=2\cdot k_{1}(x,y)$
 \end_inset
@@ -607,7 +670,7 @@ and
 \begin_inset Formula $k's$
 \end_inset
 
- Grahm metrix 
+ Gram matrix 
 \begin_inset Formula $K$
 \end_inset
 
@@ -635,7 +698,7 @@ Note that in this case
 \begin_inset Formula $k's$
 \end_inset
 
- Grahm matrix 
+ Gram matrix 
 \begin_inset Formula $K=K_{a}+K_{b}$
 \end_inset
 
@@ -672,7 +735,7 @@ Q9
 \end_layout
 
 \begin_layout Standard
-Proff online...
+Proof online...
 \end_layout
 
 \begin_layout Subsection
@@ -692,7 +755,7 @@ Note
 \begin_inset Formula $y=K\alpha+\eta$
 \end_inset
 
- and as such is an affine transformation of a Guassion and so - a Gaussion.
+ and as such is an affine transformation of a Gaussian and so - a Gaussian.
  We just need to find its mean and cov:
 \begin_inset Formula 
 \[
@@ -956,7 +1019,7 @@ separation "3pt"
 shadowsize "4pt"
 framecolor "black"
 backgroundcolor "none"
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Box Boxed
@@ -1269,16 +1332,25 @@ status open
 \end_layout
 
 \begin_layout Subsubsection
-Q7 
+Q7 No
 \end_layout
 
 \begin_layout Paragraph
-The sample noise with the highest evidence is not the necessarily sample
+The sample noise with the highest evidence is not necessarily the sample
  noise of the original measurements.
- The log-evidence of the noise is computed with regards to a spacific base
- function.
- As we've seen in Q3/4 the log-evidence may change when changing the base
- functions
+ When creating our model we assume a Gaussian prior on 
+\begin_inset Formula $\theta$
+\end_inset
+
+, we assume the noise is also a Gaussian and we assume the temperatures
+ were decided upon using a polynomial with degree 
+\begin_inset Formula $\le7$
+\end_inset
+
+.
+ In case those assumptions hold we cold say we've found the noise.
+ As it's extremely unlikely though, the noise with the high-test evidence
+ is not necessarily the sample noise of the original measurements.
 \end_layout
 
 \end_body
