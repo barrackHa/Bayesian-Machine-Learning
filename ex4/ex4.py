@@ -29,7 +29,10 @@ def RBF_kernel(alpha: float, beta: float) -> Callable:
     """
     def kern(x, y):
         # todo <your code here>
-        return None
+        k_x_y = alpha * np.exp(
+            -1 * beta * np.power(np.linalg.norm(x-y), 2)
+        )
+        return k_x_y
     return kern
 
 
@@ -42,7 +45,11 @@ def Laplacian_kernel(alpha: float, beta: float) -> Callable:
     """
     def kern(x, y):
         # todo <your code here>
-        return None
+        operand = np.sum(np.abs(x-y))
+        k_x_y = alpha * np.exp(
+            -1 * beta * np.power(operand, 2)
+        )
+        return k_x_y
     return kern
 
 
@@ -51,9 +58,17 @@ def Gibbs_kernel(alpha: float, beta: float, delta: float, gamma: float) -> Calla
     An implementation of the Gibbs kernel (see section 4.2.3 of http://www.gaussianprocess.org/gpml/chapters/RW.pdf)
     :return: a function that receives two inputs and returns the output of the kernel applied to these inputs
     """
+    l = lambda x: alpha * np.exp(
+        -1 * beta * np.power(np.linalg.norm(x-delta), 2)
+    )
     def kern(x, y):
         # todo <your code here>
-        return None
+        num = 2 * l(x) * l(y)
+        denom = l(x)**2 + l(y)**2
+        var = np.sqrt(num / denom)
+        exp_num = np.power(np.linalg.norm(x-y), 2)
+        exp = np.exp(-1 * (exp_num/denom))
+        return var * exp
     return kern
 
 
@@ -64,6 +79,11 @@ def NN_kernel(alpha: float, beta: float) -> Callable:
     """
     def kern(x, y):
         # todo <your code here>
+        num = 2 * beta * (x @ y + 1)
+        denom_x = 1 + (2 * beta * (x @ x + 1))
+        denom_y = 1 + (2 * beta * (y @ y + 1))
+        denom = np.sqrt(denom_x * denom_y)
+        k_x_y = alpha * (np.pi / 2) * np.arcsin(num / denom)
         return None
     return kern
 
@@ -77,6 +97,8 @@ class GaussianProcess:
         :param noise: the sample noise assumed to be added to the data
         """
         # todo <your code here>
+        self.kernel = kernel
+        self.noise = noise
 
     def fit(self, X, y) -> 'GaussianProcess':
         """
