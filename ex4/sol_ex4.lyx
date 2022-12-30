@@ -185,6 +185,257 @@ LatexCommand tableofcontents
 Theoretical
 \end_layout
 
+\begin_layout Subsection
+Q1
+\end_layout
+
+\begin_layout Paragraph
+\begin_inset Formula 
+\[
+\begin{array}{ccc}
+-\frac{1}{\alpha}\left\Vert x-x`\right\Vert ^{2}\stackrel{\alpha\rightarrow\infty}{\longrightarrow}0 & \Longrightarrow_{p_{1}} & \exp\left[-\frac{1}{\alpha}\left\Vert x-x`\right\Vert ^{2}\right]\stackrel{\alpha\rightarrow\infty}{\longrightarrow}1\\
+-\alpha\left\Vert x-x`\right\Vert ^{2}\stackrel{\alpha\rightarrow\infty}{\longrightarrow}-\infty & \Longrightarrow_{p_{2}} & \exp\left[-\alpha\left\Vert x-x`\right\Vert ^{2}\right]\stackrel{\alpha\rightarrow\infty}{\longrightarrow}\begin{cases}
+1 & x=x`\\
+0 & else
+\end{cases}
+\end{array}
+\]
+
+\end_inset
+
+Now, 
+\begin_inset Formula $f=(f_{1},f_{2})^{T}\sim\mvn 0{C_{p_{i}}}$
+\end_inset
+
+ and 
+\begin_inset Formula 
+\[
+C_{p_{i}}=\left[\begin{array}{cc}
+k_{p_{i}}(x_{1},x_{1}) & k_{p_{i}}(x_{1},x_{2})\\
+k_{p_{i}}(x_{2},x_{1}) & k_{p_{i}}(x_{2},x_{2})
+\end{array}\right]=\left[\begin{array}{cc}
+1 & k_{p_{i}}(x_{1},x_{2})\\
+k_{p_{i}}(x_{2},x_{1}) & 1
+\end{array}\right]
+\]
+
+\end_inset
+
+Specifically - 
+\begin_inset Formula 
+\[
+C_{p_{1}}\stackrel{\alpha\rightarrow\infty}{=}\left[\begin{array}{cc}
+1 & 1\\
+1 & 1
+\end{array}\right]=11^{T}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+C_{p_{2}}\stackrel{\alpha\rightarrow\infty}{=}\left[\begin{array}{cc}
+1 & 0\\
+0 & 1
+\end{array}\right]=I
+\]
+
+\end_inset
+
+Given by the 
+\begin_inset Formula $C_{p_{i}}$
+\end_inset
+
+matrices is the variance and covariance of 
+\begin_inset Formula $f_{1},f_{2}$
+\end_inset
+
+ namely:
+\begin_inset Formula 
+\[
+C_{p_{i}}=\left[\begin{array}{cc}
+var_{p_{i}}[f_{1}] & cov_{p_{i}}[f_{1},f_{2}]\\
+cov_{p_{i}}[f_{2},f_{1}] & var_{p_{i}}[f_{2}]
+\end{array}\right]
+\]
+
+\end_inset
+
+So: 
+\begin_inset Formula 
+\[
+corr_{p_{1}}(f1,f_{2})=\frac{cov_{p_{1}}[f_{1},f_{2}]}{\sqrt{var_{p_{1}}[f_{1}]}\cdot\sqrt{var_{p_{1}}[f_{2}]}}\stackrel{\alpha\rightarrow\infty}{=}\frac{1}{\sqrt{1}\cdot\sqrt{1}}=1
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+corr_{p_{2}}(f1,f_{2})=\frac{cov_{p_{2}}[f_{1},f_{2}]}{\sqrt{var_{p_{2}}[f_{1}]}\cdot\sqrt{var_{p_{2}}[f_{2}]}}\stackrel{\alpha\rightarrow\infty}{=}\frac{0}{\sqrt{1}\cdot\sqrt{1}}=0
+\]
+
+\end_inset
+
+ Q.E.D.
+\end_layout
+
+\begin_layout Subsection
+Q2
+\end_layout
+
+\begin_layout Paragraph
+\begin_inset Formula 
+\[
+C_{p_{2}}=\left[\begin{array}{ccc}
+k_{p_{i}}(x_{1},x_{1}) & \ldots & k_{p_{i}}(x_{1},x_{N})\\
+\vdots & \ddots & \vdots\\
+k_{p_{2}}(x_{N},x_{1}) & \ldots & k_{p_{2}}(x_{N},x_{N})
+\end{array}\right]=\left[\begin{array}{ccc}
+1 &  & \exp\left[-\alpha\Delta\right]\\
+ & \ddots\\
+\exp\left[-\alpha\Delta\right] &  & 1
+\end{array}\right]
+\]
+
+\end_inset
+
+In this case we have:
+\begin_inset Formula 
+\[
+corr_{p_{2}}(f1,f_{2})=\frac{cov_{p_{2}}[f_{1},f_{2}]}{\sqrt{var_{p_{2}}[f_{1}]}\cdot\sqrt{var_{p_{2}}[f_{2}]}}=\frac{\exp\left[-\alpha\Delta\right]}{\sqrt{1}\cdot\sqrt{1}}\approx\frac{1}{4}
+\]
+
+\end_inset
+
+So we have 
+\begin_inset Formula $e^{-\alpha\Delta}\approx\frac{1}{4}$
+\end_inset
+
+ iff 
+\begin_inset Formula $-\alpha\Delta\approx\ln\left(\frac{1}{4}\right)$
+\end_inset
+
+ iff 
+\begin_inset Formula 
+\[
+\alpha\approx-\ln\left(\frac{1}{4}\right)\cdot\frac{1}{\Delta}=\frac{\ln\left(4\right)}{\Delta}
+\]
+
+\end_inset
+
+Q.E.D.
+\end_layout
+
+\begin_layout Subsection
+Q3
+\end_layout
+
+\begin_layout Paragraph
+a) As we saw in Q1, the correlation under 
+\begin_inset Formula $p_{1}$
+\end_inset
+
+between any 2 entries of 
+\begin_inset Formula $f$
+\end_inset
+
+ in the limit 
+\begin_inset Formula $\alpha\rightarrow\infty$
+\end_inset
+
+ is 1.
+ Concidering the fact that 
+\begin_inset Formula $f_{i}\in\{1,-1\}$
+\end_inset
+
+, we get that (without the loss of generality) if 
+\begin_inset Formula $f_{i}=1$
+\end_inset
+
+ than 
+\begin_inset Formula $\forall j\:f_{j}=1$
+\end_inset
+
+.
+ Else, 
+\begin_inset Formula $f_{j}=-1$
+\end_inset
+
+ and so the correlation could not be 
+\begin_inset Formula $1$
+\end_inset
+
+.
+ So, under 
+\begin_inset Formula $p_{1}$
+\end_inset
+
+we get only 2 possible vectors - a vector of 1's and a vector of minus 1's
+ and the two are equally likely so:
+\begin_inset Formula 
+\[
+P_{1}(f)\stackrel{\alpha\rightarrow\infty}{=}\begin{cases}
+0.5 & f=(1,...,1)\\
+0.5 & f=(-1,...,-1)\\
+0 & else
+\end{cases}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+b) Using the same logic, the correlation under 
+\begin_inset Formula $p_{2}$
+\end_inset
+
+between any 2 entries of 
+\begin_inset Formula $f$
+\end_inset
+
+ in the limit 
+\begin_inset Formula $\alpha\rightarrow\infty$
+\end_inset
+
+ is 0.
+ I.e.
+ each entry of 
+\begin_inset Formula $f$
+\end_inset
+
+ is completely independent of the rest.
+ So, every value for 
+\begin_inset Formula $f_{i}$
+\end_inset
+
+ is equally possible, hence, any vector 
+\begin_inset Formula $f\in\{1,-1\}^{M}$
+\end_inset
+
+ is equally possible.
+ So:
+\begin_inset Formula 
+\[
+P_{2}(f)\stackrel{\alpha\rightarrow\infty}{=}2^{-M}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Q4
+\end_layout
+
+\begin_layout Paragraph
+
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage newpage
 \end_inset
@@ -194,10 +445,6 @@ Theoretical
 
 \begin_layout Section
 Practical
-\end_layout
-
-\begin_layout Standard
-
 \end_layout
 
 \end_body
