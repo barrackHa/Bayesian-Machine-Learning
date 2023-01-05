@@ -1,7 +1,7 @@
 import pytest
 import numpy as np
 from matplotlib import pyplot as plt
-from ex4 import RBF_kernel, Laplacian_kernel, Gibbs_kernel
+from ex4 import RBF_kernel, Laplacian_kernel, Gibbs_kernel, NN_kernel
 from pathlib import Path
 # import sys
 # import os
@@ -30,7 +30,15 @@ def test_Laplacian_kernel():
     assert np.array_equal(k_x_y, np.exp(-1))
 
 def test_Gibbs_kernel():
+    pass
+    # assert False
 
+def test_NN_kernel():
+    x = np.linspace(-3, 3, 100)
+    y = np.zeros_like(x)
+    k = NN_kernel(alpha=1, beta=1)
+    k_x_y = k(1,0)
+    print(k_x_y)
     assert False
     
 if __name__ == '__main__':

@@ -1,3 +1,4 @@
+from pathlib import Path
 import numpy as np
 from typing import Callable
 from matplotlib import pyplot as plt
@@ -58,7 +59,7 @@ def Gibbs_kernel(alpha: float, beta: float, delta: float, gamma: float) -> Calla
     An implementation of the Gibbs kernel (see section 4.2.3 of http://www.gaussianprocess.org/gpml/chapters/RW.pdf)
     :return: a function that receives two inputs and returns the output of the kernel applied to these inputs
     """
-    l = lambda x: alpha * np.exp(
+    l = lambda x: gamma + alpha * np.exp(
         -1 * beta * np.power(np.linalg.norm(x-delta), 2)
     )
     def kern(x, y):
@@ -79,12 +80,17 @@ def NN_kernel(alpha: float, beta: float) -> Callable:
     """
     def kern(x, y):
         # todo <your code here>
+        if not isinstance(x, np.ndarray):
+            x = np.array([x])
+        if not isinstance(y, np.ndarray):
+            y = np.array([y])
+
         num = 2 * beta * (x @ y + 1)
         denom_x = 1 + (2 * beta * (x @ x + 1))
         denom_y = 1 + (2 * beta * (y @ y + 1))
         denom = np.sqrt(denom_x * denom_y)
-        k_x_y = alpha * (np.pi / 2) * np.arcsin(num / denom)
-        return None
+        k_x_y = alpha * (2 / np.pi) * np.arcsin(num / denom)
+        return k_x_y
     return kern
 
 
@@ -99,6 +105,11 @@ class GaussianProcess:
         # todo <your code here>
         self.kernel = kernel
         self.noise = noise
+        self.k_star_operator = None
+        self.I = None
+        self.cov = None
+        self.cov_inv = None
+        self.alpha = None
 
     def fit(self, X, y) -> 'GaussianProcess':
         """
@@ -108,6 +119,24 @@ class GaussianProcess:
         :return: the fitted model
         """
         # todo <your code here>
+        dim_X = X.shape[0]
+        self.I = dim_X
+        k = self.kernel
+        range(dim_X)
+        cov = np.array([ 
+            [k(X[i],X[j]) for i in range(dim_X)]
+            for j in range(dim_X)
+        ]) 
+        cov = cov + self.noise * np.eye(dim_X)
+        self.cov = cov
+        self.cov_inv = np.linalg.pinv(cov) 
+        self.alpha = self.cov_inv @ y
+
+        # k_star is an operator that takes a sample and returns the kernel 
+        # values between it and all the training samples
+        # The len is (n_training_samples)
+        self.k_star_operator = lambda x: np.array([k(x, x_) for x_ in X])
+
         return self
 
     def predict(self, X: np.ndarray) -> np.ndarray:
@@ -117,8 +146,15 @@ class GaussianProcess:
         :return: the predictions for X
         """
         # todo <your code here>
-        return None
+        if self.k_star_operator is not None:
+            K = np.array([self.k_star_operator(x) for x in X]) 
+            f_z = self.alpha @ K.T
+            self.fitted_mean = f_z
+            return f_z
+        
+        return np.zeros_like(X)
 
+        
     def fit_predict(self, X: np.ndarray, y: np.ndarray) -> np.ndarray:
         """
         Find the model's posterior and return the predicted values for X using MMSE
@@ -136,7 +172,21 @@ class GaussianProcess:
         :return: a numpy array with the sample (same shape as X)
         """
         # todo <your code here>
-        return None
+        # if model was not fitted, sample from the prior
+        if self.k_star_operator is None:
+            K = np.array([[self.kernel(x,x_) for x in X] for x_ in X]) 
+            K = K + self.noise * np.eye(X.shape[0])
+            chol = np.linalg.cholesky(K)
+            return chol @ np.random.randn(chol.shape[-1]) 
+
+        # sample from the posterior
+        K = np.array([self.k_star_operator(x) for x in X])
+        C_z = np.array([[self.kernel(x,x_) for x in X] for x_ in X])
+        mean = K @ self.alpha
+        cov = C_z - K @ self.cov_inv @ K.T
+        sample = np.random.multivariate_normal(mean, cov)
+
+        return sample
 
     def predict_std(self, X: np.ndarray) -> np.ndarray:
         """
@@ -145,7 +195,18 @@ class GaussianProcess:
         :return: a numpy array with the standard deviations (same shape as X)
         """
         # todo <your code here>
-        return None
+        # if model was not fitted, std of the prior
+        if self.k_star_operator is None:
+            K = np.array([[self.kernel(x,x_) for x in X] for x_ in X]) 
+            K = K + self.noise * np.eye(X.shape[0])
+            return np.sqrt(np.diagonal(K) + self.noise)
+
+        # std of the posterior
+        # K = self.k_star_operator(X)
+        K = np.array([self.k_star_operator(x) for x in X])
+        C_z = np.array([[self.kernel(x,x_) for x in X] for x_ in X])
+        cov = C_z - K @ self.cov_inv @ K.T
+        return np.sqrt(np.diagonal(cov))
 
     def log_evidence(self, X: np.ndarray, y: np.ndarray) -> float:
         """
@@ -156,10 +217,14 @@ class GaussianProcess:
         """
         self.fit(X, y)
         # todo <your code here>
-        return None
+        N = X.shape[0]
+        a = -1/2 * y @ self.alpha
+        b = -1/2 * np.linalg.slogdet(self.cov)[1]
+        c = -1 * N/2 * np.log(2*np.pi)
+        return a + b + c
 
 
-def main():
+def main(show=True, save=False):
     # ------------------------------------------------------ section 2.1
     xx = np.linspace(-5, 5, 500)
     x, y = np.array([-2, -1, 0, 1, 2]), np.array([-2.1, -4.3, 0.7, 1.2, 3.9])
@@ -169,27 +234,30 @@ def main():
     params = [
         # Laplacian kernels
         ['Laplacian', Laplacian_kernel, 1, 0.25],           # insert your parameters, order: alpha, beta
-        ['Laplacian', Laplacian_kernel, None, None],        # insert your parameters, order: alpha, beta
-        ['Laplacian', Laplacian_kernel, None, None],        # insert your parameters, order: alpha, beta
+        ['Laplacian', Laplacian_kernel, 1, 1],        # insert your parameters, order: alpha, beta
+        ['Laplacian', Laplacian_kernel, 10, 1],        # insert your parameters, order: alpha, beta
 
         # RBF kernels
         ['RBF', RBF_kernel, 1, 0.25],                       # insert your parameters, order: alpha, beta
-        ['RBF', RBF_kernel, None, None],                    # insert your parameters, order: alpha, beta
-        ['RBF', RBF_kernel, None, None],                    # insert your parameters, order: alpha, beta
+        ['RBF', RBF_kernel, 1, 1],                    # insert your parameters, order: alpha, beta
+        ['RBF', RBF_kernel, 10, 1],                    # insert your parameters, order: alpha, beta
 
         # Gibbs kernels
-        ['Gibbs', Gibbs_kernel, 1, 0.5, 0, .1],             # insert your parameters, order: alpha, beta, delta, gamma
-        ['Gibbs', Gibbs_kernel, None, None, None, None],    # insert your parameters, order: alpha, beta, delta, gamma
-        ['Gibbs', Gibbs_kernel, None, None, None, None],    # insert your parameters, order: alpha, beta, delta, gamma
+        # a, b, d, g
+        ['Gibbs', Gibbs_kernel, 1, 0.5, 0, 0.1],             # insert your parameters, order: alpha, beta, delta, gamma
+        ['Gibbs', Gibbs_kernel, 1, 0.1, 0, 0.1],    # insert your parameters, order: alpha, beta, delta, gamma
+        ['Gibbs', Gibbs_kernel, 10, 0.1, 0, 0.1],    # insert your parameters, order: alpha, beta, delta, gamma
 
         # Neurel network kernels
+        # a, b
         ['NN', NN_kernel, 1, 0.25],                         # insert your parameters, order: alpha, beta
-        ['NN', NN_kernel, None, None],                      # insert your parameters, order: alpha, beta
-        ['NN', NN_kernel, None, None],                      # insert your parameters, order: alpha, beta
+        ['NN', NN_kernel, 0.5, 1],                      # insert your parameters, order: alpha, beta
+        ['NN', NN_kernel, 0.5, 10],                      # insert your parameters, order: alpha, beta
     ]
     noise = 0.05
 
     # plot all of the chosen parameter settings
+    j = 0
     for p in params:
         # create kernel according to parameters chosen
         k = p[1](*p[2:])    # p[1] is the kernel function while p[2:] are the kernel parameters
@@ -200,11 +268,26 @@ def main():
         # plot prior variance and samples from the priors
         plt.figure()
         # todo <your code here>
+        s = 2*gp.predict_std(xx)
+        m = gp.predict(xx)
+        plt.plot(xx, m, lw=1, label='Prior', linestyle='--' , color='black')
+        for _ in range(5):
+            plt.plot(xx, gp.sample(xx), lw=1)
+        f = gp.sample(xx)
+        plt.plot(xx, gp.sample(xx), lw=1)
+        plt.fill_between(xx, -1*s, s, alpha=.3)
         plt.xlabel('$x$')
         plt.ylabel('$f(x)$')
         plt.title(KERNEL_STRS[p[0]].format(*p[2:]))
         plt.ylim([-5, 5])
+        plt.legend()
 
+        if save:
+            f_name = f'kernel_{p[0]}_{(j%3)+1}_prior.png'
+            f_p = Path(__file__).parents[0]/f'tmp_figs/{f_name}'
+            plt.savefig(f_p)
+
+        
         # fit the GP to the data and calculate the posterior mean and confidence interval
         gp.fit(x, y)
         m, s = gp.predict(xx), 2*gp.predict_std(xx)
@@ -219,7 +302,16 @@ def main():
         plt.ylabel('$f(x)$')
         plt.title(KERNEL_STRS[p[0]].format(*p[2:]))
         plt.ylim([-5, 5])
-        plt.show()
+
+        if save:
+            f_name = f'kernel_{p[0]}_{(j%3)+1}_post.png'
+            f_p = Path(__file__).parents[0]/f'tmp_figs/{f_name}'
+            plt.savefig(f_p)
+        
+        j += 1
+    
+    # if show:
+    #     plt.show()
 
     # ------------------------------ question 4
     # define range of betas
@@ -234,7 +326,14 @@ def main():
     plt.plot(betas, evidence, lw=2)
     plt.xlabel(r'$\beta$')
     plt.ylabel('log-evidence')
-    plt.show()
+    
+    if save:
+        f_name = f'log-evidence.png'
+        f_p = Path(__file__).parents[0]/f'tmp_figs/{f_name}'
+        plt.savefig(f_p)
+
+    # if show:
+    #   plt.show()
 
     # extract betas that had the min, median and max evidence
     srt = np.argsort(evidence)
@@ -243,13 +342,19 @@ def main():
     # plot the mean of the posterior of a GP using the extracted betas on top of the data
     plt.figure()
     plt.scatter(x, y, 30, 'k', alpha=.5)
-    plt.plot(xx, GaussianProcess(RBF_kernel(1, beta=min_ev), noise).fit(x, y).predict(xx), lw=2, label='min evidence')
-    plt.plot(xx, GaussianProcess(RBF_kernel(1, beta=median_ev), noise).fit(x, y).predict(xx), lw=2, label='median evidence')
-    plt.plot(xx, GaussianProcess(RBF_kernel(1, beta=max_ev), noise).fit(x, y).predict(xx), lw=2, label='max evidence')
+    plt.plot(xx, GaussianProcess(RBF_kernel(1, beta=min_ev), noise).fit(x, y).predict(xx), lw=2, label=r'min evidence $\beta={}$'.format(min_ev))
+    plt.plot(xx, GaussianProcess(RBF_kernel(1, beta=median_ev), noise).fit(x, y).predict(xx), lw=2, label=r'median evidence $\beta={}$'.format(median_ev))
+    plt.plot(xx, GaussianProcess(RBF_kernel(1, beta=max_ev), noise).fit(x, y).predict(xx), lw=2, label=r'max evidence $\beta={}$'.format(max_ev))
     plt.xlabel(r'$x$')
     plt.ylabel(r'$f(x)$')
     plt.legend()
-    plt.show()
+
+    if save:
+        f_name = f'funcs_by_log_evidence.png'
+        f_p = Path(__file__).parents[0]/f'tmp_figs/{f_name}'
+        plt.savefig(f_p)
+    # if show:
+    #   plt.show()
 
     # ------------------------------------------------------ section 2.2
     # define function and parameters
@@ -278,11 +383,17 @@ def main():
     plt.xlabel('$x$')
     plt.ylabel('$f(x)$')
     plt.ylim([-3, 3])
-    plt.show()
+    
+    if save:
+        f_name = f'last.png'
+        f_p = Path(__file__).parents[0]/f'tmp_figs/{f_name}'
+        plt.savefig(f_p)
+    if show:
+      plt.show()
 
 
 if __name__ == '__main__':
-    main()
+    main(show=True, save=True)
 
 
 
