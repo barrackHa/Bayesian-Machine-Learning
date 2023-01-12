@@ -64,15 +64,12 @@ def main(save=False):
     plt.ylabel('y')
     plt.xlabel('x')
 
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!
-    # plt.clf()
-    # plt.close()
     if save:
         f_name = f'q1.png'
         f_p = Path(__file__).parents[0]/f'tmp_figs/{f_name}'
         plt.savefig(f_p)
-    plt.show()
-    exit()
+
+    plt.show()  
 
     # ------------------------------------------------------ section 2
     # load image data
@@ -89,8 +86,6 @@ def main(save=False):
     train_score, test_score = np.zeros(len(nus)), np.zeros(len(nus))
     preds = []
     for i, nu in enumerate(nus):
-        # !!!!!!
-        break
         beta = .05 * nu
         print(f'QDA with nu={nu}', end='', flush=True)
         
@@ -98,20 +93,15 @@ def main(save=False):
         dogs_model = Gaussian(beta, nu).fit(train[:dogs.shape[0]])
         frogs_model = Gaussian(beta, nu).fit(train[dogs.shape[0]:])
 
-        # pred = lambda x: np.clip(dogs_model.log_likelihood(x) - frogs_model.log_likelihood(x), -25, 25)
-        # todo: good pred func
         pred = lambda x: np.where(
             np.sign(
                 dogs_model.log_likelihood(x) - frogs_model.log_likelihood(x)
             ) == 0, 1, np.sign(dogs_model.log_likelihood(x) - frogs_model.log_likelihood(x))
         )
 
-
         preds.append(pred(train))
         # print train and test accuracies
-        # print(f'Train accuracy: {accuracy(pred(train), labels):.2f}')
         train_score[i] = accuracy(pred(train), labels)
-        # print(f'Test accuracy: {accuracy(pred(test), labels_t):.2f}')
         test_score[i] = accuracy(pred(test), labels_t)
 
         print(f': train={train_score[i]:.2f}, test={test_score[i]:.2f}', flush=True)
@@ -122,10 +112,12 @@ def main(save=False):
     plt.legend()
     plt.ylabel('accuracy')
     plt.xlabel(r'value of $\nu$')
-    # !!!!!!!!!!!!!!!!!!!!!!!!!!
-    plt.clf()
-    plt.close()
-    # plt.show()
+
+    if save:
+        f_name = f'q2.png'
+        f_p = Path(__file__).parents[0]/f'tmp_figs/{f_name}'
+        plt.savefig(f_p)
+    plt.show()
 
     # ------------------------------------------------------ section 2.2
     # define question variables
@@ -143,9 +135,7 @@ def main(save=False):
         gp = GaussianProcess(kern, sigma).fit(X, y)
         
         # print train and test accuracies
-        # print(f'Train accuracy: {accuracy(gpr.predict(train), labels):.2f}')
         train_score[i] = accuracy(gp.predict(X), y)
-        # print(f'Test accuracy: {accuracy(gpr.predict(test), labels_t):.2f}')
         test_score[i] = accuracy(gp.predict(test), labels_t)
         
         print(f': train={train_score[i]:.2f}, test={test_score[i]:.2f}', flush=True)
@@ -157,6 +147,12 @@ def main(save=False):
     plt.ylabel('accuracy')
     plt.xlabel('# of samples')
     plt.xscale('log')
+
+    if save:
+        f_name = f'q3.png'
+        f_p = Path(__file__).parents[0]/f'tmp_figs/{f_name}'
+        plt.savefig(f_p)
+    
     plt.show()
 
     # calculate how certain the model is about the predictions
@@ -165,8 +161,6 @@ def main(save=False):
     # plot most and least confident points
     plot_ims(dogs_t[inds][:25], 'least confident')
     plot_ims(dogs_t[inds][-25:], 'most confident')
-    plt.show()
-
 
 if __name__ == '__main__':
     main(save=False)

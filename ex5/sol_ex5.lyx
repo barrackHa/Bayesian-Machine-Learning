@@ -225,102 +225,10 @@ Image Classification
 \end_layout
 
 \begin_layout Subsection
-Kernels
-\end_layout
-
-\begin_layout Subsubsection
-Laplacian
+Generative Classification of Images
 \end_layout
 
 \begin_layout Paragraph
-\begin_inset Box Frameless
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "100col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../ex4/tmp_figs/kernel_Laplacian_1_prior.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\begin_inset Box Boxed
-position "t"
-hor_pos "c"
-has_inner_box 1
-inner_pos "t"
-use_parbox 0
-use_makebox 0
-width "50col%"
-special "none"
-height "1in"
-height_special "totalheight"
-thickness "0.4pt"
-separation "3pt"
-shadowsize "4pt"
-framecolor "black"
-backgroundcolor "none"
-status open
-
-\begin_layout Plain Layout
-\begin_inset Graphics
-	filename ../ex4/tmp_figs/kernel_Laplacian_1_post.png
-	scale 45
-	rotateOrigin center
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\end_inset
-
-
 \begin_inset Box Frameless
 position "c"
 hor_pos "c"
@@ -341,7 +249,7 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename ../ex4/tmp_figs/last.png
+	filename ex5_utils/tmp_figs/q2.png
 	scale 75
 	rotateOrigin center
 
@@ -353,6 +261,171 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Paragraph
+The test accuracy for 
+\begin_inset Formula $\nu=0$
+\end_inset
+
+ is 
+\begin_inset Formula $0.72$
+\end_inset
+
+ and for 
+\begin_inset Formula $\nu=25$
+\end_inset
+
+ is 
+\begin_inset Formula $0.81$
+\end_inset
+
+.
+ This happens as 
+\begin_inset Formula $\nu=0$
+\end_inset
+
+ gives us the ML solution but 
+\begin_inset Formula $\nu=25$
+\end_inset
+
+ is a better estimate for the covariance distribution and so the model is
+ able to generalize better.
+\end_layout
+
+\begin_layout Subsection
+Discriminative Classification of Images
+\end_layout
+
+\begin_layout Paragraph
+\begin_inset Box Frameless
+position "c"
+hor_pos "c"
+has_inner_box 1
+inner_pos "c"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ex5_utils/tmp_figs/q3.png
+	scale 75
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Box Frameless
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "100col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "50col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ex5_utils/tmp_figs/least_confident.png
+	scale 75
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Box Boxed
+position "t"
+hor_pos "c"
+has_inner_box 1
+inner_pos "t"
+use_parbox 0
+use_makebox 0
+width "50col%"
+special "none"
+height "1in"
+height_special "totalheight"
+thickness "0.4pt"
+separation "3pt"
+shadowsize "4pt"
+framecolor "black"
+backgroundcolor "none"
+status open
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename ex5_utils/tmp_figs/most_confident.png
+	scale 75
+	rotateOrigin center
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+As we can see, the most confident are clearly cuter than the least.
 \end_layout
 
 \end_body
