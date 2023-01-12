@@ -6,6 +6,10 @@
 # figuers
 *.png
 
+# specific npy's
+dogs.npy
+frogs.npy
+
 # ide's
 *.idea/
 .vscode/
