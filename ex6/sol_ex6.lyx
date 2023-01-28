@@ -186,11 +186,145 @@ Theoretical
 \end_layout
 
 \begin_layout Subsection
-Q1
+EM Initialization
+\end_layout
+
+\begin_layout Paragraph
+In this case, for each 
+\begin_inset Formula $k$
+\end_inset
+
+, the E-step for 
+\begin_inset Formula $t=1$
+\end_inset
+
+ is:
+\begin_inset Formula 
+\[
+r_{ik}^{(1)}\defin\frac{\pi_{k}^{(0)}\cmvn{x_{i}}{\mu}{\Sigma}}{\sum_{k'}\pi_{k'}^{(0)}\cmvn{x_{i}}{\mu}{\Sigma}}=\frac{\pi_{k}^{(0)}\cmvn{x_{i}}{\mu}{\Sigma}}{\cmvn{x_{i}}{\mu}{\Sigma}\sum_{k'}\pi_{k'}^{(0)}}=\frac{\pi_{k}^{(0)}}{\sum_{k'}\pi_{k'}^{(0)}}=\pi_{k}^{(0)}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\pi_{k}^{1}=\frac{1}{N}\sum_{i}\frac{\pi_{k}^{(0)}}{\sum_{k'}\pi_{k'}^{(0)}}=\frac{1}{N}N\frac{\pi_{k}^{(0)}}{\sum_{k'}\pi_{k'}^{(0)}}=\frac{\pi_{k}^{(0)}}{\sum_{k'}\pi_{k'}^{(0)}}=\pi_{k}^{(0)}
+\]
+
+\end_inset
+
+and the M-step:
+\family typewriter
+
+\begin_inset Formula 
+\[
+\mu_{k}^{(1)}=\frac{\sum_{i}\pi_{k}^{(0)}x_{i}}{\sum_{i}\pi_{k}^{(0)}}=\frac{\pi_{k}^{(0)}\sum_{i}x_{i}}{N\pi_{k}^{(0)}}=\frac{\sum_{i}x_{i}}{N}=\mu
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\[
+\Sigma_{k}^{(1)}=\frac{\sum_{i}\pi_{k}^{(0)}(x_{i}-\mu)(x_{i}-\mu)^{T}}{\sum_{i}\pi_{k}^{(0)}}=\frac{\pi_{k}^{(0)}\sum_{i}(x_{i}-\mu)(x_{i}-\mu)^{T}}{N\pi_{k}^{(0)}}=\frac{\sum_{i}(x_{i}-\mu)(x_{i}-\mu)^{T}}{N}=\Sigma
+\]
+
+\end_inset
+
+
+\family default
+In conclusion, the first step changes nothing and we're back to the conditions
+ of the initial state.
+ Hence, step 
+\begin_inset Formula $t=2$
+\end_inset
+
+ would reiterate the same process and yield the same results and any 
+\begin_inset Formula $t$
+\end_inset
+
+ after that would be the same.
+ So:
+\begin_inset Formula 
+\begin{align*}
+\forall k,t\; & \mu_{k}^{(t)}=\mu\\
+\forall k,t\; & \Sigma_{k}^{(T)}=\Sigma\\
+\forall k,t\; & \pi_{k}^{(t)}=\pi_{k}^{(0)}
+\end{align*}
+
+\end_inset
+
+I.e.
+ we start with a regular Gaussian and stay with it so the solution is the
+ MLE solution.
+ Q.E.D.
 \end_layout
 
 \begin_layout Subsection
-Q2
+Gibbs Sampling
+\end_layout
+
+\begin_layout Paragraph
+Let 
+\begin_inset Formula $y$
+\end_inset
+
+ be a constant, so:
+\begin_inset Formula 
+\[
+p(x|y)=\frac{1}{z_{x}}\cmvn x{\mu_{x}}{\Sigma_{x}}e^{-\frac{\beta}{2}\left\Vert x-y\right\Vert ^{2}}
+\]
+
+\end_inset
+
+As this is a quadratic form in x, we're left to find the mean and covariance
+ of this distribution.
+ 
+\begin_inset Formula 
+\[
+\ln p(x|y)=-\frac{1}{2}(x-\mu_{x})^{T}\Sigma_{x}^{-1}(x-\mu_{x})^{T}-\frac{\beta}{2}\left\Vert x-y\right\Vert ^{2}+const=-\left(\frac{1}{2}\left((x-\mu_{x})^{T}\Sigma_{x}^{-1}(x-\mu_{x})+\beta\left\Vert x-y\right\Vert ^{2}\right)\right)+const
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+\begin_inset Formula 
+\[
+\Delta=\mahala x{\mu_{x}}{\Sigma_{x}^{-1}}+\frac{\beta}{2}\left\Vert x-y\right\Vert ^{2}
+\]
+
+\end_inset
+
+
+\begin_inset Formula 
+\begin{align*}
+\frac{\partial\Delta}{\partial x} & =\Sigma_{x}^{-1}(x-\mu_{x})+\beta(x-y)\\
+= & \Sigma_{x}^{-1}x-\Sigma_{x}^{-1}\mu_{x}+\beta x-\beta y=\left(\Sigma_{x}^{-1}+\beta I\right)\left(x-\frac{\Sigma_{x}^{-1}\mu_{x}+\beta y}{\left(\Sigma_{x}^{-1}+\beta I\right)}\right)
+\end{align*}
+
+\end_inset
+
+ So we get - 
+\begin_inset Formula 
+\[
+x|y\sim\cmvn x{\left(\Sigma_{x}^{-1}+\beta I\right)^{-1}\left(\Sigma_{x}^{-1}\mu_{x}+\beta y\right)}{\left(\Sigma_{x}^{-1}+\beta I\right)^{-1}}
+\]
+
+\end_inset
+
+As the problem is symmetric in x and y, we get for y:
+\begin_inset Formula 
+\[
+y|x\sim\cmvn y{\left(\Sigma_{y}^{-1}+\beta I\right)^{-1}\left(\Sigma_{y}^{-1}\mu_{y}+\beta x\right)}{\left(\Sigma_{y}^{-1}+\beta I\right)^{-1}}
+\]
+
+\end_inset
+
+Q.E.D.
 \end_layout
 
 \begin_layout Standard
