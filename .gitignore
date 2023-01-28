@@ -9,6 +9,8 @@
 # specific npy's
 dogs.npy
 frogs.npy
+mnist_partial.npy
+mnist_labs_partial.npy
 
 # ide's
 *.idea/
