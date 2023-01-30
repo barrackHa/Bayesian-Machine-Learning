@@ -1,3 +1,4 @@
+import copy
 import numpy as np
 from matplotlib import pyplot as plt
 from ex6_utils import (plot_ims, load_MNIST, outlier_data, gmm_data, plot_2D_gmm, load_dogs_vs_frogs,
@@ -21,7 +22,25 @@ def outlier_regression(model: BayesianLinearRegression, X: np.ndarray, y: np.nda
              indices of points which were considered as outliers
     """
     # todo <your code here>
-    return None, None
+    tmp_X, tmp_y, tmp_k = None, None, np.zeros_like(y, dtype=int)
+    new_model = copy.deepcopy(model)
+    new_model.fit(X, y)
+
+    outlier_likelihood = (1/(np.sqrt(2*np.pi*sig_o))) * np.exp(-0.5*(y - mu_o)**2/sig_o)
+
+    for t in range(T):
+        num = p_out * outlier_likelihood 
+        denum = (p_out * outlier_likelihood) + \
+                ((1 - p_out) * np.exp(new_model.log_likelihood(X, y)))
+        outlier_prob = num / denum 
+        for i,p in enumerate(outlier_prob):
+            tmp_k[i] = np.random.choice(a=[0,1], p=[1-p, p])
+
+        inliers = 1-tmp_k
+        tmp_X, tmp_y = np.extract(inliers, X), np.extract(inliers, y)
+        tmp_theta = new_model.fit_predict(tmp_X, tmp_y)
+        
+    return new_model, tmp_k
 
 
 class BayesianGMM:
@@ -38,6 +57,13 @@ class BayesianGMM:
         :param learn_cov: a boolean indicating whether the cluster covariances should be learned or not
         """
         # todo <your code here>
+        self.k = k
+        self.alpha = alpha
+        self.mu_0 = mu_0
+        self.sig_0 = sig_0
+        self.nu = nu
+        self.beta = beta
+        self.learn_cov = learn_cov
 
     def log_likelihood(self, X: np.ndarray) -> np.ndarray:
         """
@@ -102,19 +128,20 @@ if __name__ == '__main__':
     samp, outliers = outlier_regression(mdl, ims, labs, p_out=0.01, T=50, mu_o=0, sig_o=.5)
     # plot the outliers
     plot_ims(ims[outliers], title='outliers')
-
+    exit()
     # ------------------------------------------------------ section 3 - Bayesian GMM
     # ---------------------- question 5
     # load 2D GMM data
     k, N = 5, 1000
-    X = gmm_data(N, k)
-
+    # X = gmm_data(N, k)
+    X, means, covs = gmm_data(N, k)
     for i in range(5):
         gmm = BayesianGMM(k=50, alpha=.01, mu_0=np.zeros(2), sig_0=.5, nu=5, beta=.5)
         gmm.gibbs_fit(X, T=100)
 
         # plot a histogram of the mixture probabilities (in descending order)
-        pi = None  # mixture probabilities from the fitted GMM
+        # pi = None  # mixture probabilities from the fitted GMM
+        pi = np.ones(5) * 0.2
         plt.figure()
         plt.bar(np.arange(len(pi)), np.sort(pi)[::-1])
         plt.ylabel(r'$\pi_k$')
@@ -122,8 +149,9 @@ if __name__ == '__main__':
         plt.show()
 
         # plot the fitted 2D GMM
-        plot_2D_gmm(X, None, None, gmm.cluster(X))  # the second input are the means and the third are the covariances
-
+        # plot_2D_gmm(X, None, None, gmm.cluster(X))  # the second input are the means and the third are the covariances
+        plot_2D_gmm(X, means, covs, gmm.cluster(X)) 
+    exit()
     # ---------------------- questions 6-7
     # load image data
     MNIST, labs = load_MNIST()
