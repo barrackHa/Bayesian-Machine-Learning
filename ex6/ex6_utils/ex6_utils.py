@@ -278,10 +278,10 @@ def load_dogs_vs_frogs(N: int=1000):
     :return: the tuple (X, y) where X is the concatenated array of shape [2N,32,32,3] of the images and y are the
              labels, as a numpy array of shape [2N,] where all dogs are labeled as 1 and all frogs as -1
     """
-    dogs = np.load('dogs.npy')
+    dogs = np.load(Path(__file__).parent / 'dogs.npy')
     dogs = dogs[np.random.choice(dogs.shape[0], N, replace=False)]
 
-    frogs = np.load('frogs.npy')
+    frogs = np.load(Path(__file__).parent / 'frogs.npy')
     frogs = frogs[np.random.choice(dogs.shape[0], N, replace=False)]
 
     X = np.concatenate([dogs, frogs], axis=0)
