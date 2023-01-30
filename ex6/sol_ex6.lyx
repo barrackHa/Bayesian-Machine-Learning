@@ -335,7 +335,7 @@ Q.E.D.
 \end_layout
 
 \begin_layout Section
-Practical
+Robust Regression
 \end_layout
 
 \begin_layout Paragraph
@@ -463,6 +463,10 @@ status open
 \end_inset
 
 
+\end_layout
+
+\begin_layout Section
+Bayesian Gaussian Mixture Models
 \end_layout
 
 \end_body
